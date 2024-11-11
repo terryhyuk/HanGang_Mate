@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,dart,flutter,macos,androidstudio,firebase
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,python,dart,flutter,macos,androidstudio,firebase
+# Created by https://www.toptal.com/developers/gitignore/api/flutter,dart,macos,python,firebase,visualstudiocode,androidstudio
+# Edit at https://www.toptal.com/developers/gitignore?templates=flutter,dart,macos,python,firebase,visualstudiocode,androidstudio
 
 ### Dart ###
 # See https://www.dartlang.org/guides/libraries/private-files
@@ -151,6 +151,7 @@ dist/
 downloads/
 eggs/
 .eggs/
+lib/
 lib64/
 parts/
 sdist/
@@ -453,4 +454,4 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,dart,flutter,macos,androidstudio,firebase
+# End of https://www.toptal.com/developers/gitignore/api/flutter,dart,macos,python,firebase,visualstudiocode,androidstudio
