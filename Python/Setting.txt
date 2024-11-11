@@ -25,3 +25,17 @@ else:
 --------------------------------------------------------------------------------
 ### y축 지수 제거
 ticklabel_format(axis='y',useOffset=False, style='plain') # Y축의 지수표시를 막기
+
+
+
+
+--------------------------------------------------------------------------------
+import warnings
+warnings.filterwarnings('ignore')
+
+
+
+
+--------------------------------------------------------------------------------
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
