@@ -57,6 +57,12 @@ dependencies:
   # 채팅패키지
   chat_bubbles: ^1.6.0
 
+  # 구글 맵
+  google_maps_flutter: ^2.9.0
+
+  # 구글맵 경로
+  flutter_polyline_points: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
