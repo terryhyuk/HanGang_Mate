@@ -15,10 +15,10 @@ router = APIRouter()
 
 def connect():
     conn = pymysql.connect(
-        host=host.remote,
+        host=host.ip,
         user='root',
         password='qwer1234',
         charset='utf8',
-        db=''
+        db='parking'
     )
     return conn
