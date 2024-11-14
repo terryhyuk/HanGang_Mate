@@ -7,12 +7,13 @@ Usage : 게시판 전체보기, 게시판 글 등록
 
 from fastapi import APIRouter
 import pymysql
+import host
 
 router = APIRouter()
 
 def connect():
     conn = pymysql.connect(
-        host='192.168.50.87',
+        host=host.ip,
         user='root',
         password='qwer1234',
         db='parking',

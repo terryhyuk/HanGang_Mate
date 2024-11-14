@@ -14,7 +14,7 @@ app.include_router(post_router, prefix="/post", tags=['post'])
 
 def connect():
     conn = pymysql.connect(
-        host='192.168.50.87',
+        host=host.ip,
         user='root',
         password='qwer1234',
         db='parking',
