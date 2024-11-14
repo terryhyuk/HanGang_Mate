@@ -10,6 +10,7 @@ class Home extends StatelessWidget {
   final PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
 
+  // 드랍다운 버튼 테스트 데이터
   final List<String> parks = ['망원한강공원', '강서한강공원', '난지한강공원', '이촌한강공원', '뚝섬한강공원'];
 
   @override
@@ -28,7 +29,9 @@ class Home extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10),
         // backgroundColor: Colors.grey.shade50,
         isVisible: true,
-        onItemSelected: (index) {},
+        onItemSelected: (index) {
+          // 비로그인 상태일시 로그인이 필요한 기능은 로그인 화면으로 이동
+        },
         animationSettings: const NavBarAnimationSettings(
           navBarItemAnimation: ItemAnimationSettings(
             duration: Duration(milliseconds: 400),
@@ -74,8 +77,12 @@ class Home extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Currently at :',
-                            style: TextStyle(fontSize: 16)),
+                        const Text(
+                          '선택된 공원 :',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
                         DropdownButton<String>(
                           value: selectedPark,
                           onChanged: (String? newValue) {
@@ -99,13 +106,13 @@ class Home extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  '주차장 현황',
+                                  'oo공원 주차장 현황',
                                   style: TextStyle(
                                     fontSize: 18,
                                   ),
@@ -113,12 +120,21 @@ class Home extends StatelessWidget {
                                 IconButton(
                                   icon: const Icon(Icons.refresh),
                                   onPressed: () {},
-                                )
+                                ),
                               ],
+                            ),
+                            Slider(
+                              value: 50,
+                              min: 0,
+                              max: 100,
+                              // divisions: 4, // 여유, 보통, 혼잡 구분
+                              onChanged: (double value) {
+                                // 슬라이더 값 변경 시 처리
+                              },
                             ),
                             const SizedBox(height: 10),
                             const Text(
-                              '현재 34대 주차 가능',
+                              '현재 혼잡도 n%',
                               style: TextStyle(
                                 fontSize: 16,
                               ),
