@@ -6,10 +6,6 @@
 	<string>AIzaSyChOi1PglntKQzJbqrhDpsPB1qnVamialQ</string>
 	<key>GCM_SENDER_ID</key>
 	<string>92194517348</string>
-	<key>CLIENT_ID</key>
-	<string>92194517348-1ki9cd0s6l7lhvd53mi907kmcsraqim6.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.92194517348-1ki9cd0s6l7lhvd53mi907kmcsraqim6</string>	
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>

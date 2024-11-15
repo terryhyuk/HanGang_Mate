@@ -40,20 +40,20 @@ dependencies:
 
   # 네비게이션 바
   persistent_bottom_nav_bar: ^6.2.1
-
+  
   # http
   http: ^1.2.2
 
   # getstorage
   get_storage: ^2.1.1
-
+  
   # firebase
   firebase_core: ^3.6.0
-  cloud_firestore: ^5.4.3
-
+  cloud_firestore: ^5.4.3  
+  
   # lottie
   lottie: ^3.1.2
-
+  
   # 채팅패키지
   chat_bubbles: ^1.6.0
 
@@ -62,10 +62,6 @@ dependencies:
 
   # 구글맵 경로
   flutter_polyline_points: ^2.1.0
-
-  # 구글 로그인
-  firebase_auth: ^5.3.3
-  google_sign_in: ^6.2.2
 
 dev_dependencies:
   flutter_test:

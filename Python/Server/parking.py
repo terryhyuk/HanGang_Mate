@@ -7,7 +7,6 @@ Usage : FastAPI Router about post
 
 from fastapi import FastAPI
 from post import router as post_router
-import host
 import pymysql
 
 app = FastAPI()
