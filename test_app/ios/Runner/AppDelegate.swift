@@ -1,4 +1,3 @@
-// git ignore 설정하기
 import UIKit
 import Flutter
 import GoogleMaps
@@ -9,7 +8,7 @@ import GoogleMaps
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GMSServices.provideAPIKey("AIzaSyCWLtBsAqpr9bSEg5nOSjkqGUFuGVLGgDI")
+    GMSServices.provideAPIKey("")
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
