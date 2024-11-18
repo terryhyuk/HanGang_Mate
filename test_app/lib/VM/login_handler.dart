@@ -15,7 +15,7 @@ class LoginHandler {
   // 로그인 상태 확인
   isLoggeIn() {
     return FirebaseAuth.instance.currentUser != null &&
-        getStoredEmail().inNotEmpty;
+        getStoredEmail().isNotEmpty;
   }
 
   // GetStorage에서 저장된 이메일 가져오기
@@ -73,24 +73,34 @@ class LoginHandler {
 
 // query inserted google email from db to differentiate whether email is registered or not
   userloginCheckJSONData(email) async {
-    var url = Uri.parse('http://127.0.0.1:8000/user/selectuser?id=$email');
-    var response = await http.get(url);
-    data.clear();
-    var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-    List result = dataConvertedJSON['results'];
-    data.addAll(result);
+    try {
+      var url = Uri.parse('http://127.0.0.1:8000/user/selectuser?email=$email');
+      var response = await http.get(url);
+      data.clear();
+      var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
+
+      // null 체크와 타입 캐스팅을 함께 처리
+      List<dynamic> result = (dataConvertedJSON['results'] as List?) ?? [];
+      data.addAll(result);
+    } catch (e) {
+      print('Error fetching user data: $e');
+      // 에러 처리
+    }
   }
 
   // insert the account information to mysql
   userloginInsertData(String userEmail, String userName) async {
     var url = Uri.parse(
-        'http://127.0.0.1:8000/user/insertuser?id=$userEmail&password=""&image=usericon.jpg&name=$userName&phone=""');
+        'http://127.0.0.1:8000/user/insertuser?email=$userEmail&name=$userName&observer=false');
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     var result = dataConvertedJSON['results'];
 
     if (result == 'OK') {
-    } else {}
+      // 성공 처리
+    } else {
+      // 실패 처리
+    }
   }
 
   // 로그아웃 및 비우기
