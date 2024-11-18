@@ -8,7 +8,6 @@ Date : 2024.11.17~
 from fastapi import APIRouter
 import pymysql
 import host
-import requests
 router = APIRouter()
 
 def connect():
@@ -61,4 +60,3 @@ async def select_hanriver():
         print(e)
         return {'error' : e}
     
-
