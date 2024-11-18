@@ -8,12 +8,14 @@ Usage : FastAPI Router about post
 from fastapi import FastAPI
 from post import router as post_router
 from park_info import router as parking_router
+from login import router as login_router
 import pymysql
 import host
 
 app = FastAPI()
 app.include_router(post_router, prefix="/post", tags=['post'])
-app.include_router(parking_router, prefix="/parking", tags=['pakring'])
+app.include_router(parking_router, prefix="/parking", tags=['parking'])
+app.include_router(login_router, prefix="/user", tags=['login'])
 
 def connect():
     conn = pymysql.connect(
@@ -27,4 +29,4 @@ def connect():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
