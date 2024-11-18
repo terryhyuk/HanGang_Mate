@@ -9,8 +9,6 @@ from fastapi import APIRouter
 import pymysql
 import host
 import requests
-from bs4 import BeautifulSoup
-import pandas as pd
 router = APIRouter()
 
 def connect():
@@ -47,7 +45,7 @@ async def selectlatlng(hname : str=None ):
 
 
 ### 정섭 : 공원 목록(드랍다운용) 불러오기
-@ router.get('/select_hanriver')
+@router.get('/select_hanriver')
 async def select_hanriver():
     conn = connect()
     curs = conn.cursor()
@@ -62,3 +60,5 @@ async def select_hanriver():
         conn.close()
         print(e)
         return {'error' : e}
+    
+
