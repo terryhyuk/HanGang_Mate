@@ -18,10 +18,10 @@ class LocationHandler extends GetxController{
   @override
   void onInit() async {
     super.onInit();
+    await checkLocationPermission();
     await getAllHname();
     await getParkingLoc();
     await createMarker();
-    await checkLocationPermission();
   }
 
 // 위치 제공 동의 
