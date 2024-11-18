@@ -16,39 +16,41 @@ return
       appBar: AppBar(
       ),
       body: 
-      Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              GetBuilder<LocationHandler>(
-                builder: (_) {
-                  return Obx(() {
-                    if (controller.parkingMarker.isEmpty) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      return Center(
-                        child: Column(
-                          children: [
-                            _dropDown(),
-                            _card(),
-                            _googleMap(context),
-                          ],
-                        ),
-                      );
-                    }
-                  });
-                }
-              ),
-            ],
+      SingleChildScrollView(
+        child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                GetBuilder<LocationHandler>(
+                  builder: (_) {
+                    return Obx(() {
+                      if (controller.parkingMarker.isEmpty) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return Center(
+                          child: Column(
+                            children: [
+                              _dropDown(),
+                              _card(),
+                              _googleMap(context),
+                            ],
+                          ),
+                        );
+                      }
+                    });
+                  }
+                ),
+              ],
+            ),
           ),
+        ],
         ),
-      ],
       )
     );
   }
@@ -87,7 +89,7 @@ Widget _card(){
                             children: [
                               Text(
                                 controller.selectHname.value,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18,
                                 ),
                               ),
@@ -132,7 +134,7 @@ Widget _googleMap(context){
                               LatLng(controller.parkingInfo[0].lat, controller.parkingInfo[0].lng), // 지도 중심점은 임의로 첫번째 주차장 값으로 설정함
                         ),
                         onMapCreated: (GoogleMapController controller) {
-                          if(mapController.isCompleted){
+                          if(!mapController.isCompleted){
                           mapController.complete(controller);
                           }
                         },

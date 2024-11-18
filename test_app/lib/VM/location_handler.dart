@@ -70,7 +70,7 @@ checkLocationPermission() async {
   // }
   
 
-  // 주차장 정보 가져오기(주차장이름, 위도, 경도)
+  // 주차장 정보 가져오기(주차장이름, 위도, 경도) 
   getParkingLoc()async{
     var url = Uri.parse('http://127.0.0.1:8000/parking/selectlatlng?hname=$selectHname');
     var response = await http.get(url);
@@ -82,7 +82,6 @@ checkLocationPermission() async {
       String pname = dataConvertedJSON['pname'][i];
       double lat = dataConvertedJSON['lat'][i];
       double lng = dataConvertedJSON['lng'][i];
-      
       returnData.add(Parking(
         pname: pname, 
         lat: lat, 
@@ -118,3 +117,6 @@ checkLocationPermission() async {
       //zoom 과 카메라 위치는 임의로 첫번째 주차장 위치로 지정
   }
   }
+
+
+

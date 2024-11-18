@@ -59,4 +59,3 @@ async def select_hanriver():
         conn.close()
         print(e)
         return {'error' : e}
-    
