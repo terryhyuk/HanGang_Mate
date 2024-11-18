@@ -7,11 +7,13 @@ Usage : FastAPI Router about post
 
 from fastapi import FastAPI
 from post import router as post_router
+from park_info import router as parking_router
 import pymysql
 import host
 
 app = FastAPI()
 app.include_router(post_router, prefix="/post", tags=['post'])
+app.include_router(parking_router, prefix="/parking", tags=['pakring'])
 
 def connect():
     conn = pymysql.connect(
