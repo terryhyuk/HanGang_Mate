@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -10,16 +9,17 @@ import 'package:test_app/view/chat.dart';
 class LoginHandler {
   final box = GetStorage();
   String userEmail = '';
-  String userName ='';
+  String userName = '';
   List data = [];
 
   // 로그인 상태 확인
-  isLoggeIn(){
-    return FirebaseAuth.instance.currentUser != null && getStoredEmail().inNotEmpty;
+  isLoggeIn() {
+    return FirebaseAuth.instance.currentUser != null &&
+        getStoredEmail().inNotEmpty;
   }
 
   // GetStorage에서 저장된 이메일 가져오기
-  getStoredEmail(){
+  getStoredEmail() {
     return box.read('userEmail') ?? '';
   }
 
@@ -27,7 +27,7 @@ class LoginHandler {
   signInWithGoogle() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    // to prevent the error whitch when user return to the login page without signing in (안창빈)
+    // to prevent the error whitch when user return to the login page without signing in
     if (gUser == null) {
       return null;
     }
@@ -38,21 +38,21 @@ class LoginHandler {
     box.write('userEmail', userEmail);
     box.write('userName', userName);
 
-    // check whether the account is registered (안창빈)
+    // check whether the account is registered
     bool isUserRegistered = await userloginCheckDatabase(userEmail);
 
-    // if the account is trying to login on the first time add the google account information to the mySQL DB (안창빈)
+    // if the account is trying to login on the first time add the google account information to the mySQL DB
     if (!isUserRegistered) {
       userloginInsertData(userEmail, userName);
     }
 
-    // firbase Create a new credential (안창빈)
+    // firbase Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    // Sign in to Firebase with the Google credentials (안창빈)
+    // Sign in to Firebase with the Google credentials
     final UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
@@ -61,7 +61,7 @@ class LoginHandler {
     return userCredential;
   }
 
-  // check whether the account is registered (안창빈)
+  // check whether the account is registered
   userloginCheckDatabase(String email) async {
     userloginCheckJSONData(email);
     if (data.isEmpty) {
@@ -81,7 +81,7 @@ class LoginHandler {
     data.addAll(result);
   }
 
-  // insert the account information to mysql(db) (안창빈)
+  // insert the account information to mysql
   userloginInsertData(String userEmail, String userName) async {
     var url = Uri.parse(
         'http://127.0.0.1:8000/user/insertuser?id=$userEmail&password=""&image=usericon.jpg&name=$userName&phone=""');
@@ -98,8 +98,6 @@ class LoginHandler {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
     box.write('userEmail', "");
-    // Get.find<PostController>().clearPet();
-    // Get.find<ChatHandler>().chatsClear();
     // update();
   }
 }
