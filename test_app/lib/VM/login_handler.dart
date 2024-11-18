@@ -1,37 +1,77 @@
 import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:test_app/vm/location_handler.dart';
+import 'package:test_app/view/chat.dart';
 
-class LoginHandler extends LocationHandler {
-  List data = [];
+class LoginHandler {
+  final box = GetStorage();
   String userEmail = '';
-  String userName = '';
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  String userName ='';
+  List data = [];
 
+  // 로그인 상태 확인
+  isLoggeIn(){
+    return FirebaseAuth.instance.currentUser != null && getStoredEmail().inNotEmpty;
+  }
+
+  // GetStorage에서 저장된 이메일 가져오기
+  getStoredEmail(){
+    return box.read('userEmail') ?? '';
+  }
+
+  // Google로그인
   signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null;
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      return userCredential.user;
-    } catch (e) {
-      print('Google 로그인 오류: $e');
+    // to prevent the error whitch when user return to the login page without signing in (안창빈)
+    if (gUser == null) {
       return null;
+    }
+    final GoogleSignInAuthentication googleAuth = await gUser.authentication;
+
+    userEmail = gUser.email;
+    userName = gUser.displayName!;
+    box.write('userEmail', userEmail);
+    box.write('userName', userName);
+
+    // check whether the account is registered (안창빈)
+    bool isUserRegistered = await userloginCheckDatabase(userEmail);
+
+    // if the account is trying to login on the first time add the google account information to the mySQL DB (안창빈)
+    if (!isUserRegistered) {
+      userloginInsertData(userEmail, userName);
+    }
+
+    // firbase Create a new credential (안창빈)
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Sign in to Firebase with the Google credentials (안창빈)
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // 로그인 후 채팅패이지로
+    Get.to(() => const Chat());
+    return userCredential;
+  }
+
+  // check whether the account is registered (안창빈)
+  userloginCheckDatabase(String email) async {
+    userloginCheckJSONData(email);
+    if (data.isEmpty) {
+      return false;
+    } else {
+      return true;
     }
   }
 
+// query inserted google email from db to differentiate whether email is registered or not
   userloginCheckJSONData(email) async {
     var url = Uri.parse('http://127.0.0.1:8000/user/selectuser?id=$email');
     var response = await http.get(url);
@@ -41,9 +81,10 @@ class LoginHandler extends LocationHandler {
     data.addAll(result);
   }
 
+  // insert the account information to mysql(db) (안창빈)
   userloginInsertData(String userEmail, String userName) async {
-    var url =
-        Uri.parse('http://127.0.0.1:8000/user/insertuser?email=$userEmail');
+    var url = Uri.parse(
+        'http://127.0.0.1:8000/user/insertuser?id=$userEmail&password=""&image=usericon.jpg&name=$userName&phone=""');
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     var result = dataConvertedJSON['results'];
@@ -52,8 +93,13 @@ class LoginHandler extends LocationHandler {
     } else {}
   }
 
+  // 로그아웃 및 비우기
   signOut() async {
-    await _auth.signOut();
-    await _googleSignIn.signOut();
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
+    box.write('userEmail', "");
+    // Get.find<PostController>().clearPet();
+    // Get.find<ChatHandler>().chatsClear();
+    // update();
   }
 }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Chat extends StatelessWidget {
-  const Chat({super.key});
+class Post extends StatelessWidget {
+  const Post({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('chat'),
+        title: const Text(
+          '문의 게시판'
+        ),
       ),
     );
   }
