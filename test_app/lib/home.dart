@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
       backgroundColor: Colors.white,
       body: TabBarView(
         controller: controller.tabController,
-        children: const [Info(), Post(), Chat(), Findmap()],
+        children:  [Info(), Post(), Chat(), Findmap()],
       ),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             onTap: (index) {
