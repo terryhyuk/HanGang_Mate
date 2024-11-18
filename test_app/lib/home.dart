@@ -4,10 +4,13 @@ import 'package:test_app/view/chat.dart';
 import 'package:test_app/view/findmap.dart';
 import 'package:test_app/view/info.dart';
 import 'package:test_app/view/post.dart';
+import 'package:test_app/view/widgets/login_check.dart';
+import 'package:test_app/vm/login_handler.dart';
 import 'package:test_app/vm/tab_vm.dart';
 
 class Home extends StatelessWidget {
   final TabVM controller = Get.put(TabVM());
+  final LoginHandler loginHandler = Get.put(LoginHandler());
 
   Home({super.key});
 
@@ -17,7 +20,12 @@ class Home extends StatelessWidget {
       backgroundColor: Colors.white,
       body: TabBarView(
         controller: controller.tabController,
-        children:  [Info(), Post(), Chat(), Findmap()],
+        children: [
+          const Info(), 
+          loginHandler.isLoggeIn()? const Post() : const LoginCheck(), 
+          loginHandler.isLoggeIn()? const Chat() : const LoginCheck(), 
+          const Findmap()
+          ],
       ),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             onTap: (index) {
@@ -25,8 +33,6 @@ class Home extends StatelessWidget {
             },
             type: BottomNavigationBarType.fixed,
             backgroundColor: const Color.fromARGB(255, 245, 245, 245),
-            //showSelectedLabels: F,
-            //showUnselectedLabels: F,
             iconSize: 25,
             selectedFontSize: 14,
             selectedItemColor: const Color.fromARGB(255, 101, 186, 255),
