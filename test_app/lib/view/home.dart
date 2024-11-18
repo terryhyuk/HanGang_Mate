@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:test_app/view/chat.dart';
 import 'package:test_app/view/feed.dart';
+import 'package:test_app/view/marker_test.dart';
 import 'package:test_app/view/mypage.dart';
 
 class Home extends StatelessWidget {
@@ -151,7 +152,7 @@ class Home extends StatelessWidget {
         ),
       ),
       const Feed(),
-      const Chat(),
+      MarkerTest(),
       const Mypage(),
     ];
   }

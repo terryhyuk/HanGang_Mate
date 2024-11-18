@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/view/test.dart';
+import 'package:test_app/vm/login_handler.dart';
 
 class Mypage extends StatelessWidget {
   const Mypage({super.key});
@@ -15,12 +14,7 @@ class Mypage extends StatelessWidget {
         child: ElevatedButton(
           child: const Text('Google로 로그인'),
           onPressed: () async {
-            User? user = await AuthService().signInWithGoogle();
-            if (user != null) {
-              print('로그인 성공: ${user.displayName}');
-            } else {
-              print('로그인 실패');
-            }
+            await LoginHandler().signInWithGoogle();
           },
         ),
       ),
