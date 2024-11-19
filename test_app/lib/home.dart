@@ -5,14 +5,15 @@ import 'package:test_app/view/findmap.dart';
 import 'package:test_app/view/info.dart';
 import 'package:test_app/view/post.dart';
 import 'package:test_app/view/widgets/login_check.dart';
+import 'package:test_app/vm/location_handler.dart';
 import 'package:test_app/vm/login_handler.dart';
 import 'package:test_app/vm/tab_vm.dart';
 
-class Home extends StatelessWidget {
-  final TabVM controller = Get.put(TabVM());
-  final LoginHandler loginHandler = Get.put(LoginHandler());
-
+class Home extends GetView<TabVM> {
   Home({super.key});
+
+  final LoginHandler loginController = Get.find<LoginHandler>();
+  final LocationHandler locationController = Get.find<LocationHandler>();
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,10 @@ class Home extends StatelessWidget {
         controller: controller.tabController,
         children: [
           Info(),
-          loginHandler.isLoggeIn() ? const Post() : const LoginCheck(),
-          loginHandler.isLoggeIn() ? const Chat() : const LoginCheck(),
+          Obx(() =>
+              loginController.isLoggedIn ? const Post() : const LoginCheck()),
+          Obx(() =>
+              loginController.isLoggedIn ? const Chat() : const LoginCheck()),
           const Findmap()
         ],
       ),

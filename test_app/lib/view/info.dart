@@ -1,14 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:test_app/VM/location_handler.dart';
+import 'package:test_app/vm/location_handler.dart';
 
 class Info extends StatelessWidget {
   Info({super.key});
-  final LocationHandler controller =
-      Get.put(LocationHandler()); // 임시 Location handler 추후에 기능 분리 필요해보임
+  final LocationHandler controller = Get.put(LocationHandler());
   final Completer<GoogleMapController> mapController =
       Completer<GoogleMapController>(); // google map 출력을 위한 controller
   @override
@@ -49,7 +47,6 @@ class Info extends StatelessWidget {
         ));
   }
 
-// Widget
   Widget _dropDown() {
     return DropdownButton<String>(
       value: controller.selectHname.value,

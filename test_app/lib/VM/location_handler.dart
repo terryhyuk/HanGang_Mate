@@ -17,6 +17,10 @@ class LocationHandler extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    initializeAsync();
+  }
+
+  initializeAsync() async {
     await checkLocationPermission();
     await getAllHname();
     await getParkingLoc();
