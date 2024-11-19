@@ -6,12 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:test_app/Model/parking.dart';
 
 class LocationHandler extends GetxController {
-  var parkingInfo = <Parking>[].obs; // 공원별 주차장 정보(주차장명, 위도, 경도)
-  final RxDouble currentlat = 0.0.obs; // 현재 내 위도 (경로 만들때 필요)
-  final RxDouble currentlng = 0.0.obs; // 현재 내 경도 (경로 만들때 필요)
-  var hnameList = [].obs; // 드랍다운용 한강 공원 이름
-  var selectHname = ''.obs; // 드랍다운 선택된 한강공원 관리
-  final parkingMarker = <Marker>[].obs; // 공원별 주차장 마커
+  var parkingInfo = <Parking>[].obs;
+  final RxDouble currentlat = 0.0.obs;
+  final RxDouble currentlng = 0.0.obs;
+  var hnameList = [].obs;
+  var selectHname = ''.obs;
+  final parkingMarker = <Marker>[].obs;
   final Rx<GoogleMapController?> mapController = Rx<GoogleMapController?>(null);
 
   @override
@@ -27,7 +27,6 @@ class LocationHandler extends GetxController {
     await createMarker();
   }
 
-// 위치 제공 동의
   checkLocationPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -38,11 +37,10 @@ class LocationHandler extends GetxController {
     }
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
-      await getCurrentLocation(); //현재 위치
+      await getCurrentLocation();
     }
   }
 
-// 내위치 가져오는 함수 (추후에 길찾기 기능을 위함)
   getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition();
     currentlat.value = position.latitude;
@@ -50,9 +48,8 @@ class LocationHandler extends GetxController {
     update();
   }
 
-// 로딩시에 한강 공원 정보 모두 불러오기
   getAllHname() async {
-    var url = Uri.parse('http://127.0.0.1:8000/parking/select_hanriver?');
+    var url = Uri.parse('http://127.0.0.1:8000/parking/hanriver');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
@@ -61,15 +58,15 @@ class LocationHandler extends GetxController {
     }
   }
 
-  // 주차장 정보 가져오기(주차장이름, 위도, 경도)
   getParkingLoc() async {
     var url = Uri.parse(
-        'http://127.0.0.1:8000/parking/selectlatlng?hname=$selectHname');
+        'http://127.0.0.1:8000/parking/hanriver?hname=${selectHname.value}');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-      List<Parking> returnData = []; // obs 리스트 대입용
-      parkingInfo.clear(); // 중복 방지 초기화 기능
+      List<Parking> returnData = [];
+      parkingInfo.clear();
+
       for (int i = 0; i < dataConvertedJSON['pname'].length; i++) {
         String pname = dataConvertedJSON['pname'][i];
         double lat = dataConvertedJSON['lat'][i];
@@ -82,19 +79,17 @@ class LocationHandler extends GetxController {
     }
   }
 
-  // 공원별 주차장 마커 만드는 함수
   createMarker() {
     parkingMarker.value = parkingInfo
         .map(
           (park) => Marker(
-              markerId: MarkerId(park.pname), //
+              markerId: MarkerId(park.pname),
               infoWindow: InfoWindow(title: park.pname, snippet: park.pname),
               position: LatLng(park.lat, park.lng)),
         )
         .toList();
   }
 
-  // dropdown으로 공원 변경시 카메라 포지션 변경,
   changeCameraPosition() {
     if (mapController.value != null && parkingInfo.isNotEmpty) {
       mapController.value!.animateCamera(CameraUpdate.newCameraPosition(

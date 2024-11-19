@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FeedWrite extends StatelessWidget {
-  const FeedWrite({super.key});
+class PostWrite extends StatelessWidget {
+  const PostWrite({super.key});
 
   @override
   Widget build(BuildContext context) {

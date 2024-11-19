@@ -1,5 +1,5 @@
 """
-author : 정섭
+author : 정섭, JY(24.11.19 수정)
 Description : DB에 있는 hanriver 목록 불러오기 
 Date : 2024.11.17~
 한강공원 목록 : 'http://127.0.0.1:8000/parking/select_hanriver?'
@@ -20,43 +20,31 @@ def connect():
     )
     return conn
 
-
-### 정섭 : 공원별 주차장 이름, 위도 경도 불러오기
-@router.get('/selectlatlng')
-async def selectlatlng(hname : str=None ):
+@router.get('/hanriver')
+async def get_hanriver_data(hname: str = None):
     conn = connect()
     curs = conn.cursor()
     try:
-        sql = "select pname,lat,lng from hanriver where hname = %s"
-        curs.execute(sql,hname)
-        presults = curs.fetchall()
-        conn.close()
-        pname = [i[0] for i in presults]
-        lat = [i[1] for i in presults]
-        lng = [i[2] for i in presults]
-        return {'pname' : pname, 'lat' : lat, 'lng':lng}
-
+        if hname:
+            # 특정 공원의 주차장 정보 조회
+            sql = "SELECT pname, lat, lng FROM hanriver WHERE hname = %s"
+            curs.execute(sql, hname)
+            results = curs.fetchall()
+            data = {
+                'pname': [r[0] for r in results],
+                'lat': [r[1] for r in results],
+                'lng': [r[2] for r in results]
+            }
+        else:
+            # 전체 공원 목록 조회
+            sql = "SELECT DISTINCT hname FROM hanriver"
+            curs.execute(sql)
+            results = curs.fetchall()
+            data = {'results': [r[0] for r in results]}
+        
+        return data
     except Exception as e:
+        print("Error:", e)
+        return {'error': str(e)}
+    finally:
         conn.close()
-        print("Error", e)
-        return{'results' : 'Error'}
-    
-
-
-### 정섭 : 공원 목록(드랍다운용) 불러오기
-@router.get('/select_hanriver')
-async def select_hanriver():
-    conn = connect()
-    curs = conn.cursor()
-    try:
-        sql = 'select distinct hname from hanriver'
-        curs.execute(sql)
-        results = curs.fetchall()
-        conn.close()
-        result = [i[0] for i in results]
-        return {'results' :result}
-    except Exception as e :
-        conn.close()
-        print(e)
-        return {'error' : e}
-    

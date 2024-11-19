@@ -12,17 +12,22 @@ class LoginCheck extends GetView<LoginHandler> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(message),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => controller.signInWithGoogle(),
-            child: const Text('로그인'),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('로그인'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(message),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => controller.signInWithGoogle(),
+              child: const Text('로그인'),
+            ),
+          ],
+        ),
       ),
     );
   }

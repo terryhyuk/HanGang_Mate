@@ -9,7 +9,7 @@ class Findmap extends GetView<LoginHandler> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Find Map'),
+        title: const Text('로그아웃'),
       ),
       body: Center(
         child: ElevatedButton(
