@@ -63,8 +63,8 @@ class Info extends StatelessWidget {
               value; // vm 변수 변경해주기 (==> 다른 함수 만들때 별도의 parameter 필요없음)
           await controller.getParkingLoc(); // 선택한 공원에 맞는 주차장 이름, 위도, 경도 받아오는 함수
           await controller.createMarker(); // google map 주차장 marker 생성
-          await controller.changeCameraPosition(
-              mapController); // mapcontroller의 type 변환이 필요해서 파라미터로 설정함
+          await controller
+              .changeCameraPosition(); // mapcontroller의 type 변환이 필요해서 파라미터로 설정함
         }
       },
     );
@@ -123,22 +123,19 @@ class Info extends StatelessWidget {
         mapType: MapType.terrain,
         initialCameraPosition: CameraPosition(
           zoom: 13,
-          target: LatLng(controller.parkingInfo[0].lat,
-              controller.parkingInfo[0].lng), // 지도 중심점은 임의로 첫번째 주차장 값으로 설정함
+          target: LatLng(
+              controller.parkingInfo[0].lat, controller.parkingInfo[0].lng),
         ),
-        onMapCreated: (GoogleMapController controller) {
-          if (!mapController.isCompleted) {
-            mapController.complete(controller);
-          }
+        onMapCreated: (GoogleMapController mapController) {
+          controller.mapController.value = mapController;
         },
-        markers: controller.parkingMarker
-            .toSet(), // 변수가 List 형태이기 때문에 Set으로 type 맞춰줘야함
-        myLocationButtonEnabled: false, // 내 위치로 카메라 이동하는 버튼
-        myLocationEnabled: false, // 내 위치 표시
-        zoomControlsEnabled: false, // 지도 확대 하기
-        zoomGesturesEnabled: false, // 지도 확대하기
-        rotateGesturesEnabled: false, // 지도 카메라 이동하기
-        scrollGesturesEnabled: false, // 지도 카메라 이동하기
+        markers: controller.parkingMarker.toSet(),
+        myLocationButtonEnabled: false,
+        myLocationEnabled: false,
+        zoomControlsEnabled: false,
+        zoomGesturesEnabled: false,
+        rotateGesturesEnabled: false,
+        scrollGesturesEnabled: false,
       ),
     );
   }

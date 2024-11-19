@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,7 @@ class LocationHandler extends GetxController {
   var hnameLsit = [].obs; // 드랍다운용 한강 공원 이름
   var selectHname = ''.obs; // 드랍다운 선택된 한강공원 관리
   final parkingMarker = <Marker>[].obs; // 공원별 주차장 마커
+  final Rx<GoogleMapController?> mapController = Rx<GoogleMapController?>(null);
 
   @override
   void onInit() async {
@@ -106,12 +106,12 @@ class LocationHandler extends GetxController {
   }
 
   // dropdown으로 공원 변경시 카메라 포지션 변경,
-  changeCameraPosition(Completer<GoogleMapController> controller) async {
-    final GoogleMapController mapController =
-        await controller.future; // mapController의 type 변환 필요
-
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(parkingInfo[0].lat, parkingInfo[0].lng), zoom: 13)));
-    //zoom 과 카메라 위치는 임의로 첫번째 주차장 위치로 지정
+  changeCameraPosition() {
+    if (mapController.value != null && parkingInfo.isNotEmpty) {
+      mapController.value!.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(parkingInfo[0].lat, parkingInfo[0].lng),
+              zoom: 13)));
+    }
   }
 }
