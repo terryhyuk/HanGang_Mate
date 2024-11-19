@@ -21,11 +21,11 @@ class Home extends StatelessWidget {
       body: TabBarView(
         controller: controller.tabController,
         children: [
-          Info(), 
-          loginHandler.isLoggeIn()? const Post() : const LoginCheck(), 
-          loginHandler.isLoggeIn()? const Chat() : const LoginCheck(), 
+          Info(),
+          loginHandler.isLoggeIn() ? const Post() : const LoginCheck(),
+          loginHandler.isLoggeIn() ? const Chat() : const LoginCheck(),
           const Findmap()
-          ],
+        ],
       ),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             onTap: (index) {

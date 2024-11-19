@@ -7,9 +7,7 @@ class Post extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          '문의 게시판'
-        ),
+        title: const Text('문의 게시판'),
       ),
     );
   }

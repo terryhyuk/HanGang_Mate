@@ -7,10 +7,10 @@ class LoginCheck extends StatelessWidget {
   final VoidCallback? onLoginPressed;
 
   const LoginCheck({
-    Key? key,
+    super.key,
     this.message = '이 기능을 사용하려면 로그인이 필요합니다.',
     this.onLoginPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
