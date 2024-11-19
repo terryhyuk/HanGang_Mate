@@ -51,7 +51,7 @@ class Info extends StatelessWidget {
     return DropdownButton<String>(
       value: controller.selectHname.value,
       icon: const Icon(Icons.keyboard_arrow_down),
-      items: controller.hnameLsit.map((dynamic item) {
+      items: controller.hnameList.map((dynamic item) {
         return DropdownMenuItem<String>(
           value: item,
           child: Text(item),

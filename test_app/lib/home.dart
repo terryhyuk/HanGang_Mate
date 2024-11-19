@@ -17,36 +17,63 @@ class Home extends GetView<TabVM> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: TabBarView(
-        controller: controller.tabController,
-        children: [
-          Info(),
-          Obx(() =>
-              loginController.isLoggedIn ? const Post() : const LoginCheck()),
-          Obx(() =>
-              loginController.isLoggedIn ? const Chat() : const LoginCheck()),
-          const Findmap()
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: TabBarView(
+            controller: controller.tabController,
+            children: [
+              Info(),
+              Obx(() => loginController.isLoggedIn
+                  ? const Post()
+                  : const LoginCheck()),
+              Obx(() => loginController.isLoggedIn
+                  ? const Chat()
+                  : const LoginCheck()),
+              const Findmap()
+            ],
+          ),
+          bottomNavigationBar: Obx(() => _buildBottomNavigationBar(context)),
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final iconSize = screenWidth * 0.06; // 화면 너비의 6%로 아이콘 크기 설정
+    final barHeight = screenHeight * 0.08; // 화면 높이의 8%로 네비게이션 바 높이 설정
+
+    return SizedBox(
+      height: barHeight,
+      child: BottomNavigationBar(
+        onTap: (index) {
+          controller.tabController.index = index;
+        },
+        type: BottomNavigationBarType.fixed,
+        iconSize: iconSize,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        currentIndex: controller.currentIndex.value,
+        items: [
+          _buildBottomNavigationBarItem(Icons.home_outlined),
+          _buildBottomNavigationBarItem(Icons.post_add_outlined),
+          _buildBottomNavigationBarItem(Icons.chat_outlined),
+          _buildBottomNavigationBarItem(Icons.person_outline_outlined),
         ],
       ),
-      bottomNavigationBar: Obx(() => BottomNavigationBar(
-            onTap: (index) {
-              controller.tabController.index = index;
-            },
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: const Color.fromARGB(255, 245, 245, 245),
-            iconSize: 25,
-            selectedFontSize: 14,
-            selectedItemColor: const Color.fromARGB(255, 101, 186, 255),
-            currentIndex: controller.currentIndex.value,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-              BottomNavigationBarItem(icon: Icon(Icons.post_add), label: ''),
-              BottomNavigationBarItem(icon: Icon(Icons.chat), label: ''),
-              BottomNavigationBarItem(icon: Icon(Icons.map), label: ''),
-            ],
-          )),
+    );
+  }
+
+  BottomNavigationBarItem _buildBottomNavigationBarItem(IconData icon) {
+    return BottomNavigationBarItem(
+      icon: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Icon(icon),
+      ),
+      label: '',
     );
   }
 }

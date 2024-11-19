@@ -9,7 +9,7 @@ class LocationHandler extends GetxController {
   var parkingInfo = <Parking>[].obs; // 공원별 주차장 정보(주차장명, 위도, 경도)
   final RxDouble currentlat = 0.0.obs; // 현재 내 위도 (경로 만들때 필요)
   final RxDouble currentlng = 0.0.obs; // 현재 내 경도 (경로 만들때 필요)
-  var hnameLsit = [].obs; // 드랍다운용 한강 공원 이름
+  var hnameList = [].obs; // 드랍다운용 한강 공원 이름
   var selectHname = ''.obs; // 드랍다운 선택된 한강공원 관리
   final parkingMarker = <Marker>[].obs; // 공원별 주차장 마커
   final Rx<GoogleMapController?> mapController = Rx<GoogleMapController?>(null);
@@ -56,20 +56,10 @@ class LocationHandler extends GetxController {
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-      hnameLsit.value = dataConvertedJSON['results'];
-      selectHname.value = hnameLsit[0];
+      hnameList.value = dataConvertedJSON['results'];
+      selectHname.value = hnameList[0];
     }
-    // print(selectHname);
   }
-
-//---------- 필요없는 함수 -------------
-// 드랍다운 선택시 value(화면에 보이는 값) 변경,
-  // changeValue()async{
-  // selectHname.value = newValue;
-  // await getParkingLoc();
-  // print(selectHname);
-  // update();
-  // }
 
   // 주차장 정보 가져오기(주차장이름, 위도, 경도)
   getParkingLoc() async {
@@ -102,7 +92,6 @@ class LocationHandler extends GetxController {
               position: LatLng(park.lat, park.lng)),
         )
         .toList();
-// print(marker);
   }
 
   // dropdown으로 공원 변경시 카메라 포지션 변경,
