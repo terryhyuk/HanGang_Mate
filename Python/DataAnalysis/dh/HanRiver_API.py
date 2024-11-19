@@ -55,7 +55,9 @@ def extract_weather_info(city_data):
     # 추출한 날씨 정보를 딕셔너리 형태로 반환
     return {
         "기온": weather_info.get("TEMP", "정보 없음"),  # 기온
+        "최고기온":weather_info.get("MAX_TEMP", "정보없음"), # 최고기온 
         "체감 온도": weather_info.get("SENSIBLE_TEMP", "정보 없음"),  # 체감 온도
+        "강수" : weather_info.get("PRECPT_TYPE", "정보 없음"), # 강수
         "습도": weather_info.get("HUMIDITY", "정보 없음"),  # 습도
         "풍향": weather_info.get("WIND_DIRCT", "정보 없음"),  # 바람 방향
         "통합대기환경지수": weather_info.get("AIR_IDX_MVL", "정보 없음"),  # 통합 대기 환경 지수
