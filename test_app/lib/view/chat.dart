@@ -7,7 +7,7 @@ class Chat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('chat'),
+        title: const Text('1 : 1  채팅 문의'),
       ),
     );
   }
