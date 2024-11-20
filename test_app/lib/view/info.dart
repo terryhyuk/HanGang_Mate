@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:test_app/vm/location_handler.dart';
+import 'package:test_app/view/detail.dart';
 
 class Info extends StatelessWidget {
   Info({super.key});
@@ -71,45 +72,50 @@ class Info extends StatelessWidget {
   }
 
   Widget _card() {
-    return Card(
-      elevation: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  controller.selectHname.value,
-                  style: const TextStyle(
-                    fontSize: 18,
+    return GestureDetector(
+      onTap: (){
+        Get.to(Detail());
+      },
+      child: Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    controller.selectHname.value,
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            Slider(
-              value: 50,
-              min: 0,
-              max: 100,
-              // divisions: 4, // 여유, 보통, 혼잡 구분
-              onChanged: (double value) {
-                // 슬라이더 값 변경 시 처리
-              },
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              '현재 혼잡도 n%',
-              style: TextStyle(
-                fontSize: 16,
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () {},
+                  ),
+                ],
               ),
-            ),
-          ],
+              Slider(
+                value: 50,
+                min: 0,
+                max: 100,
+                // divisions: 4, // 여유, 보통, 혼잡 구분
+                onChanged: (double value) {
+                  // 슬라이더 값 변경 시 처리
+                },
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                '현재 혼잡도 n%',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,18 +1,30 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:test_app/Model/parking.dart';
+import 'package:test_app/private.dart';
 
 class LocationHandler extends GetxController {
-  var parkingInfo = <Parking>[].obs;
-  final RxDouble currentlat = 0.0.obs;
-  final RxDouble currentlng = 0.0.obs;
-  var hnameList = [].obs;
-  var selectHname = ''.obs;
-  final parkingMarker = <Marker>[].obs;
-  final Rx<GoogleMapController?> mapController = Rx<GoogleMapController?>(null);
+  var parkingInfo = <Parking>[].obs; // 주차장 정보
+  final RxDouble currentlat = 0.0.obs; // 내위치
+  final RxDouble currentlng = 0.0.obs; // 내위치
+  var hnameList = [].obs; //한강공원 이름
+  var selectHname = ''.obs; // 드랍다운 선택 이름
+  final parkingMarker = <Marker>[].obs; // 드랍다운 맵 마커
+  final Rx<GoogleMapController?> mapController = Rx<GoogleMapController?>(null); // info 페이지 구글맵
+  final Rx<GoogleMapController?> routesController = Rx<GoogleMapController?>(null); // routes 페이지 구글맵
+  final Private private = Private(); // 구글 맵 api 보관 파일 
+  PolylinePoints polylinePoints = PolylinePoints();
+  List<PointLatLng> polyline = []; // api로 polyline decoding후 변수 저장
+  List<LatLng> route = []; // 길 찾기에 필요한 체크포인트 latlong
+  var lines = <Polyline>[].obs; // 길 찾기 그림
+  RxString selectParking = ''.obs;
+  // String currentPlaceID = '';  //임시, 경로 api에 필요 할 수도 있음
+
 
   @override
   void onInit() async {
@@ -98,4 +110,53 @@ class LocationHandler extends GetxController {
               zoom: 13)));
     }
   }
+
+
+
+  // //1. 현위치를 주소 id 로 가져오기
+  // getCurrentPlaceID() async {
+  //   var url = Uri.parse(
+  //       "https://maps.googleapis.com/maps/api/geocode/json?latlng=$currentlat,$currentlng&key=${private.mapAPIkey}");
+  //   var response = await http.get(url);
+  //   if (response.statusCode == 200) {
+  //     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
+  //     currentPlaceID =
+  //         await dataConvertedJSON['results'][0]['place_id'];
+  //   }
+  //   print(currentPlaceID);
+  //   // print(currentlat);
+  //   // print(currentlng);
+  // }
+
+
+
+  // 3. polyline
+  createRoute(int index) async {
+    lines.clear();
+    var url = Uri.parse(
+      "https://maps.googleapis.com/maps/api/directions/json?origin=${currentlat},${currentlng}&destination=${parkingInfo[index].lat},${parkingInfo[index].lng}&mode=transit&language=ko&key=${private.mapAPIkey}");
+    var response = await http.get(url);
+    var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
+    polyline = polylinePoints.decodePolyline(
+        dataConvertedJSON['routes'][0]['overview_polyline']['points']);
+        // var distance =dataConvertedJSON['routes'][0]['legs'][0]['distance']['text']; // 거리
+
+    route = polyline
+        .map(
+          (point) => LatLng(point.latitude, point.longitude),
+        )
+        .toList();
+    lines.add(Polyline(
+        polylineId: const PolylineId('route'),
+        points: route,
+        color: Colors.red));
+  }
+
+selectParkingname (index){
+    selectParking.value = parkingInfo[index].pname;
+    
+    update();
+}
+
+
 }
