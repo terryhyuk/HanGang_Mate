@@ -75,8 +75,11 @@ class Info extends StatelessWidget {
 
   Widget _card(context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async{
+        if(controller.apivalue.value == true){
+        await controller.predict();
         Get.to(Detail());
+        }
       },
       child: Card(
         elevation: 4,
@@ -102,15 +105,6 @@ class Info extends StatelessWidget {
                   ),
                 ],
               ),
-              // Slider(
-              //   value: 50,
-              //   min: 0,
-              //   max: 100,
-              //   // divisions: 4, // 여유, 보통, 혼잡 구분
-              //   onChanged: (double value) {
-              //     // 슬라이더 값 변경 시 처리
-              //   },
-              // ),
               _colorSlider(context),
               const SizedBox(height: 10),
               Obx(

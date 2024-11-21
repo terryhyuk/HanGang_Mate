@@ -11,6 +11,7 @@ class Routes extends StatelessWidget {
     final index = Get.arguments;
     return Scaffold(
       appBar: AppBar(
+        title: Text(controller.parkingInfo[index].pname),
         leading: IconButton(
             onPressed: () => Get.back(), icon: const Icon(Icons.arrow_back)),
       ),
@@ -31,7 +32,7 @@ class Routes extends StatelessWidget {
       },
       markers: {
         Marker(
-            markerId: MarkerId(controller.selectParking.value),
+            markerId: MarkerId(controller.parkingInfo[index].pname),
             position: LatLng(controller.parkingInfo[index].lat,
                 controller.parkingInfo[index].lng))
       },

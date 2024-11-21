@@ -19,8 +19,16 @@ class Detail extends StatelessWidget {
             builder: (_) {
               return Obx(
                 () {
-                  if (controller.parkingInfo.isEmpty) {
-                    return const Text('ERROR');
+                  if (controller.predvalue.value == false) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Text('예측중')
+                        ],
+                      ),
+                    );
                   } else {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,6 +51,16 @@ class Detail extends StatelessWidget {
                   }
                 },
               );
+              // else{
+              //   return Center(
+              //     child: Column(
+              //       children: [
+              //         CircularProgressIndicator(),
+              //         Text('.....예측하는중.....')
+              //       ],
+              //     ),
+              //   );
+              // }
             },
           ),
         ));
@@ -67,7 +85,7 @@ class Detail extends StatelessWidget {
                     duration: const Duration(seconds: 1),
                     curve: Curves.linear,
                     radius: 50,
-                    value: controller.parkingInfo[index].lat,
+                    value: controller.parkingCapacity[index],
                     axis: const GaugeAxis(
                       min: 0,
                       max: 100,
@@ -84,9 +102,11 @@ class Detail extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Obx(() => Text('${controller.parkingCapacity[index].toStringAsFixed(1)}%'),)
                 ],
               );
-            }),
+            },
+            ),
         const Divider()
       ],
     );
@@ -132,12 +152,6 @@ class Detail extends StatelessWidget {
           '에상 혼잡도이므로 실제와 다를 수 있습니다',
           style: TextStyle(color: Colors.red),
         ),
-        // DropdownButton(
-        //   items: List.empty(),
-        //   onChanged: (value) {
-        //     //
-        //   },
-        //   ),
         GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -158,15 +172,15 @@ class Detail extends StatelessWidget {
                         border: Border.all(color: Colors.black)),
                     child: DotsIndicator(
                       dotsCount: 4,
-                      position: index, // 예측값 들어가기 => list로 저장 후 index 로 불러오기
+                      position: controller.dotsPosition(index), // 예측값 들어가기 => list로 저장 후 index 로 불러오기
                       decorator: DotsDecorator(
                           size: const Size(20, 20),
                           activeSize: const Size(20, 20),
                           color: Colors.black,
-                          activeColor: color[index]),
+                          activeColor: color[controller.dotsPosition(index)]),
                     ),
                   ),
-                  const Text('혼잡도 들어갈 자리') //
+                   Text(controller.parkingInfo[index].predictMessage!) //
                 ],
               );
             })
