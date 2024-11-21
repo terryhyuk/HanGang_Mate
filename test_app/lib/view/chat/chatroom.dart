@@ -1,8 +1,7 @@
-import 'package:chat_bubbles/bubbles/bubble_special_three.dart';
-import 'package:chat_bubbles/date_chips/date_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:test_app/Model/message.dart';
 import 'package:test_app/vm/chating_controller.dart';
 import 'package:test_app/vm/login_handler.dart';
@@ -12,10 +11,10 @@ class ChatScreen extends StatelessWidget {
   final String userEmail;
 
   ChatScreen({
-    super.key,
+    Key? key,
     required this.roomId,
     required this.userEmail,
-  });
+  }) : super(key: key);
 
   final ChatController chatController = Get.find<ChatController>();
   final LoginHandler loginHandler = Get.find<LoginHandler>();
@@ -23,18 +22,17 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(loginHandler.box.read('observer'));
+    final isCurrentUserObserver = loginHandler.isObserver == 'Y';
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('$roomId님의 1:1 문의'),
-        centerTitle: false,
+        title: Text('${isCurrentUserObserver ? userEmail : "관리자"}님과의 1:1 문의'),
+        centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {
-              logoutChat();
-            },
+            onPressed: () => logoutChat(),
             icon: const Icon(Icons.logout),
           )
         ],
@@ -48,22 +46,30 @@ class ChatScreen extends StatelessWidget {
           Expanded(
             child: Obx(
               () => ListView.builder(
-                reverse: false, // 변경: true에서 false로
+                reverse: true, // 최신 메시지를 아래에 표시
                 itemCount: chatController.messages.length,
                 itemBuilder: (context, index) {
-                  Message message = chatController.messages[index];
-                  bool isCurrentUserObserver =
-                      chatController.isObserver.value == 'T';
-                  bool isMessageFromObserver = message.observer == 'T';
-                  bool shouldAlignRight = isCurrentUserObserver
-                      ? isMessageFromObserver
-                      : !isMessageFromObserver;
+                  Message message = chatController.messages[
+                      chatController.messages.length -
+                          1 -
+                          index]; // 역순으로 메시지 가져오기
+                  bool shouldAlignRight =
+                      (isCurrentUserObserver && message.observer == 'Y') ||
+                          (!isCurrentUserObserver && message.observer == 'N');
                   return ListTile(
                     title: Column(
                       crossAxisAlignment: shouldAlignRight
                           ? CrossAxisAlignment.end
                           : CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          '', // 닉네임 사용
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Row(
                           mainAxisAlignment: shouldAlignRight
                               ? MainAxisAlignment.end
@@ -105,14 +111,12 @@ class ChatScreen extends StatelessWidget {
                 controller: sendController,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      sendMessage();
-                    },
+                    onPressed: () => sendMessage(),
                     icon: const Icon(Icons.send),
                     color: Colors.blue,
                     iconSize: 25,
                   ),
-                  hintText: "Type your message here",
+                  hintText: "메시지를 입력하세요",
                 ),
               ),
             ),
@@ -123,19 +127,18 @@ class ChatScreen extends StatelessWidget {
     );
   }
 
-  sendMessage() {
+  void sendMessage() {
     if (sendController.text.isNotEmpty) {
-      String userEmail = loginHandler.box.read('userEmail');
       chatController.sendMessage(
         roomId,
         sendController.text,
-        userEmail,
+        loginHandler.userEmail.value,
       );
       sendController.clear();
     }
   }
 
-  logoutChat() {
+  void logoutChat() {
     Get.dialog(
       AlertDialog(
         title: const Text('채팅방 나가기'),
