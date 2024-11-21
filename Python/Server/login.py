@@ -63,3 +63,23 @@ async def insert(email: str=None, name: str=None, observer: str=None):
         conn.close()
         print("Error :", e)
         return {'results': 'Error'}
+    
+
+@router.get("/checkObserver")
+async def checkObserver(user_id: str):
+    conn = connect()
+    curs = conn.cursor()
+    try:
+        sql = "select observer from user where id = %s"
+        curs.execute(sql, (user_id,))
+        result = curs.fetchone()
+        conn.close()
+        
+        if result:
+            return {'is_observer': result[0]}
+        else:
+            return {'is_observer': False, 'message': 'User not found'}
+    except Exception as e:
+        conn.close()
+        print("Error", e)
+        return {'error': str(e)}
