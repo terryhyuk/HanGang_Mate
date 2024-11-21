@@ -73,7 +73,13 @@ dependencies:
   # 주차대수 게이지 표시
   gauge_indicator: ^0.4.3
 
+  # info 페이지 무지개 슬라이더
   gradient_slider: ^1.0.2
+
+  # detail 페이지 예측값 모양
+  dots_indicator: ^3.0.0
+
+  syncfusion_flutter_gauges: ^27.2.2
 
 dev_dependencies:
   flutter_test:
