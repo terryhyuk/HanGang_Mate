@@ -24,10 +24,7 @@ class Detail extends StatelessWidget {
                     return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          Text('예측중')
-                        ],
+                        children: [CircularProgressIndicator(), Text('예측중')],
                       ),
                     );
                   } else {
@@ -41,10 +38,13 @@ class Detail extends StatelessWidget {
                               fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         _parkingWidget(context),
-                        const Text(
-                          '예상혼잡도',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
+                        const Padding(
+                          padding:  EdgeInsets.all(8.0),
+                          child:  Text(
+                            '      예상혼잡도',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                          ),
                         ),
                         _predictWidget(context)
                       ],
@@ -72,45 +72,48 @@ class Detail extends StatelessWidget {
     return Column(
       children: [
         GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: controller.parkingInfo.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, //한줄에 출력될 개수
-            ),
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Text(controller.parkingInfo[index].pname),
-                  AnimatedRadialGauge(
-                    duration: const Duration(seconds: 1),
-                    curve: Curves.linear,
-                    radius: 50,
-                    value: controller.parkingCapacity[index],
-                    axis:  const GaugeAxis(
-                      min: 0,
-                      max: 100,
-                      degrees: 180,
-                      progressBar: GaugeBasicProgressBar(
-                        color: percentClr,
-                      ),
-                      segments: [
-                        GaugeSegment(
-                          from: 0,
-                          to: 100,
-                          border: GaugeBorder(color: Colors.black),
-                        )
-                      ],
-                      style: GaugeAxisStyle(
-                        background: Colors.transparent,
-                      ),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: controller.parkingInfo.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, //한줄에 출력될 개수
+          ),
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Text(controller.parkingInfo[index].pname),
+                AnimatedRadialGauge(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.linear,
+                  radius: 50,
+                  value: controller.parkingCapacity[index],
+                  axis: const GaugeAxis(
+                    min: 0,
+                    max: 100,
+                    degrees: 180,
+                    progressBar: GaugeBasicProgressBar(
+                      color: percentClr,
+                    ),
+                    segments: [
+                      GaugeSegment(
+                        from: 0,
+                        to: 100,
+                        border: GaugeBorder(color: Colors.black),
+                      )
+                    ],
+                    style: GaugeAxisStyle(
+                      background: Colors.transparent,
                     ),
                   ),
-                  Obx(() => Text('${controller.parkingCapacity[index].toStringAsFixed(1)}%'),)
-                ],
-              );
-            },
-            ),
+                ),
+                Obx(
+                  () => Text(
+                      '${controller.parkingCapacity[index].toStringAsFixed(1)}%'),
+                )
+              ],
+            );
+          },
+        ),
         const Divider()
       ],
     );
@@ -131,15 +134,13 @@ class Detail extends StatelessWidget {
                 children: [
                   Text(controller.parkingInfo[index].pname),
                   IconButton(
-                      onPressed: () async {
-                        await controller.createRoute(index);
-                        Get.to(Routes(), arguments: index);
-                      },
-                      icon: const Icon(Icons.directions_car),
-                      style: IconButton.styleFrom(
-                        backgroundColor: mapButtonClr
-                      ),
-                      )
+                    onPressed: () async {
+                      await controller.createRoute(index);
+                      Get.to(Routes(), arguments: index);
+                    },
+                    icon: const Icon(Icons.directions_car),
+                    style: IconButton.styleFrom(backgroundColor: mapButtonClr),
+                  )
                 ],
               ),
             );
@@ -152,7 +153,7 @@ class Detail extends StatelessWidget {
 
 // 주차장 혼잡도 예측값
   Widget _predictWidget(context) {
-    List<Color> color = [pred1Clr,pred2Clr,pred3Clr,pred4Clr];
+    List<Color> color = [pred1Clr, pred2Clr, pred3Clr, pred4Clr];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -172,7 +173,11 @@ class Detail extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text(controller.parkingInfo[index].pname),
+                    child: Text(controller.parkingInfo[index].pname,
+                    style: const TextStyle(
+                      fontSize: 16
+                    ),
+                    ),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -180,7 +185,8 @@ class Detail extends StatelessWidget {
                         border: Border.all(color: Colors.black)),
                     child: DotsIndicator(
                       dotsCount: 4,
-                      position: controller.dotsPosition(index), // 예측값 들어가기 => list로 저장 후 index 로 불러오기
+                      position: controller.dotsPosition(
+                          index), // 예측값 들어가기 => list로 저장 후 index 로 불러오기
                       decorator: DotsDecorator(
                           size: const Size(20, 20),
                           activeSize: const Size(20, 20),
@@ -188,7 +194,15 @@ class Detail extends StatelessWidget {
                           activeColor: color[controller.dotsPosition(index)]),
                     ),
                   ),
-                   Text(controller.parkingInfo[index].predictMessage!) //
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      controller.parkingInfo[index].predictMessage!,
+                      style: const TextStyle(fontWeight: FontWeight.bold,
+                      fontSize: 1
+                      ),
+                    ),
+                  ) //
                 ],
               );
             })

@@ -176,22 +176,21 @@ class LocationHandler extends GetxController {
             int.parse(parking['CUR_PRK_CNT']?.toString() ?? '0');
         total += (capacity - currentParking);
         totalCapacity += capacity;
+        result.add((1-(currentParking/capacity))*100); // detail guage 퍼센트 계산 실시간 주차대수로 계산됨
       }
       capacity.value = totalCapacity;
       totalAvailableParking.value = total;
-        result.add((1-(currentParking/capacity))*100); // detail guage 퍼센트 계산 실시간 주차대수로 계산됨
-      totalAvailableParking.value = total;
-      }
       maxTemp=data['최고기온'];
       parkingCapacity.value = result;
       apivalue.value = true;
     update();
-    } else {
-      print("Failed to fetch data. Status code: ${response.statusCode}");
+      }
+    else {
+    print("Failed to fetch data. Status code: ${response.statusCode}");
     }
-  }
 
 
+}
 predictYeouido() async {
 // 1주차장 462 , 2주차장 171, 3주차장 800\
 final parkingCapacity = [462,171,800]; // 흠..
