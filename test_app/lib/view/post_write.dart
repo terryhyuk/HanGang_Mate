@@ -179,7 +179,14 @@ class PostWrite extends GetView<PostHandler> {
 
                       final success = await controller.submitPost(request);
                       if (success) {
-                        Get.back();
+                        Get.back(result: true);
+                        Get.snackbar(
+                          '성공',
+                          '게시글이 등록되었습니다.',
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: Colors.green[100],
+                          duration: const Duration(seconds: 2),
+                        );
                       }
                     }
                   },
