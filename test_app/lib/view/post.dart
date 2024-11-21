@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test_app/view/post_view.dart';
 import 'package:test_app/view/post_write.dart';
 import 'package:test_app/vm/post_handler.dart';
 
@@ -88,7 +89,7 @@ class Post extends GetView<PostHandler> {
                               ],
                             ),
                             onTap: () {
-                              // 게시글 상세보기 구현 예정
+                              Get.to(() => PostView(post: post));
                             },
                           ),
                         );
@@ -101,7 +102,7 @@ class Post extends GetView<PostHandler> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // 페이지 컨트롤 - 중앙 배치
+                // 페이지 컨트롤
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -121,7 +122,7 @@ class Post extends GetView<PostHandler> {
                     ),
                   ],
                 ),
-                // 문의등록 버튼 - 오른쪽 배치
+                // 문의등록 버튼
                 Positioned(
                   right: 0,
                   child: SizedBox(
