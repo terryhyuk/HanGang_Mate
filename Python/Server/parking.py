@@ -11,6 +11,7 @@ from park_info import router as parking_router
 from login import router as login_router
 from model import router as model_router
 from HanRiver_API import router as hanriver_router
+from admin import router as admin_router
 import pymysql
 import host
 
@@ -21,6 +22,7 @@ app.include_router(login_router, prefix="/user", tags=['login'])
 app.include_router(model_router, prefix="/predict", tags=["Model"])
 app.include_router(hanriver_router, prefix="/hanriver", tags=["Live"])
 
+app.include_router(admin_router, prefix="/admin", tags=['admin'])
 
 def connect():
     conn = pymysql.connect(
@@ -34,4 +36,4 @@ def connect():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run(app, host='127.0.0.1', port=8000, reload=True)
