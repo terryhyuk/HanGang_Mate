@@ -24,13 +24,13 @@ def connect():
 
 # 전체 게시글 불러오기
 @router.get("/selectpost")
-async def selectpost(page: int = 1, limit: int = 10, user_email: str = None, observer: str = 'false'):
+async def selectpost(page: int = 1, limit: int = 10, user_email: str = None, observer: str = 'N'):
     conn = connect()
     curs = conn.cursor(pymysql.cursors.DictCursor)  # DictCursor 사용
     try:
         # 권한에 따른 WHERE 절 구성
         params = []
-        if observer != 'true':
+        if observer != 'Y':
             where_clause = "WHERE public = 'Y'"
             if user_email:
                 where_clause += " OR user_email = %s"

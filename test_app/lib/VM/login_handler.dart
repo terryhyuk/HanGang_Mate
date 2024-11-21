@@ -90,9 +90,9 @@ class LoginHandler extends GetxController {
       data.addAll(result);
 
       if (result.isNotEmpty) {
-        String observerValue = result[0]['observer'] ?? 'false';
+        String observerValue = result[0]['observer'] ?? 'N';
 
-        _isObserver.value = observerValue.toLowerCase() == 'true';
+        _isObserver.value = observerValue.toLowerCase() == 'Y';
         box.write('isObserver', _isObserver.value);
       }
     } catch (e) {
@@ -103,7 +103,7 @@ class LoginHandler extends GetxController {
   // DB에 계정 등록
   userloginInsertData(String userEmail, String userName) async {
     var url = Uri.parse(
-        'http://127.0.0.1:8000/user/insertuser?email=$userEmail&name=$userName&observer=false');
+        'http://127.0.0.1:8000/user/insertuser?email=$userEmail&name=$userName&observer=N');
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     var result = dataConvertedJSON['results'];
