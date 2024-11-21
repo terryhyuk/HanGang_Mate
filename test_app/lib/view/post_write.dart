@@ -15,13 +15,16 @@ class PostWrite extends GetView<PostHandler> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('게시글 작성'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(screenWidth * 0.04),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -30,9 +33,13 @@ class PostWrite extends GetView<PostHandler> {
                   // 공원 선택 드롭다운
                   Expanded(
                     child: Obx(() => DropdownButtonFormField<String>(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: '공원 선택',
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03,
+                              vertical: screenHeight * 0.02,
+                            ),
                           ),
                           value: _locationHandler.selectHname.value,
                           onChanged: (String? newValue) {
@@ -46,18 +53,25 @@ class PostWrite extends GetView<PostHandler> {
                               .map<DropdownMenuItem<String>>((String park) {
                             return DropdownMenuItem<String>(
                               value: park,
-                              child: Text(park),
+                              child: Text(
+                                park,
+                                style: TextStyle(fontSize: screenWidth * 0.035),
+                              ),
                             );
                           }).toList(),
                         )),
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: screenWidth * 0.04),
                   // 주차장 선택 드롭다운
                   Expanded(
                     child: Obx(() => DropdownButtonFormField<String>(
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             labelText: '주차장 선택',
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03,
+                              vertical: screenHeight * 0.02,
+                            ),
                           ),
                           value: _locationHandler.parkingInfo.isNotEmpty
                               ? _locationHandler.parkingInfo[0].pname
@@ -71,26 +85,34 @@ class PostWrite extends GetView<PostHandler> {
                               .map<DropdownMenuItem<String>>((Parking park) {
                             return DropdownMenuItem<String>(
                               value: park.pname,
-                              child: Text(park.pname),
+                              child: Text(
+                                park.pname,
+                                style: TextStyle(fontSize: screenWidth * 0.035),
+                              ),
                             );
                           }).toList(),
                         )),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
 
               // 내용 입력 필드
               TextField(
                 controller: questionController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: '내용을 입력하세요.',
                   alignLabelWithHint: true,
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.03,
+                    vertical: screenHeight * 0.02,
+                  ),
                 ),
+                style: TextStyle(fontSize: screenWidth * 0.035),
                 maxLines: 10,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
 
               // 공개/비공개 라디오 버튼
               Row(
@@ -107,10 +129,13 @@ class PostWrite extends GetView<PostHandler> {
                               }
                             },
                           )),
-                      const Text('공개'),
+                      Text(
+                        '공개',
+                        style: TextStyle(fontSize: screenWidth * 0.035),
+                      ),
                     ],
                   ),
-                  const SizedBox(width: 32),
+                  SizedBox(width: screenWidth * 0.08),
                   Row(
                     children: [
                       Obx(() => Radio<bool>(
@@ -122,22 +147,24 @@ class PostWrite extends GetView<PostHandler> {
                               }
                             },
                           )),
-                      const Text('비공개'),
+                      Text(
+                        '비공개',
+                        style: TextStyle(fontSize: screenWidth * 0.035),
+                      ),
                     ],
                   )
                 ],
               ),
 
-              const SizedBox(height: 32),
+              SizedBox(height: screenHeight * 0.04),
 
               // 게시글 올리기 버튼
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(200, 50),
+                    minimumSize: Size(screenWidth * 0.5, screenHeight * 0.06),
                   ),
                   onPressed: () async {
-                    // 입력값 검증
                     if (questionController.text.trim().isEmpty) {
                       Get.snackbar(
                         '오류',
@@ -149,22 +176,30 @@ class PostWrite extends GetView<PostHandler> {
                       return;
                     }
 
-                    // 확인 다이얼로그 표시
                     final confirmed = await Get.dialog<bool>(
                       AlertDialog(
-                        title: const Text('확인'),
-                        content: const Text('게시글을 등록하시겠습니까?'),
+                        title: Text(
+                          '확인',
+                          style: TextStyle(fontSize: screenWidth * 0.04),
+                        ),
+                        content: Text(
+                          '게시글을 등록하시겠습니까?',
+                          style: TextStyle(fontSize: screenWidth * 0.035),
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () => Get.back(result: false),
-                            child: const Text('취소'),
+                            child: Text(
+                              '취소',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
                           ),
                           TextButton(
                             onPressed: () => Get.back(result: true),
-                            style: TextButton.styleFrom(
-                                // foregroundColor: Colors.blue,
-                                ),
-                            child: const Text('확인'),
+                            child: Text(
+                              '확인',
+                              style: TextStyle(fontSize: screenWidth * 0.035),
+                            ),
                           ),
                         ],
                       ),
@@ -190,7 +225,10 @@ class PostWrite extends GetView<PostHandler> {
                       }
                     }
                   },
-                  child: const Text('게시글 올리기'),
+                  child: Text(
+                    '게시글 올리기',
+                    style: TextStyle(fontSize: screenWidth * 0.04),
+                  ),
                 ),
               ),
             ],
