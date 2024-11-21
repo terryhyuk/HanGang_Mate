@@ -112,7 +112,7 @@ class ChatController extends GetxController {
         listenToMessages();
       }
     } catch (e) {
-      print('Error sending message: $e');
+      // print('Error sending message: $e');
     }
   }
 
@@ -135,9 +135,9 @@ class ChatController extends GetxController {
       // 로컬 메시지 목록 초기화
       messages.clear();
 
-      print('채팅 내역이 삭제되었습니다.');
+      // print('채팅 내역이 삭제되었습니다.');
     } catch (e) {
-      print('채팅 내역 삭제 중 오류 발생: $e');
+      // print('채팅 내역 삭제 중 오류 발생: $e');
     }
   }
 }

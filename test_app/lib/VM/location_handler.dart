@@ -15,9 +15,11 @@ class LocationHandler extends GetxController {
   var hnameList = [].obs; //한강공원 이름
   var selectHname = ''.obs; // 드랍다운 선택 이름
   final parkingMarker = <Marker>[].obs; // 드랍다운 맵 마커
-  final Rx<GoogleMapController?> mapController = Rx<GoogleMapController?>(null); // info 페이지 구글맵
-  final Rx<GoogleMapController?> routesController = Rx<GoogleMapController?>(null); // routes 페이지 구글맵
-  final Private private = Private(); // 구글 맵 api 보관 파일 
+  final Rx<GoogleMapController?> mapController =
+      Rx<GoogleMapController?>(null); // info 페이지 구글맵
+  final Rx<GoogleMapController?> routesController =
+      Rx<GoogleMapController?>(null); // routes 페이지 구글맵
+  final Private private = Private(); // 구글 맵 api 보관 파일
   PolylinePoints polylinePoints = PolylinePoints();
   List<PointLatLng> polyline = []; // api로 polyline decoding후 변수 저장
   List<LatLng> route = []; // 길 찾기에 필요한 체크포인트 latlong
@@ -25,19 +27,19 @@ class LocationHandler extends GetxController {
   RxString selectParking = ''.obs;
   // String currentPlaceID = '';  //임시, 경로 api에 필요 할 수도 있음
 
-
   @override
   void onInit() async {
     super.onInit();
     initializeAsync();
   }
 
-  initializeAsync() async { 
+  initializeAsync() async {
     await checkLocationPermission();
     await getAllHname();
     await getParkingLoc();
     await createMarker();
   }
+
 // 위치제공 동의
   checkLocationPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
@@ -49,16 +51,18 @@ class LocationHandler extends GetxController {
     }
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
-      await getCurrentLocation(); 
+      await getCurrentLocation();
     }
   }
- // 현재위치 가져오기
+
+  // 현재위치 가져오기
   getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition();
     currentlat.value = position.latitude;
     currentlng.value = position.longitude;
     update();
   }
+
 // 한강공원 목록 가져오기
   getAllHname() async {
     var url = Uri.parse('http://127.0.0.1:8000/parking/hanriver');
@@ -69,6 +73,7 @@ class LocationHandler extends GetxController {
       selectHname.value = hnameList[0];
     }
   }
+
   // 선택한 한강공원의 주차장 정보 가져오기
   getParkingLoc() async {
     var url = Uri.parse(
@@ -90,7 +95,8 @@ class LocationHandler extends GetxController {
       update();
     }
   }
- // google map 경로 그리기
+
+  // google map 경로 그리기
   createMarker() {
     parkingMarker.value = parkingInfo
         .map(
@@ -101,7 +107,8 @@ class LocationHandler extends GetxController {
         )
         .toList();
   }
- //info 화면에서 드랍다운 선택시 지도 카메라 이동
+
+  //info 화면에서 드랍다운 선택시 지도 카메라 이동
   changeCameraPosition() {
     if (mapController.value != null && parkingInfo.isNotEmpty) {
       mapController.value!.animateCamera(CameraUpdate.newCameraPosition(
@@ -111,20 +118,16 @@ class LocationHandler extends GetxController {
     }
   }
 
-
-
-
-
   // 경로 그리기
   createRoute(int index) async {
     lines.clear();
     var url = Uri.parse(
-      "https://maps.googleapis.com/maps/api/directions/json?origin=$currentlat,$currentlng&destination=${parkingInfo[index].lat},${parkingInfo[index].lng}&mode=transit&language=ko&key=${private.mapAPIkey}");
+        "https://maps.googleapis.com/maps/api/directions/json?origin=$currentlat,$currentlng&destination=${parkingInfo[index].lat},${parkingInfo[index].lng}&mode=transit&language=ko&key=${private.mapAPIkey}");
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     polyline = polylinePoints.decodePolyline(
         dataConvertedJSON['routes'][0]['overview_polyline']['points']);
-        // var distance =dataConvertedJSON['routes'][0]['legs'][0]['distance']['text']; // 거리
+    // var distance =dataConvertedJSON['routes'][0]['legs'][0]['distance']['text']; // 거리
 
     route = polyline
         .map(
@@ -137,12 +140,9 @@ class LocationHandler extends GetxController {
         color: Colors.red));
   }
 
-
 // 드랍다운 변경하기
-selectParkingname (index){
+  selectParkingname(index) {
     selectParking.value = parkingInfo[index].pname;
     update();
-}
-
-
+  }
 }

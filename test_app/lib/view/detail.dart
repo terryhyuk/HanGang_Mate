@@ -27,20 +27,16 @@ class Detail extends StatelessWidget {
                       children: [
                         _gaugeWidget(context),
                         const Text(
-          '길찾기',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15
-          ),
-          ),
+                          '길찾기',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
                         _parkingWidget(context),
                         const Text(
-            '예상혼잡도',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 15
-          ),
-          ),
+                          '예상혼잡도',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
                         _predictWidget(context)
                       ],
                     );
@@ -57,8 +53,8 @@ class Detail extends StatelessWidget {
     return Column(
       children: [
         GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: controller.parkingInfo.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, //한줄에 출력될 개수
@@ -96,11 +92,10 @@ class Detail extends StatelessWidget {
     );
   }
 
-
 // 주차장 길찾기 목록
   Widget _parkingWidget(context) {
     return Column(
-      crossAxisAlignment:  CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListView.builder(
           shrinkWrap: true,
@@ -127,29 +122,30 @@ class Detail extends StatelessWidget {
     );
   }
 
-
-
 // 주차장 혼잡도 예측값
-  Widget _predictWidget(context){
-    List<Color> color =[Colors.blue, Colors.green, Colors.yellow, Colors.red];
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('에상 혼잡도이므로 실제와 다를 수 있습니다',style: TextStyle(color: Colors.red),),
-          // DropdownButton(
-          //   items: List.empty(),
-          //   onChanged: (value) {
-          //     //
-          //   },
-          //   ),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: controller.parkingInfo.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, //한줄에 출력될 개수
-              ),
-              itemBuilder: (context, index) {
+  Widget _predictWidget(context) {
+    List<Color> color = [Colors.blue, Colors.green, Colors.yellow, Colors.red];
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          '에상 혼잡도이므로 실제와 다를 수 있습니다',
+          style: TextStyle(color: Colors.red),
+        ),
+        // DropdownButton(
+        //   items: List.empty(),
+        //   onChanged: (value) {
+        //     //
+        //   },
+        //   ),
+        GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: controller.parkingInfo.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, //한줄에 출력될 개수
+            ),
+            itemBuilder: (context, index) {
               return Column(
                 children: [
                   Padding(
@@ -158,29 +154,23 @@ class Detail extends StatelessWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.black
-                      )
-                    ),
-                    
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.black)),
                     child: DotsIndicator(
                       dotsCount: 4,
                       position: index, // 예측값 들어가기 => list로 저장 후 index 로 불러오기
-                      decorator:  DotsDecorator(
-                        size: const Size(20, 20),
-                        activeSize: const Size(20, 20),
-                        color: Colors.black,
-                        activeColor: color[index]
-                      ),
+                      decorator: DotsDecorator(
+                          size: const Size(20, 20),
+                          activeSize: const Size(20, 20),
+                          color: Colors.black,
+                          activeColor: color[index]),
                     ),
                   ),
                   const Text('혼잡도 들어갈 자리') //
                 ],
               );
-              }
-            )
-        ],
-      );
+            })
+      ],
+    );
   }
 }

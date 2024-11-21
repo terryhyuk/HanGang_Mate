@@ -29,9 +29,8 @@ class Home extends GetView<TabVM> {
               Obx(() => loginController.isLoggedIn
                   ? const Post()
                   : const LoginCheck()),
-              Obx(() => loginController.isLoggedIn
-                  ? Chat()
-                  : const LoginCheck()),
+              Obx(() =>
+                  loginController.isLoggedIn ? Chat() : const LoginCheck()),
               const Findmap()
             ],
           ),

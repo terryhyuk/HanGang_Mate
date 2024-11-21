@@ -12,10 +12,10 @@ class ChatScreen extends StatelessWidget {
   final String userEmail;
 
   ChatScreen({
-    Key? key,
+    super.key,
     required this.roomId,
     required this.userEmail,
-  }) : super(key: key);
+  });
 
   final ChatController chatController = Get.find<ChatController>();
   final LoginHandler loginHandler = Get.find<LoginHandler>();
@@ -23,12 +23,12 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(loginHandler.box.read('observer'));
+    // print(loginHandler.box.read('observer'));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('${roomId}님의 1:1 문의'),
+        title: Text('$roomId님의 1:1 문의'),
         centerTitle: false,
         actions: [
           IconButton(

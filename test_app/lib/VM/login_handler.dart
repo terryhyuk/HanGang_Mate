@@ -90,7 +90,7 @@ class LoginHandler extends GetxController {
         box.write('isObserver', _isObserver.value);
       }
     } catch (e) {
-      print('Error in userloginCheckJSONData: $e');
+      // print('Error in userloginCheckJSONData: $e');
       return 'Error fetching user data: $e';
     }
   }

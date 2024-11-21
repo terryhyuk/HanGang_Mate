@@ -26,7 +26,7 @@ class PostHandler extends GetxController {
       }
       return null;
     } catch (e) {
-      print('Error getting hanriver seq: $e');
+      // print('Error getting hanriver seq: $e');
       return null;
     }
   }
@@ -55,7 +55,7 @@ class PostHandler extends GetxController {
 
       return response.statusCode == 200;
     } catch (e) {
-      print('Error submitting post: $e');
+      // print('Error submitting post: $e');
       return false;
     }
   }
@@ -88,7 +88,7 @@ class PostHandler extends GetxController {
         }
       }
     } catch (e) {
-      print('Error in getPosts: $e');
+      // print('Error in getPosts: $e');
     } finally {
       isLoading.value = false;
     }

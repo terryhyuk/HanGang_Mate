@@ -5,15 +5,15 @@ import 'package:get/get.dart';
 import 'package:test_app/vm/login_handler.dart';
 
 class Chat extends StatelessWidget {
-  Chat({Key? key}) : super(key: key);
+  Chat({super.key});
 
   final ChatController chatController = Get.put(ChatController());
   final LoginHandler loginHandler = LoginHandler();
 
   @override
   Widget build(BuildContext context) {
-    print(loginHandler.box.read('userEmail'));
-    print(loginHandler.box.read('observer'));
+    // print(loginHandler.box.read('userEmail'));
+    // print(loginHandler.box.read('observer'));
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -23,12 +23,15 @@ class Chat extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton(
-          child: Text('1:1 문의하기'),
+          child: const Text('1:1 문의하기'),
           onPressed: () {
             final currentUserEmail = loginHandler.box.read('userEmail');
             if (currentUserEmail != null) {
-              Get.to(() => ChatScreen(roomId: currentUserEmail, userEmail: loginHandler.box.read('userEmail'),));
-            } 
+              Get.to(() => ChatScreen(
+                    roomId: currentUserEmail,
+                    userEmail: loginHandler.box.read('userEmail'),
+                  ));
+            }
           },
         ),
       ),
