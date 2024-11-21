@@ -12,6 +12,8 @@ class AdminPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var value = Get.arguments ?? 26;  
+    // adminHandler.showPostJSONData(value);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -20,6 +22,8 @@ class AdminPost extends StatelessWidget {
       ),
       body: GetBuilder<AnswerHandler>(
         builder: (controller) {
+    qsController.text=adminHandler.post.value[2];
+    awController.text=adminHandler.post.value[3];
         return SingleChildScrollView(
           child: Center(
             child: Padding(
@@ -41,36 +45,16 @@ class AdminPost extends StatelessWidget {
                                   width: 0.5, // Border width
                                 ),
                               ),
-                              child: Text('지점: 지점명')),
+                              child: Text('지점: ${adminHandler.post.value[1]}')),
                         ),
                       ),
                     ],
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black, // Border color
-                            width: 0.5, // Border width
-                          ),
-                        ),
-                        child: TextField(
-                          controller: titleController,
-                          readOnly: true,
-                          maxLines: null,
-                          decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(20,0,0,0),
-                              hintText: '문의 제목',
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none),
-                        )),
-                  ),                
+                  ),     
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text('작성자: '),
+                        Text('작성자: ${adminHandler.post.value[0].split('@')[0]}'),
                       ],
                     ),
                   ),
@@ -83,16 +67,16 @@ class AdminPost extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Colors.black, // Border color
-                              width: 0.5, // Border width
+                              width: 0.8, // Border width
                             ),
                           ),
                           child: TextField(
                             controller: qsController,
                             readOnly: true,
                             maxLines: null,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(20),
-                                hintText: '문의내용',
+                                // hintText: adminHandler.post.value[3],
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none),
                           )),
@@ -105,15 +89,15 @@ class AdminPost extends StatelessWidget {
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.black, // Border color
-                            width: 0.5, // Border width
+                            width: 0.8, // Border width
                           ),
                         ),
                         child: TextField(
                           controller: awController,
                           maxLines: null,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                               contentPadding: EdgeInsets.all(20),
-                              hintText: '답변을 입력해주세요.',
+                              hintText: adminHandler.post.value[3],
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none),
                         )),
@@ -126,7 +110,7 @@ class AdminPost extends StatelessWidget {
                                   foregroundColor: Colors.black
                                 ),                                        
                       onPressed: () async{
-                        await answerAction('답변완료', awController.text, 0);
+                        await answerAction('Y', awController.text, value);
                       }, 
                       child: Text('작성완료')),
                   )
@@ -142,6 +126,7 @@ class AdminPost extends StatelessWidget {
   answerAction(String complete, String answer, int seq) async {
     var result = await adminHandler.answerJSONData(complete, answer, seq);
     if (result == 'OK') {
+      adminHandler.post.value=[];
       Get.back();
     } else {
       errorSnackBar();
