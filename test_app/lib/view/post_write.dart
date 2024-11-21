@@ -137,29 +137,55 @@ class PostWrite extends GetView<PostHandler> {
                     minimumSize: const Size(200, 50),
                   ),
                   onPressed: () async {
-                    if (questionController.text.isEmpty) {
+                    // 입력값 검증
+                    if (questionController.text.trim().isEmpty) {
                       Get.snackbar(
                         '오류',
                         '내용을 입력하세요.',
                         snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red[100],
+                        duration: const Duration(seconds: 2),
                       );
                       return;
                     }
 
-                    final request = PostRequest(
-                      userEmail: _loginHandler.userEmail.value,
-                      hname: _locationHandler.selectHname.value,
-                      question: questionController.text,
+                    // 확인 다이얼로그 표시
+                    final confirmed = await Get.dialog<bool>(
+                      AlertDialog(
+                        title: const Text('확인'),
+                        content: const Text('게시글을 등록하시겠습니까?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Get.back(result: false),
+                            child: const Text('취소'),
+                          ),
+                          TextButton(
+                            onPressed: () => Get.back(result: true),
+                            style: TextButton.styleFrom(
+                                // foregroundColor: Colors.blue,
+                                ),
+                            child: const Text('확인'),
+                          ),
+                        ],
+                      ),
                     );
 
-                    final success = await controller.submitPost(request);
-                    if (success) {
-                      Get.back();
+                    if (confirmed == true) {
+                      final request = PostRequest(
+                        userEmail: _loginHandler.userEmail.value,
+                        hname: _locationHandler.selectHname.value,
+                        question: questionController.text.trim(),
+                      );
+
+                      final success = await controller.submitPost(request);
+                      if (success) {
+                        Get.back();
+                      }
                     }
                   },
                   child: const Text('게시글 올리기'),
                 ),
-              )
+              ),
             ],
           ),
         ),

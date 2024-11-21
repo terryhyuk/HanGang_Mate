@@ -28,14 +28,8 @@ class PostHandler extends GetxController {
   // 게시글 등록
   submitPost(PostRequest request) async {
     try {
-      // 공원 seq 가져오기
       final hanriverSeq = await getHanriverSeq(request.hname);
       if (hanriverSeq == null) {
-        Get.snackbar(
-          '오류',
-          '공원 정보를 가져올 수 없습니다.',
-          snackPosition: SnackPosition.BOTTOM,
-        );
         return false;
       }
 
@@ -54,26 +48,9 @@ class PostHandler extends GetxController {
             'http://127.0.0.1:8000/post/insertpost?user_email=${posting.userEmail}&hanriver_seq=${posting.hanriverSeq}&date=${posting.date}&public=${posting.public}&question=${posting.question}&complete=${posting.complete}&answer=${posting.answer}'),
       );
 
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          '성공',
-          '게시글이 등록되었습니다.',
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        return true;
-      }
-      Get.snackbar(
-        '오류',
-        '게시글 등록에 실패했습니다.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return false;
+      return response.statusCode == 200;
     } catch (e) {
-      Get.snackbar(
-        '오류',
-        '네트워크 오류가 발생했습니다.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      print('Error submitting post: $e');
       return false;
     }
   }
