@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:get/get.dart';
@@ -24,8 +25,58 @@ class Detail extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _gauge(context),
-                      SizedBox(
+                      Expanded(
+                        child: _gauge(context),
+                      ),
+                      const Divider(),
+                      _parking_list(context)
+                    ],
+                  ),
+                );
+              }
+            },
+          );
+      },)
+    );
+  }
+
+
+// 주차장 현황 게이지 
+Widget _gauge (context) {
+  return GridView.builder(
+    itemCount: controller.parkingInfo.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, //한줄에 출력될 개수
+            ),
+            itemBuilder: (context, index) {
+    return  Column(
+      children: [
+        Text(controller.parkingInfo[index].pname),
+        AnimatedRadialGauge(
+        duration: const Duration(seconds: 1),
+        curve: Curves.linear,
+        radius: 50,
+        value: controller.parkingInfo[index].lat,
+        axis:  const GaugeAxis(
+          min: 0,
+          max: 100,
+          degrees: 180,
+          segments: [
+            GaugeSegment(from: 0, to: 100, border: GaugeBorder(color: Colors.black),)
+          ],
+          style: GaugeAxisStyle(
+            background: Colors.transparent,
+          ),
+        ),
+        ),
+      ],
+    );
+            }
+  );
+}
+
+Widget _parking_list(context){
+        return SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.3,
                         child: ListView.builder(
@@ -45,34 +96,7 @@ class Detail extends StatelessWidget {
                             ),
                           );
                         },),
-                      )
-                    ],
-                  ),
-                );
-              }
-            },
-          );
-      },)
-    );
-  }
+                      );
 
-
-// 주차장 현황 게이지 
-Widget _gauge (context) {
-  return AnimatedRadialGauge(
-  duration: const Duration(seconds: 1),
-  curve: Curves.linear,
-  radius: 100,
-  value: controller.currentlat.value,
-  axis:   GaugeAxis(
-    min: 0,
-    max: 100,
-    degrees: 180,
-    pointer: GaugePointer.needle(width: 10, height: 10, color: Colors.red),
-    style: GaugeAxisStyle(
-      background: Colors.transparent
-    ),
-  ),
-  );
 }
 }

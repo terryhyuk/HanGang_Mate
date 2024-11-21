@@ -113,24 +113,9 @@ class LocationHandler extends GetxController {
 
 
 
-  // //1. 현위치를 주소 id 로 가져오기
-  // getCurrentPlaceID() async {
-  //   var url = Uri.parse(
-  //       "https://maps.googleapis.com/maps/api/geocode/json?latlng=$currentlat,$currentlng&key=${private.mapAPIkey}");
-  //   var response = await http.get(url);
-  //   if (response.statusCode == 200) {
-  //     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-  //     currentPlaceID =
-  //         await dataConvertedJSON['results'][0]['place_id'];
-  //   }
-  //   print(currentPlaceID);
-  //   // print(currentlat);
-  //   // print(currentlng);
-  // }
 
 
-
-  // 3. polyline
+  // 경로 그리기
   createRoute(int index) async {
     lines.clear();
     var url = Uri.parse(
@@ -154,7 +139,6 @@ class LocationHandler extends GetxController {
 
 selectParkingname (index){
     selectParking.value = parkingInfo[index].pname;
-    
     update();
 }
 
