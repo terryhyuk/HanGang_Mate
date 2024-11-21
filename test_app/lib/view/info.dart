@@ -252,6 +252,7 @@ class Info extends StatelessWidget {
     return GestureDetector(
       onTap: () async{
         if(controller.apivalue.value == true){
+        await controller.resetTime();
         await controller.predict();
         Get.to(Detail());
         }

@@ -157,6 +157,27 @@ class Detail extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        DropdownButton<int>(
+              //Map형태(dictionary)
+              dropdownColor: dropDownBackgroundClr,
+              iconEnabledColor:
+                  dropDownBackgroundClr,
+              value: controller.selectedTime.value, //선택한 이름
+              icon: const Icon(Icons.keyboard_arrow_down),
+              items: controller.timeList
+              .asMap()
+              .entries
+              .map<DropdownMenuItem<int>>((item) {
+            return DropdownMenuItem<int>(
+              value: item.key,
+              child: Text(item.value),
+            );
+          }).toList(),
+              onChanged: (int? value) {
+                controller.selectedTime.value = value!;
+                controller.predict();
+              },
+            ),
         const Text(
           '에상 혼잡도이므로 실제와 다를 수 있습니다',
           style: TextStyle(color: Colors.red),
@@ -186,7 +207,7 @@ class Detail extends StatelessWidget {
                     child: DotsIndicator(
                       dotsCount: 4,
                       position: controller.dotsPosition(
-                          index), // 예측값 들어가기 => list로 저장 후 index 로 불러오기
+                          index),
                       decorator: DotsDecorator(
                           size: const Size(20, 20),
                           activeSize: const Size(20, 20),
@@ -196,13 +217,15 @@ class Detail extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      controller.parkingInfo[index].predictMessage!,
-                      style: const TextStyle(fontWeight: FontWeight.bold,
-                      fontSize: 1
+                    child: 
+                      Text(
+                        controller.parkingInfo[index].predictMessage!,
+                        style: const TextStyle(fontWeight: FontWeight.bold,
+                        fontSize: 20
+                        ),
                       ),
                     ),
-                  ) //
+                  // ) 
                 ],
               );
             })

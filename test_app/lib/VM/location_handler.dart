@@ -32,6 +32,11 @@ class LocationHandler extends GetxController {
   RxBool apivalue = false.obs; // api 정보 받아오기 전, detail page 이동 방지
   String maxTemp = ""; // 최고기온 뚝섬용
   final parkingCapacity = <double>[].obs; // 구획수 and 게이지 계산용
+  final RxInt selectedTime = 0.obs; // 예측 시간
+  final List<String> timeList = ['2시간 후', '3시간 후', '4시간 후', '5시간 후'];// 드롭다운 아이템 리스트
+
+  
+
 
   @override
   void onInit() async {
@@ -194,7 +199,8 @@ class LocationHandler extends GetxController {
 predictYeouido() async {
 // 1주차장 462 , 2주차장 171, 3주차장 800\
 final parkingCapacity = [462,171,800]; // 흠..
-  int holiday= isholiday();
+  String time = await getTimeodDay();
+  int holiday= await isholiday();
   // 쿼리 파라미터 설정
   predvalue.value = false;
   for (int i =0; i<parkingInfo.length; i++){
@@ -218,10 +224,10 @@ final parkingCapacity = [462,171,800]; // 흠..
   if(response.statusCode == 200){  
   var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
   // print(dataConvertedJSON);
-  parkingInfo[i].predictParking = dataConvertedJSON['예측 주차대수']['아침'];
-  parkingInfo[i].predictMessage = dataConvertedJSON['혼잡도']['예측 아침 혼잡도'];
+  parkingInfo[i].predictParking = dataConvertedJSON['예측 주차대수'][time];
+  parkingInfo[i].predictMessage = dataConvertedJSON['혼잡도']['예측 $time 혼잡도'];
 } 
-print(queryParameters);
+print(parkingInfo[i].predictMessage);
   }
   // print(parkingCapacity);
   predvalue.value = true;
@@ -236,6 +242,7 @@ predictTtukseom() async {
   // 쿼리 파라미터 설정
   final parkingCapacity = [356,112,136,67]; // 
   predvalue.value = false;
+  String time = await getTimeodDay(); // 아침 낮 저녁 구분
   int holiday = await isholiday();
   for(int i=0; i<parkingInfo.length; i++){
   final queryParameters = {
@@ -257,11 +264,9 @@ predictTtukseom() async {
 );
 if(response.statusCode == 200){  
   var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-  parkingInfo[i].predictParking = dataConvertedJSON['예측 주차대수']['아침'];
-  parkingInfo[i].predictMessage = dataConvertedJSON['혼잡도']['예측 아침 혼잡도'];
-  // print(dataConvertedJSON);
+  parkingInfo[i].predictParking = dataConvertedJSON['예측 주차대수'][time];
+  parkingInfo[i].predictMessage = dataConvertedJSON['혼잡도']['예측 $time 혼잡도'];
 }
-print(queryParameters);
   }
   predvalue.value = true;
   update();
@@ -298,5 +303,23 @@ dotsPosition(index){
 }
 
 
+// 예측값을 보여줄 아침, 낮, 저녁 선택
+getTimeodDay(){
+  int currentHour = DateTime.now().hour;
+  int addHour = int.parse(timeList[selectedTime.value].split('시간')[0]);
+  int newHour = (currentHour + addHour) %24;
+  if (6 <= newHour && newHour < 11) {
+      return '아침';
+    } else if (11 <= newHour && newHour < 18) {
+      return '낮';
+    } else {
+      return '저녁';
+    }
+  }
 
+
+// detail page 드랍다운 초기화
+resetTime(){
+  selectedTime.value = 0;
+}
 } //End
