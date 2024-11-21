@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:gradient_slider/gradient_slider.dart';
 import 'package:test_app/vm/location_handler.dart';
 import 'package:test_app/view/detail.dart';
 
@@ -33,7 +35,7 @@ class Info extends StatelessWidget {
                           child: Column(
                             children: [
                               _dropDown(),
-                              _card(),
+                              _card(context),
                               _googleMap(context),
                             ],
                           ),
@@ -71,7 +73,7 @@ class Info extends StatelessWidget {
     );
   }
 
-  Widget _card() {
+  Widget _card(context) {
     return GestureDetector(
       onTap: (){
         Get.to(Detail());
@@ -98,15 +100,16 @@ class Info extends StatelessWidget {
                   ),
                 ],
               ),
-              Slider(
-                value: 50,
-                min: 0,
-                max: 100,
-                // divisions: 4, // 여유, 보통, 혼잡 구분
-                onChanged: (double value) {
-                  // 슬라이더 값 변경 시 처리
-                },
-              ),
+              // Slider(
+              //   value: 50,
+              //   min: 0,
+              //   max: 100,
+              //   // divisions: 4, // 여유, 보통, 혼잡 구분
+              //   onChanged: (double value) {
+              //     // 슬라이더 값 변경 시 처리
+              //   },
+              // ),
+              _colorSlider(context),
               const SizedBox(height: 10),
               const Text(
                 '현재 혼잡도 n%',
@@ -145,4 +148,40 @@ class Info extends StatelessWidget {
       ),
     );
   }
+
+//  주차장 현황 slider 
+Widget _colorSlider(context){
+  double sliderValue = 50; // 테스트용 임의 값 지정, 
+  return GradientSlider(
+    thumbAsset: 'images/slider_icon.jpg', // slider 값 표시 이미지, 임시
+  thumbHeight: 30,
+  thumbWidth: 30,
+  trackHeight: 10,
+  trackBorder: 1,
+  activeTrackGradient: const LinearGradient(colors: [
+      Colors.blue,
+      Colors.green,
+      Colors.yellow,
+      Colors.orange, 
+      Colors.red,
+    ], ),
+  inactiveTrackGradient: const LinearGradient(colors: [
+      Colors.blue,
+      Colors.green,
+      Colors.yellow,
+      Colors.orange, 
+      Colors.red,
+    ],
+    ),
+  slider: Slider(
+    value: sliderValue,
+    min: 0,
+    max: 100,
+    onChanged: (value) {
+      //
+    },
+  ),
+);
+}
+
 }
