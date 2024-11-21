@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:test_app/Model/posting.dart';
 
 class AnswerHandler extends GetxController{
   var post = Rx<List<dynamic>>([]);

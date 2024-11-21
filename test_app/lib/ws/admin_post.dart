@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:test_app/ws/answer_handler.dart';
 
 class AdminPost extends StatelessWidget {
@@ -18,7 +17,7 @@ class AdminPost extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('답변하기'),
+        title: const Text('답변하기'),
       ),
       body: GetBuilder<AnswerHandler>(
         builder: (controller) {
