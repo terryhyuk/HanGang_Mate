@@ -97,7 +97,7 @@ class Info extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.refresh),
                     onPressed: () async {
-                      await controller.getParkingLoc(); // 데이터 새로고침
+                      await controller.fetchParkingData(); // 데이터 새로고침
                     },
                   ),
                 ],

@@ -25,7 +25,7 @@ class LocationHandler extends GetxController {
   List<LatLng> route = []; // 길 찾기에 필요한 체크포인트 latlong
   var lines = <Polyline>[].obs; // 길 찾기 그림
   RxString selectParking = ''.obs;
-  var totalAvailableParking = 0.obs;
+  var totalAvailableParking = 0.obs; // 주차장 실시간 이용가능 대수
   // String currentPlaceID = '';  //임시, 경로 api에 필요 할 수도 있음
 
   @override

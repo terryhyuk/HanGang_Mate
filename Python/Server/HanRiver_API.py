@@ -28,22 +28,16 @@ def fetch_data(url: str):
         return None
 
 # 실시간 인구 및 혼잡도 정보 추출 함수
-def extract_congestion_info(city_data: dict):
-    """
-    실시간 인구 및 혼잡도 정보를 추출합니다.
-    :param city_data: CITYDATA 키로부터 가져온 데이터
-    :return: 정리된 혼잡도 정보 딕셔너리
-    """
-    live_ppltn = city_data.get('LIVE_PPLTN_STTS', [])
-    congestion_info = live_ppltn[0] if live_ppltn else {}
-    
-    return {
-        "장소명": city_data.get("AREA_NM", "정보 없음"),
-        "장소 코드": city_data.get("AREA_CD", "정보 없음"),
-        "장소 혼잡도 지표": congestion_info.get("AREA_CONGEST_LVL", "정보 없음"),
-        "장소 혼잡도 지표 관련 메세지": congestion_info.get("AREA_CONGEST_MSG", "정보 없음"),
-        "실시간 인구 현황": f"{congestion_info.get('AREA_PPLTN_MIN', '정보 없음')} ~ {congestion_info.get('AREA_PPLTN_MAX', '정보 없음')}"
-    }
+# def extract_congestion_info(city_data: dict):
+#     """
+#     실시간 인구 및 혼잡도 정보를 추출합니다.
+#     :param city_data: CITYDATA 키로부터 가져온 데이터
+#     :return: 정리된 혼잡도 정보 딕셔너리
+#     """
+#     return {
+#         "장소명": city_data.get("AREA_NM", "정보 없음"),
+#         "장소 코드": city_data.get("AREA_CD", "정보 없음"),
+#     }
 
 # 주차장 중복 제거 및 최신 정보 선택 함수
 def extract_unique_parking_info(city_data: dict):
@@ -74,8 +68,6 @@ def extract_weather_info(city_data: dict):
     
     return {
         "최고기온": weather_info.get("MAX_TEMP", "정보 없음"),
-        "통합대기환경지수": weather_info.get("AIR_IDX_MVL", "정보 없음"),
-        "통합대기환경지수 메시지": weather_info.get("AIR_MSG", "정보 없음")
     }
 
 # 전체 데이터 처리 함수
@@ -86,13 +78,12 @@ def process_city_data(data: dict):
     :return: 정리된 데이터 딕셔너리
     """
     city_data = data.get('CITYDATA', {})
-    congestion_info = extract_congestion_info(city_data)
+    # congestion_info = extract_congestion_info(city_data)
     unique_parking_list = extract_unique_parking_info(city_data)
     weather_info = extract_weather_info(city_data)
 
     return {
-        **congestion_info,
-        "전체도로소통평균현황 메세지": city_data.get("ROAD_MSG", "정보 없음"),
+        # **congestion_info,
         "주차장 현황": unique_parking_list,
         **weather_info
     }
