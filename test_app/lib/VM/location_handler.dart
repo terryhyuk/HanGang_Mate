@@ -15,16 +15,18 @@ class LocationHandler extends GetxController {
   var hnameList = [].obs; //한강공원 이름
   var selectHname = ''.obs; // 드랍다운 선택 이름
   final parkingMarker = <Marker>[].obs; // 드랍다운 맵 마커
-  final Rx<GoogleMapController?> mapController = Rx<GoogleMapController?>(null); // info 페이지 구글맵
-  final Rx<GoogleMapController?> routesController = Rx<GoogleMapController?>(null); // routes 페이지 구글맵
-  final Private private = Private(); // 구글 맵 api 보관 파일 
+  final Rx<GoogleMapController?> mapController =
+      Rx<GoogleMapController?>(null); // info 페이지 구글맵
+  final Rx<GoogleMapController?> routesController =
+      Rx<GoogleMapController?>(null); // routes 페이지 구글맵
+  final Private private = Private(); // 구글 맵 api 보관 파일
   PolylinePoints polylinePoints = PolylinePoints();
   List<PointLatLng> polyline = []; // api로 polyline decoding후 변수 저장
   List<LatLng> route = []; // 길 찾기에 필요한 체크포인트 latlong
   var lines = <Polyline>[].obs; // 길 찾기 그림
   RxString selectParking = ''.obs;
+  var totalAvailableParking = 0.obs;
   // String currentPlaceID = '';  //임시, 경로 api에 필요 할 수도 있음
-
 
   @override
   void onInit() async {
@@ -37,6 +39,7 @@ class LocationHandler extends GetxController {
     await getAllHname();
     await getParkingLoc();
     await createMarker();
+    await fetchParkingData();
   }
 
   checkLocationPermission() async {
@@ -111,20 +114,16 @@ class LocationHandler extends GetxController {
     }
   }
 
-
-
-
-
   // 경로 그리기
   createRoute(int index) async {
     lines.clear();
     var url = Uri.parse(
-      "https://maps.googleapis.com/maps/api/directions/json?origin=${currentlat},${currentlng}&destination=${parkingInfo[index].lat},${parkingInfo[index].lng}&mode=transit&language=ko&key=${private.mapAPIkey}");
+        "https://maps.googleapis.com/maps/api/directions/json?origin=${currentlat},${currentlng}&destination=${parkingInfo[index].lat},${parkingInfo[index].lng}&mode=transit&language=ko&key=${private.mapAPIkey}");
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     polyline = polylinePoints.decodePolyline(
         dataConvertedJSON['routes'][0]['overview_polyline']['points']);
-        // var distance =dataConvertedJSON['routes'][0]['legs'][0]['distance']['text']; // 거리
+    // var distance =dataConvertedJSON['routes'][0]['legs'][0]['distance']['text']; // 거리
 
     route = polyline
         .map(
@@ -137,10 +136,38 @@ class LocationHandler extends GetxController {
         color: Colors.red));
   }
 
-selectParkingname (index){
+  selectParkingname(index) {
     selectParking.value = parkingInfo[index].pname;
     update();
-}
+  }
 
+// API 데이터 가져오기
+  Future<void> fetchParkingData() async {
+    final encodedPname =
+        Uri.encodeComponent(selectHname.value); // 선택된 공원 이름 인코딩
+    final url =
+        Uri.parse("http://127.0.0.1:8000/hanriver/citydata/$encodedPname");
 
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data =
+          json.decode(utf8.decode(response.bodyBytes));
+      print("Response Data: $data"); // 디버깅용
+
+      final List<dynamic> parkingList = data['주차장 현황'];
+
+      int total = 0;
+      for (var parking in parkingList) {
+        int capacity = int.parse(parking['CPCTY']);
+        int currentParking = int.parse(parking['CUR_PRK_CNT']);
+        total += (capacity - currentParking);
+      }
+
+      totalAvailableParking.value = total;
+      // print("Total Available Parking: $total");
+    } else {
+      // print("Failed to fetch data. Status code: ${response.statusCode}");
+    }
+  }
 }

@@ -67,6 +67,7 @@ class Info extends StatelessWidget {
           await controller.createMarker(); // google map 주차장 marker 생성
           await controller
               .changeCameraPosition(); // mapcontroller의 type 변환이 필요해서 파라미터로 설정함
+          await controller.fetchParkingData();
         }
       },
     );
@@ -74,7 +75,7 @@ class Info extends StatelessWidget {
 
   Widget _card(context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Get.to(Detail());
       },
       child: Card(
@@ -95,7 +96,9 @@ class Info extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.refresh),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await controller.getParkingLoc(); // 데이터 새로고침
+                    },
                   ),
                 ],
               ),
@@ -110,10 +113,12 @@ class Info extends StatelessWidget {
               // ),
               _colorSlider(context),
               const SizedBox(height: 10),
-              const Text(
-                '현재 혼잡도 n%',
-                style: TextStyle(
-                  fontSize: 16,
+              Obx(
+                () => Text(
+                  "총 주차 가능 대수: ${controller.totalAvailableParking}",
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],
@@ -148,39 +153,41 @@ class Info extends StatelessWidget {
     );
   }
 
-//  주차장 현황 slider 
-Widget _colorSlider(context){
-  double sliderValue = 50; // 테스트용 임의 값 지정, 
-  return GradientSlider(
-    thumbAsset: 'images/slider_icon.jpg', // slider 값 표시 이미지, 임시
-  thumbHeight: 30,
-  thumbWidth: 30,
-  trackHeight: 10,
-  trackBorder: 1,
-  activeTrackGradient: const LinearGradient(colors: [
-      Colors.blue,
-      Colors.green,
-      Colors.yellow,
-      Colors.orange, 
-      Colors.red,
-    ], ),
-  inactiveTrackGradient: const LinearGradient(colors: [
-      Colors.blue,
-      Colors.green,
-      Colors.yellow,
-      Colors.orange, 
-      Colors.red,
-    ],
-    ),
-  slider: Slider(
-    value: sliderValue,
-    min: 0,
-    max: 100,
-    onChanged: (value) {
-      //
-    },
-  ),
-);
-}
-
+//  주차장 현황 slider
+  Widget _colorSlider(context) {
+    double sliderValue = 50; // 테스트용 임의 값 지정,
+    return GradientSlider(
+      thumbAsset: 'images/slider_icon.jpg', // slider 값 표시 이미지, 임시
+      thumbHeight: 30,
+      thumbWidth: 30,
+      trackHeight: 10,
+      trackBorder: 1,
+      activeTrackGradient: const LinearGradient(
+        colors: [
+          Colors.blue,
+          Colors.green,
+          Colors.yellow,
+          Colors.orange,
+          Colors.red,
+        ],
+      ),
+      inactiveTrackGradient: const LinearGradient(
+        colors: [
+          Colors.blue,
+          Colors.green,
+          Colors.yellow,
+          Colors.orange,
+          Colors.red,
+        ],
+      ),
+      slider: Slider(
+        value: sliderValue,
+        min: 0,
+        max: 100,
+        onChanged: (value) {
+          //
+        },
+      ),
+    );
+  }
 }
