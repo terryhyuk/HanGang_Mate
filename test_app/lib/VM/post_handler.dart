@@ -65,8 +65,7 @@ class PostHandler extends GetxController {
       isLoading.value = true;
       final response = await http.get(
         Uri.parse(
-            'http://127.0.0.1:8000/post/selectpost?page=${currentPage.value}&limit=$itemsPerPage&user_email=${loginHandler.userEmail.value}&observer=${loginHandler.isObserver}' // 이미 'Y' 또는 'N' 문자열
-            ),
+            'http://127.0.0.1:8000/post/selectpost?page=${currentPage.value}&limit=$itemsPerPage&user_email=${loginHandler.userEmail.value}&observer=${loginHandler.isObserver}'),
       );
 
       if (response.statusCode == 200) {
@@ -82,6 +81,8 @@ class PostHandler extends GetxController {
                     'question': item['question'],
                     'complete': item['complete'],
                     'answer': item['answer'],
+                    'hname': item['hname'], // 추가
+                    'pname': item['pname'], // 추가
                   }))
               .toList();
           totalPages.value = data['total_pages'];

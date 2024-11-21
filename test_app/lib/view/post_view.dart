@@ -22,55 +22,94 @@ class PostView extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final baseFontSize = screenWidth * 0.035;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('게시글 상세'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(screenWidth * 0.04),
+        padding: EdgeInsets.symmetric(
+          horizontal: screenWidth * 0.04,
+          vertical: screenHeight * 0.02,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 작성자 정보
-            Text(
-              '작성자: ${post.userEmail}',
-              style: TextStyle(
-                fontSize: screenWidth * 0.035,
-                color: Colors.grey[600],
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.01),
-
-            // 작성일자와 상태 표시
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  formatDate(post.date),
-                  style: TextStyle(
-                    fontSize: screenWidth * 0.035,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Row(
+            Card(
+              child: Padding(
+                padding: EdgeInsets.all(screenWidth * 0.03),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      post.public == 'Y' ? Icons.public : Icons.lock,
-                      size: screenWidth * 0.04,
-                    ),
-                    SizedBox(width: screenWidth * 0.02),
+                    // 작성자 정보
                     Text(
-                      post.complete == 'Y' ? '답변완료' : '답변대기',
+                      '작성자: ${post.userEmail}',
                       style: TextStyle(
-                        fontSize: screenWidth * 0.035,
-                        color:
-                            post.complete == 'Y' ? Colors.green : Colors.orange,
+                        fontSize: baseFontSize,
+                        color: Colors.grey[600],
                       ),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+
+                    // 주차장 정보
+                    if (post.hname != null) ...[
+                      Text(
+                        '공원: ${post.hname}',
+                        style: TextStyle(
+                          fontSize: baseFontSize,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.01),
+                    ],
+                    if (post.pname != null) ...[
+                      Text(
+                        '주차장: ${post.pname}',
+                        style: TextStyle(
+                          fontSize: baseFontSize,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      SizedBox(height: screenHeight * 0.01),
+                    ],
+
+                    // 작성일자와 상태
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            formatDate(post.date),
+                            style: TextStyle(
+                              fontSize: baseFontSize,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              post.public == 'Y' ? Icons.public : Icons.lock,
+                              size: baseFontSize * 1.2,
+                            ),
+                            SizedBox(width: screenWidth * 0.02),
+                            Text(
+                              post.complete == 'Y' ? '답변완료' : '답변대기',
+                              style: TextStyle(
+                                fontSize: baseFontSize,
+                                color: post.complete == 'Y'
+                                    ? Colors.green
+                                    : Colors.orange,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
             SizedBox(height: screenHeight * 0.02),
 
@@ -78,46 +117,44 @@ class PostView extends StatelessWidget {
             Text(
               '문의내용',
               style: TextStyle(
-                fontSize: screenWidth * 0.04,
+                fontSize: baseFontSize * 1.2,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: screenHeight * 0.01),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                post.question,
-                style: TextStyle(fontSize: screenWidth * 0.04),
+            Card(
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                child: Text(
+                  post.question,
+                  style: TextStyle(fontSize: baseFontSize * 1.1),
+                ),
               ),
             ),
 
             // 답변 섹션
-            SizedBox(height: screenHeight * 0.03),
+            SizedBox(height: screenHeight * 0.02),
             Text(
               '답변',
               style: TextStyle(
-                fontSize: screenWidth * 0.04,
+                fontSize: baseFontSize * 1.2,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: screenHeight * 0.01),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              decoration: BoxDecoration(
-                color: post.answer != null ? Colors.blue[50] : Colors.grey[50],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                post.answer ?? '아직 답변이 등록되지 않았습니다.',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.04,
-                  color: post.answer != null ? Colors.black : Colors.grey[600],
+            Card(
+              color: post.answer != null ? Colors.blue[50] : Colors.grey[50],
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                child: Text(
+                  post.answer ?? '아직 답변이 등록되지 않았습니다.',
+                  style: TextStyle(
+                    fontSize: baseFontSize * 1.1,
+                    color:
+                        post.answer != null ? Colors.black : Colors.grey[600],
+                  ),
                 ),
               ),
             ),
