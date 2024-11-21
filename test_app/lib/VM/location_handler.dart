@@ -42,6 +42,7 @@ class LocationHandler extends GetxController {
     await fetchParkingData();
   }
 
+// 위치제공 동의
   checkLocationPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -56,6 +57,7 @@ class LocationHandler extends GetxController {
     }
   }
 
+  // 현재위치 가져오기
   getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition();
     currentlat.value = position.latitude;
@@ -63,6 +65,7 @@ class LocationHandler extends GetxController {
     update();
   }
 
+// 한강공원 목록 가져오기
   getAllHname() async {
     var url = Uri.parse('http://127.0.0.1:8000/parking/hanriver');
     var response = await http.get(url);
@@ -73,6 +76,7 @@ class LocationHandler extends GetxController {
     }
   }
 
+  // 선택한 한강공원의 주차장 정보 가져오기
   getParkingLoc() async {
     var url = Uri.parse(
         'http://127.0.0.1:8000/parking/hanriver?hname=${selectHname.value}');
@@ -94,6 +98,7 @@ class LocationHandler extends GetxController {
     }
   }
 
+  // google map 경로 그리기
   createMarker() {
     parkingMarker.value = parkingInfo
         .map(
@@ -105,6 +110,7 @@ class LocationHandler extends GetxController {
         .toList();
   }
 
+  //info 화면에서 드랍다운 선택시 지도 카메라 이동
   changeCameraPosition() {
     if (mapController.value != null && parkingInfo.isNotEmpty) {
       mapController.value!.animateCamera(CameraUpdate.newCameraPosition(

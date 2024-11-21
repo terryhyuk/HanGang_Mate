@@ -62,8 +62,8 @@ dependencies:
 
   # 구글맵 경로
   flutter_polyline_points: ^2.1.0
-  
-  # 지도 
+
+  # 지도
   geolocator: ^13.0.2
 
   # 구글 로그인
@@ -78,6 +78,9 @@ dependencies:
 
   # detail 페이지 예측값 모양
   dots_indicator: ^3.0.0
+
+  # intl
+  intl: ^0.19.0
 
   syncfusion_flutter_gauges: ^27.2.2
 

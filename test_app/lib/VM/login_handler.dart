@@ -10,11 +10,11 @@ class LoginHandler extends GetxController {
   final RxBool _isLoggedIn = false.obs;
   final RxString userEmail = ''.obs;
   final RxString userName = ''.obs;
-  final RxBool _isObserver = false.obs;
+  final RxString _isObserver = 'N'.obs;
   List data = [];
 
   bool get isLoggedIn => _isLoggedIn.value;
-  bool get isObserver => _isObserver.value;
+  String get isObserver => _isObserver.value;
 
   @override
   void onInit() {
@@ -22,21 +22,18 @@ class LoginHandler extends GetxController {
     checkLoginStatus();
   }
 
-  // 로그인 상태 확인
   checkLoginStatus() {
     _isLoggedIn.value = FirebaseAuth.instance.currentUser != null &&
         getStoredEmail().isNotEmpty;
     userEmail.value = getStoredEmail();
     userName.value = box.read('userName') ?? '';
-    _isObserver.value = box.read('isObserver') ?? false; // observer 상태 읽기
+    _isObserver.value = box.read('isObserver') ?? 'N';
   }
 
-  // GetStorage에서 저장된 이메일 가져오기
   getStoredEmail() {
     return box.read('userEmail') ?? '';
   }
 
-  // Google로그인
   signInWithGoogle() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
@@ -70,7 +67,6 @@ class LoginHandler extends GetxController {
     return userCredential;
   }
 
-  // 등록된 계정인지 확인
   userloginCheckDatabase(String email) async {
     userloginCheckJSONData(email);
     if (data.isEmpty) {
@@ -90,38 +86,36 @@ class LoginHandler extends GetxController {
       data.addAll(result);
 
       if (result.isNotEmpty) {
-        String observerValue = result[0]['observer'] ?? 'false';
-
-        _isObserver.value = observerValue.toLowerCase() == 'true';
+        _isObserver.value = result[0]['observer'] ?? 'N';
         box.write('isObserver', _isObserver.value);
       }
     } catch (e) {
+      // print('Error in userloginCheckJSONData: $e');
       return 'Error fetching user data: $e';
     }
   }
 
-  // DB에 계정 등록
   userloginInsertData(String userEmail, String userName) async {
     var url = Uri.parse(
-        'http://127.0.0.1:8000/user/insertuser?email=$userEmail&name=$userName&observer=false');
+        'http://127.0.0.1:8000/user/insertuser?email=$userEmail&name=$userName&observer=N');
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     var result = dataConvertedJSON['results'];
 
     if (result == 'OK') {
-      // 성공 처리
-    } else {
-      // 실패 처리
+      _isObserver.value = 'N';
+      box.write('isObserver', _isObserver.value);
     }
   }
 
-  // 로그아웃
   signOut() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
     box.write('userEmail', "");
     box.write('userName', "");
+    box.write('isObserver', "N");
     _isLoggedIn.value = false;
+    _isObserver.value = 'N';
     userEmail.value = '';
     userName.value = '';
     update();
