@@ -47,3 +47,8 @@ async def get_hanriver_data(hname: str = None):
         return {'error': str(e)}
     finally:
         conn.close()
+
+
+
+
+

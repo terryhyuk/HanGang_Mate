@@ -30,7 +30,7 @@ ttukseom_features_parking = joblib.load('Ttukseom_features_parking.pkl')
 
 # 입력 데이터 스키마 정의 (여의도)
 class YeouidoFeatures(BaseModel):
-    요일: int
+    요일: int # 0월 ~ 6일
     휴일여부: int
     주차장명: str
     연도: int
@@ -40,12 +40,12 @@ class YeouidoFeatures(BaseModel):
 
 # 입력 데이터 스키마 정의 (뚝섬)
 class TtukseomFeatures(BaseModel):
-    요일: int
+    요일: int # 0월 ~ 6일
     휴일여부: int
     주차장명: str
     연도: int
     월: int
-    최고기온: float
+    최고기온: float # api 로 불러오기
     주차구획수: int
 
 def calculate_congestion(parking_count, capacity):
@@ -184,3 +184,4 @@ async def predict_ttukseom(features: TtukseomFeatures):
         },
         "혼잡도": congestion_results
     }
+
