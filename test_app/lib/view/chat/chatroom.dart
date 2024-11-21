@@ -19,16 +19,16 @@ class ChatScreen extends StatelessWidget {
   final ChatController chatController = Get.find<ChatController>();
   final LoginHandler loginHandler = Get.find<LoginHandler>();
   final TextEditingController sendController = TextEditingController();
+  final ScrollController scrollController =
+      ScrollController(); // ScrollController 추가
 
   @override
   Widget build(BuildContext context) {
-    final isCurrentUserObserver = loginHandler.isObserver == 'Y';
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('${isCurrentUserObserver ? userEmail : "관리자"}님과의 1:1 문의'),
+        title: Text('${userEmail}님과의 1:1 문의'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -46,45 +46,31 @@ class ChatScreen extends StatelessWidget {
           Expanded(
             child: Obx(
               () => ListView.builder(
-                reverse: true, // 최신 메시지를 아래에 표시
+                controller: scrollController, // ScrollController 설정
+                reverse: false, // 최신 메시지를 아래에 표시
                 itemCount: chatController.messages.length,
                 itemBuilder: (context, index) {
-                  Message message = chatController.messages[
-                      chatController.messages.length -
-                          1 -
-                          index]; // 역순으로 메시지 가져오기
-                  bool shouldAlignRight =
-                      (isCurrentUserObserver && message.observer == 'Y') ||
-                          (!isCurrentUserObserver && message.observer == 'N');
-                  return ListTile(
-                    title: Column(
-                      crossAxisAlignment: shouldAlignRight
+                  Message message = chatController.messages[index];
+                  bool isMessageFromCurrentUser =
+                      message.userEmail == loginHandler.userEmail.value;
+
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    child: Column(
+                      crossAxisAlignment: isMessageFromCurrentUser
                           ? CrossAxisAlignment.end
                           : CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '', // 닉네임 사용
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: shouldAlignRight
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                          children: [
-                            BubbleSpecialThree(
-                              text: message.content,
-                              color: shouldAlignRight
-                                  ? const Color.fromARGB(255, 71, 168, 248)
-                                  : const Color.fromARGB(255, 172, 172, 172),
-                              tail: true,
-                              textStyle: const TextStyle(
-                                  color: Colors.white, fontSize: 16),
-                            ),
-                          ],
+                        BubbleSpecialThree(
+                          text: message.content,
+                          color: isMessageFromCurrentUser
+                              ? const Color.fromARGB(255, 71, 168, 248)
+                              : const Color.fromARGB(255, 172, 172, 172),
+                          tail: true,
+                          isSender: isMessageFromCurrentUser,
+                          textStyle: const TextStyle(
+                              color: Colors.white, fontSize: 16),
                         ),
                         Text(
                           DateFormat('h:mm a').format(message.timestamp),
@@ -135,6 +121,11 @@ class ChatScreen extends StatelessWidget {
         loginHandler.userEmail.value,
       );
       sendController.clear();
+
+      // 새로운 메시지를 보낸 후 스크롤을 맨 아래로 이동
+      Future.delayed(Duration(milliseconds: 100), () {
+        scrollController.jumpTo(scrollController.position.maxScrollExtent);
+      });
     }
   }
 
