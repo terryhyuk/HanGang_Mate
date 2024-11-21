@@ -68,7 +68,7 @@ class PostHandler extends GetxController {
       isLoading.value = true;
       final response = await http.get(
         Uri.parse(
-            'http://127.0.0.1:8000/post/selectpost?page=${currentPage.value}&limit=$itemsPerPage&user_email=${loginHandler.userEmail.value}&observer=${loginHandler.isObserver ? 'Y' : 'N'}'),
+            'http://127.0.0.1:8000/post/selectpost?page=${currentPage.value}&limit=$itemsPerPage&user_email=${loginHandler.userEmail.value}&observer=${loginHandler.isObserver}'),
       );
 
       if (response.statusCode == 200) {
