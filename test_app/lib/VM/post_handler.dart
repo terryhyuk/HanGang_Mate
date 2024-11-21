@@ -8,14 +8,13 @@ import 'package:test_app/vm/login_handler.dart';
 class PostHandler extends GetxController {
   final LoginHandler loginHandler = Get.find<LoginHandler>();
 
-  final isPublic = true.obs;
+  final RxString isPublic = 'Y'.obs;
   final RxList<Posting> posts = <Posting>[].obs;
   final RxInt currentPage = 1.obs;
   final RxInt totalPages = 1.obs;
   final int itemsPerPage = 10;
   final RxBool isLoading = false.obs;
 
-  // 공원 seq 가져오기
   getHanriverSeq(String hname) async {
     try {
       final response = await http.get(Uri.parse(
@@ -32,7 +31,6 @@ class PostHandler extends GetxController {
     }
   }
 
-  // 게시글 등록
   submitPost(PostRequest request) async {
     try {
       final hanriverSeq = await getHanriverSeq(request.hname);
@@ -44,7 +42,7 @@ class PostHandler extends GetxController {
         userEmail: request.userEmail,
         hanriverSeq: hanriverSeq,
         date: DateTime.now().toString(),
-        public: isPublic.value ? 'Y' : 'N',
+        public: isPublic.value,
         question: request.question,
         complete: 'N',
         answer: '',
@@ -62,13 +60,13 @@ class PostHandler extends GetxController {
     }
   }
 
-  // 게시글 목록 조회
   getPosts() async {
     try {
       isLoading.value = true;
       final response = await http.get(
         Uri.parse(
-            'http://127.0.0.1:8000/post/selectpost?page=${currentPage.value}&limit=$itemsPerPage&user_email=${loginHandler.userEmail.value}&observer=${loginHandler.isObserver}'),
+            'http://127.0.0.1:8000/post/selectpost?page=${currentPage.value}&limit=$itemsPerPage&user_email=${loginHandler.userEmail.value}&observer=${loginHandler.isObserver}' // 이미 'Y' 또는 'N' 문자열
+            ),
       );
 
       if (response.statusCode == 200) {

@@ -120,10 +120,10 @@ class PostWrite extends GetView<PostHandler> {
                 children: [
                   Row(
                     children: [
-                      Obx(() => Radio<bool>(
-                            value: true,
+                      Obx(() => Radio<String>(
+                            value: 'Y',
                             groupValue: controller.isPublic.value,
-                            onChanged: (bool? value) {
+                            onChanged: (String? value) {
                               if (value != null) {
                                 controller.isPublic.value = value;
                               }
@@ -138,10 +138,10 @@ class PostWrite extends GetView<PostHandler> {
                   SizedBox(width: screenWidth * 0.08),
                   Row(
                     children: [
-                      Obx(() => Radio<bool>(
-                            value: false,
+                      Obx(() => Radio<String>(
+                            value: 'N',
                             groupValue: controller.isPublic.value,
-                            onChanged: (bool? value) {
+                            onChanged: (String? value) {
                               if (value != null) {
                                 controller.isPublic.value = value;
                               }

@@ -88,7 +88,6 @@ class LoginHandler extends GetxController {
       if (result.isNotEmpty) {
         _isObserver.value = result[0]['observer'] ?? 'N';
         box.write('isObserver', _isObserver.value);
-        print('Observer value from DB: ${_isObserver.value}');
       }
     } catch (e) {
       print('Error in userloginCheckJSONData: $e');
