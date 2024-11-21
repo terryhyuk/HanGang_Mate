@@ -3,8 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:test_app/model/post_request.dart';
 import 'dart:convert';
 import 'package:test_app/model/posting.dart';
+import 'package:test_app/vm/login_handler.dart';
 
 class PostHandler extends GetxController {
+  final LoginHandler loginHandler = Get.find<LoginHandler>();
+
   final isPublic = true.obs;
   final RxList<Posting> posts = <Posting>[].obs;
   final RxInt currentPage = 1.obs;
@@ -64,19 +67,33 @@ class PostHandler extends GetxController {
     try {
       isLoading.value = true;
       final response = await http.get(
-        Uri.parse(
-            'http://127.0.0.1:8000/post/selectpost?page=${currentPage.value}&limit=$itemsPerPage'),
+        Uri.parse('http://127.0.0.1:8000/post/selectpost?' +
+            'page=${currentPage.value}&' +
+            'limit=$itemsPerPage&' +
+            'user_email=${loginHandler.userEmail.value}&' +
+            'observer=${loginHandler.isObserver ? 'true' : 'false'}'),
       );
 
       if (response.statusCode == 200) {
         var data = json.decode(utf8.decode(response.bodyBytes));
-        posts.value = (data['results'] as List)
-            .map((item) => Posting.fromMap(item))
-            .toList();
-        totalPages.value = data['total_pages'];
+        if (data['results'] != 'Error') {
+          posts.value = (data['results'] as List)
+              .map((item) => Posting.fromMap({
+                    'seq': item['seq'],
+                    'user_email': item['user_email'],
+                    'hanriver_seq': item['hanriver_seq'],
+                    'date': item['date'],
+                    'public': item['public'],
+                    'question': item['question'],
+                    'complete': item['complete'],
+                    'answer': item['answer'],
+                  }))
+              .toList();
+          totalPages.value = data['total_pages'];
+        }
       }
     } catch (e) {
-      print('Error: $e');
+      print('Error in getPosts: $e');
     } finally {
       isLoading.value = false;
     }

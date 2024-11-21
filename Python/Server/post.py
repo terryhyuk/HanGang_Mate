@@ -1,8 +1,7 @@
 """
-author : yh, JY(24.11.21 수정)
-Description : select/insert
+author : JY(24.11.21 수정)
+Description : 게시글 관련
 Date : 2024.11.14~
-Usage : 게시판 전체보기, 게시판 글 등록
 """
 
 from fastapi import APIRouter
@@ -21,27 +20,43 @@ def connect():
     )
     return conn
 
+
+
 # 전체 게시글 불러오기
 @router.get("/selectpost")
-async def selectpost(page: int = 1, limit: int = 10):
+async def selectpost(page: int = 1, limit: int = 10, user_email: str = None, observer: str = 'false'):
     conn = connect()
-    curs = conn.cursor(pymysql.cursors.DictCursor)  # Dictionary cursor 사용
+    curs = conn.cursor(pymysql.cursors.DictCursor)  # DictCursor 사용
     try:
+        # 권한에 따른 WHERE 절 구성
+        params = []
+        if observer != 'true':
+            where_clause = "WHERE public = 'Y'"
+            if user_email:
+                where_clause += " OR user_email = %s"
+                params.append(user_email)
+        else:
+            where_clause = ""  # 관리자는 모든 게시글 조회 가능
+            
         # 전체 게시글 수 조회
-        count_sql = "SELECT COUNT(*) as total FROM qa"
-        curs.execute(count_sql)
-        total_count = curs.fetchone()['total']
+        count_sql = f"SELECT COUNT(*) as count FROM qa {where_clause}"
+        curs.execute(count_sql, params)
+        total_count = curs.fetchone()['count']
         
         # 페이지네이션된 게시글 조회
         offset = (page - 1) * limit
-        sql = """
-            SELECT q.*, h.hname 
-            FROM qa q 
-            LEFT JOIN hanriver h ON q.hanriver_seq = h.seq 
-            ORDER BY q.seq DESC 
+        sql = f"""
+            SELECT 
+                seq, user_email, hanriver_seq, 
+                date, public, question, 
+                complete, answer 
+            FROM qa 
+            {where_clause}
+            ORDER BY seq DESC 
             LIMIT %s OFFSET %s
         """
-        curs.execute(sql, (limit, offset))
+        params.extend([limit, offset])
+        curs.execute(sql, params)
         posts = curs.fetchall()
         
         conn.close()
@@ -55,6 +70,8 @@ async def selectpost(page: int = 1, limit: int = 10):
         conn.close()
         print("Error", e)
         return{'results': 'Error'}
+    
+
 
 # 게시글 입력
 @router.get("/insertpost")
@@ -101,6 +118,8 @@ async def insertpost(
         return {'results': 'Error'}
     finally:
         conn.close()
+
+
 
 # 주차장 seq 가져오기
 @router.get("/get_hanriver_seq")
