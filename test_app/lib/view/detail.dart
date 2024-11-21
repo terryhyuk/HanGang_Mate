@@ -175,6 +175,7 @@ class Detail extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const Text('혼잡도 들어갈 자리') //
                 ],
               );
               }

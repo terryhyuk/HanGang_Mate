@@ -137,6 +137,8 @@ class LocationHandler extends GetxController {
         color: Colors.red));
   }
 
+
+// 드랍다운 변경하기
 selectParkingname (index){
     selectParking.value = parkingInfo[index].pname;
     update();
