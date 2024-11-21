@@ -68,16 +68,7 @@ def extract_weather_info(city_data: dict):
     
     return {
         "최고기온": weather_info.get("MAX_TEMP", "정보 없음"),
-        "최저기온": weather_info.get("MIN_TEMP", "정보 없음"),
-        "습도": weather_info.get("HUMIDITY", "정보 없음"),
-        "풍향": weather_info.get("WIND_DIRCT", "정보 없음"),
-        "풍속": weather_info.get("WIND_SPD", "정보 없음"),
-        "강수량": weather_info.get("PRECIPITATION", "정보 없음"),
-        "강수형태": weather_info.get("PRECPT_TYPE", "정보 없음"),
-        "하늘상태": weather_info.get("SKY_STTS", "정보 없음"),
-        "날씨 메시지": weather_info.get("AIR_MSG", "정보 없음"),
     }
-
 
 # 전체 데이터 처리 함수
 def process_city_data(data: dict):

@@ -91,8 +91,8 @@ class Detail extends StatelessWidget {
                       min: 0,
                       max: 100,
                       degrees: 180,
-                      progressBar: GaugeProgressBar.basic(
-                        color: percentClr
+                      progressBar: GaugeBasicProgressBar(
+                        color: percentClr,
                       ),
                       segments: [
                         GaugeSegment(
@@ -102,7 +102,7 @@ class Detail extends StatelessWidget {
                         )
                       ],
                       style: GaugeAxisStyle(
-                        background: Colors.transparent
+                        background: Colors.transparent,
                       ),
                     ),
                   ),
@@ -115,7 +115,6 @@ class Detail extends StatelessWidget {
       ],
     );
   }
-
 
 // 주차장 길찾기 목록
   Widget _parkingWidget(context) {
@@ -139,8 +138,8 @@ class Detail extends StatelessWidget {
                       icon: const Icon(Icons.directions_car),
                       style: IconButton.styleFrom(
                         backgroundColor: mapButtonClr
-                      )
                       ),
+                      )
                 ],
               ),
             );
@@ -153,7 +152,7 @@ class Detail extends StatelessWidget {
 
 // 주차장 혼잡도 예측값
   Widget _predictWidget(context) {
-    List<Color> color = [pred1Clr,pred2Clr,pred3Clr, pred4Clr];
+    List<Color> color = [pred1Clr,pred2Clr,pred3Clr,pred4Clr];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -196,6 +195,4 @@ class Detail extends StatelessWidget {
       ],
     );
   }
-
-
 }
