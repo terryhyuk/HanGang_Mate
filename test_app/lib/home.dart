@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/view/chat.dart';
+import 'package:test_app/view/chat/chat.dart';
 import 'package:test_app/view/findmap.dart';
 import 'package:test_app/view/info.dart';
 import 'package:test_app/view/post.dart';
 import 'package:test_app/view/widgets/login_check.dart';
-import 'package:test_app/vm/location_handler.dart';
-import 'package:test_app/vm/login_handler.dart';
 import 'package:test_app/vm/tab_vm.dart';
+
+import 'vm/location_handler.dart';
+import 'vm/login_handler.dart';
 
 class Home extends GetView<TabVM> {
   Home({super.key});
@@ -29,7 +30,7 @@ class Home extends GetView<TabVM> {
                   ? const Post()
                   : const LoginCheck()),
               Obx(() => loginController.isLoggedIn
-                  ? const Chat()
+                  ? Chat()
                   : const LoginCheck()),
               const Findmap()
             ],
