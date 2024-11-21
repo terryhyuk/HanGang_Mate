@@ -25,6 +25,7 @@ class LocationHandler extends GetxController {
   List<LatLng> route = []; // 길 찾기에 필요한 체크포인트 latlong
   var lines = <Polyline>[].obs; // 길 찾기 그림
   RxString selectParking = ''.obs;
+  var totalAvailableParking = 0.obs; // 주차장 실시간 이용가능 대수
   // String currentPlaceID = '';  //임시, 경로 api에 필요 할 수도 있음
 
   @override
@@ -38,6 +39,7 @@ class LocationHandler extends GetxController {
     await getAllHname();
     await getParkingLoc();
     await createMarker();
+    await fetchParkingData();
   }
 
 // 위치제공 동의
@@ -122,7 +124,7 @@ class LocationHandler extends GetxController {
   createRoute(int index) async {
     lines.clear();
     var url = Uri.parse(
-        "https://maps.googleapis.com/maps/api/directions/json?origin=$currentlat,$currentlng&destination=${parkingInfo[index].lat},${parkingInfo[index].lng}&mode=transit&language=ko&key=${private.mapAPIkey}");
+        "https://maps.googleapis.com/maps/api/directions/json?origin=${currentlat},${currentlng}&destination=${parkingInfo[index].lat},${parkingInfo[index].lng}&mode=transit&language=ko&key=${private.mapAPIkey}");
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     polyline = polylinePoints.decodePolyline(
@@ -140,9 +142,38 @@ class LocationHandler extends GetxController {
         color: Colors.red));
   }
 
-// 드랍다운 변경하기
   selectParkingname(index) {
     selectParking.value = parkingInfo[index].pname;
     update();
+  }
+
+// API 데이터 가져오기
+  Future<void> fetchParkingData() async {
+    final encodedPname =
+        Uri.encodeComponent(selectHname.value); // 선택된 공원 이름 인코딩
+    final url =
+        Uri.parse("http://127.0.0.1:8000/hanriver/citydata/$encodedPname");
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data =
+          json.decode(utf8.decode(response.bodyBytes));
+      print("Response Data: $data"); // 디버깅용
+
+      final List<dynamic> parkingList = data['주차장 현황'];
+
+      int total = 0;
+      for (var parking in parkingList) {
+        int capacity = int.parse(parking['CPCTY']);
+        int currentParking = int.parse(parking['CUR_PRK_CNT']);
+        total += (capacity - currentParking);
+      }
+
+      totalAvailableParking.value = total;
+      // print("Total Available Parking: $total");
+    } else {
+      // print("Failed to fetch data. Status code: ${response.statusCode}");
+    }
   }
 }

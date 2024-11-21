@@ -7,6 +7,8 @@ class Posting {
   String question;
   String complete;
   String? answer;
+  String? hname;
+  String? pname;
 
   Posting({
     this.seq,
@@ -17,9 +19,10 @@ class Posting {
     required this.question,
     required this.complete,
     this.answer,
+    this.hname,
+    this.pname,
   });
 
-  // JSON 데이터를 Posting 객체로 변환
   Posting.fromMap(Map<String, dynamic> map)
       : seq = map['seq'],
         userEmail = map['user_email'],
@@ -28,9 +31,10 @@ class Posting {
         public = map['public'],
         question = map['question'],
         complete = map['complete'],
-        answer = map['answer'];
+        answer = map['answer'],
+        hname = map['hname'],
+        pname = map['pname'];
 
-  // Posting 객체를 JSON 형태로 변환
   Map<String, dynamic> toMap() {
     return {
       'seq': seq,
@@ -41,6 +45,8 @@ class Posting {
       'question': question,
       'complete': complete,
       'answer': answer,
+      'hname': hname,
+      'pname': pname,
     };
   }
 }
