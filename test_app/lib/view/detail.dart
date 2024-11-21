@@ -4,6 +4,7 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:get/get.dart';
 import 'package:test_app/view/routes.dart';
 import 'package:test_app/vm/location_handler.dart';
+import 'package:test_app/constants/theme.dart';
 
 class Detail extends StatelessWidget {
   Detail({super.key});
@@ -86,10 +87,13 @@ class Detail extends StatelessWidget {
                     curve: Curves.linear,
                     radius: 50,
                     value: controller.parkingCapacity[index],
-                    axis: const GaugeAxis(
+                    axis:  const GaugeAxis(
                       min: 0,
                       max: 100,
                       degrees: 180,
+                      progressBar: GaugeProgressBar.basic(
+                        color: percentClr
+                      ),
                       segments: [
                         GaugeSegment(
                           from: 0,
@@ -98,7 +102,7 @@ class Detail extends StatelessWidget {
                         )
                       ],
                       style: GaugeAxisStyle(
-                        background: Colors.transparent,
+                        background: Colors.transparent
                       ),
                     ),
                   ),
@@ -111,6 +115,7 @@ class Detail extends StatelessWidget {
       ],
     );
   }
+
 
 // 주차장 길찾기 목록
   Widget _parkingWidget(context) {
@@ -131,7 +136,11 @@ class Detail extends StatelessWidget {
                         await controller.createRoute(index);
                         Get.to(Routes(), arguments: index);
                       },
-                      icon: const Icon(Icons.directions_car))
+                      icon: const Icon(Icons.directions_car),
+                      style: IconButton.styleFrom(
+                        backgroundColor: mapButtonClr
+                      )
+                      ),
                 ],
               ),
             );
@@ -144,7 +153,7 @@ class Detail extends StatelessWidget {
 
 // 주차장 혼잡도 예측값
   Widget _predictWidget(context) {
-    List<Color> color = [Colors.blue, Colors.green, Colors.yellow, Colors.red];
+    List<Color> color = [pred1Clr,pred2Clr,pred3Clr, pred4Clr];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -187,4 +196,6 @@ class Detail extends StatelessWidget {
       ],
     );
   }
+
+
 }
