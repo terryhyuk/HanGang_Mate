@@ -29,7 +29,7 @@ class LocationHandler extends GetxController {
   RxBool predvalue = false.obs; // 예측값 null 방지
   RxBool apivalue = false.obs; // api 정보 받아오기 전, detail page 이동 방지
   String maxTemp = ""; // 최고기온 뚝섬용
-  final parkingCapacity = <double>[].obs;
+  final parkingCapacity = <double>[].obs; // 구획수 and 게이지 계산용
 
   @override
   void onInit() async {
@@ -144,12 +144,6 @@ class LocationHandler extends GetxController {
         points: route,
         color: Colors.red));
   }
-
-  // selectParkingname(index) {
-  //   selectParking.value = parkingInfo[index].pname;
-  //   update();
-  // }
-
 // API 데이터 가져오기 
   Future<void> fetchParkingData() async {
     List <double >result = [];
@@ -188,14 +182,14 @@ class LocationHandler extends GetxController {
 
 predictYeouido() async {
 // 1주차장 462 , 2주차장 171, 3주차장 800\
-final parkingCapacity = [462,171,800];
+final parkingCapacity = [462,171,800]; // 흠..
   int holiday= isholiday();
   // 쿼리 파라미터 설정
   predvalue.value = false;
   for (int i =0; i<parkingInfo.length; i++){
   final queryParameters = {
     '요일': (DateTime.now().weekday-1).toString(),
-    '휴일여부': holiday,
+    '휴일여부': holiday.toString(),
     '주차장명': parkingInfo[i].pname,
     '연도': DateTime.now().year.toString(),
     '월': DateTime.now().month.toString(),
@@ -215,9 +209,10 @@ final parkingCapacity = [462,171,800];
   // print(dataConvertedJSON);
   parkingInfo[i].predictParking = dataConvertedJSON['예측 주차대수']['아침'];
   parkingInfo[i].predictMessage = dataConvertedJSON['혼잡도']['예측 아침 혼잡도'];
-}
+} 
+print(queryParameters);
   }
-  print(parkingCapacity);
+  // print(parkingCapacity);
   predvalue.value = true;
   update();
 }
@@ -228,7 +223,7 @@ final parkingCapacity = [462,171,800];
 predictTtukseom() async {
 // 2주차장 356 , 3주차장 112, 4주차장 136, 1주차장 67
   // 쿼리 파라미터 설정
-  final parkingCapacity = [67,356,112,136]; // 여의도 주차장 구획수
+  final parkingCapacity = [356,112,136,67]; // 
   predvalue.value = false;
   int holiday = await isholiday();
   for(int i=0; i<parkingInfo.length; i++){
@@ -238,7 +233,7 @@ predictTtukseom() async {
     '주차장명': parkingInfo[i].pname,
     '연도': DateTime.now().year.toString(),
     '월': DateTime.now().month.toString(),
-    '최고기온': maxTemp,
+    '최고기온': maxTemp.toString(),
     '주차구획수':parkingCapacity[i].toString() 
   };
 
@@ -255,6 +250,7 @@ if(response.statusCode == 200){
   parkingInfo[i].predictMessage = dataConvertedJSON['혼잡도']['예측 아침 혼잡도'];
   // print(dataConvertedJSON);
 }
+print(queryParameters);
   }
   predvalue.value = true;
   update();
