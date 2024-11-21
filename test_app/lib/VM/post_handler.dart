@@ -81,8 +81,8 @@ class PostHandler extends GetxController {
                     'question': item['question'],
                     'complete': item['complete'],
                     'answer': item['answer'],
-                    'hname': item['hname'], // 추가
-                    'pname': item['pname'], // 추가
+                    'hname': item['hname'],
+                    'pname': item['pname'],
                   }))
               .toList();
           totalPages.value = data['total_pages'];

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:test_app/view/post_view.dart';
 import 'package:test_app/view/post_write.dart';
 import 'package:test_app/vm/post_handler.dart';
+import 'package:test_app/vm/login_handler.dart';
 
 class Post extends GetView<PostHandler> {
   const Post({super.key});
@@ -21,6 +22,7 @@ class Post extends GetView<PostHandler> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final LoginHandler loginHandler = Get.find<LoginHandler>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.getPosts();
@@ -122,25 +124,28 @@ class Post extends GetView<PostHandler> {
                     ),
                   ],
                 ),
-                // 문의등록 버튼
-                Positioned(
-                  right: 0,
-                  child: SizedBox(
-                    width: screenWidth * 0.3,
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        final result = await Get.to(() => PostWrite());
-                        if (result == true) {
-                          controller.getPosts();
-                        }
-                      },
-                      label: Text(
-                        '문의등록',
-                        style: TextStyle(fontSize: screenWidth * 0.04),
+                // 문의등록 버튼 - 일반 사용자만 표시
+                if (loginHandler.isObserver != 'Y') ...[
+                  Positioned(
+                    right: 0,
+                    child: SizedBox(
+                      width: screenWidth * 0.3,
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          final result = await Get.to(() => PostWrite());
+                          if (result == true) {
+                            controller.getPosts();
+                          }
+                        },
+                        icon: const Icon(Icons.add),
+                        label: Text(
+                          '문의등록',
+                          style: TextStyle(fontSize: screenWidth * 0.04),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
