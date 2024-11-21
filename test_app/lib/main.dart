@@ -6,6 +6,7 @@ import 'package:test_app/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:test_app/vm/location_handler.dart';
 import 'package:test_app/vm/login_handler.dart';
+import 'package:test_app/vm/post_handler.dart';
 import 'package:test_app/vm/tab_vm.dart';
 
 void main() async {
@@ -17,6 +18,7 @@ void main() async {
   Get.put(TabVM());
   Get.put(LocationHandler());
   Get.put(LoginHandler());
+  Get.put(PostHandler());
   runApp(const MyApp());
 }
 
