@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:test_app/Model/message.dart';
 import 'package:test_app/vm/login_handler.dart';
-import 'package:http/http.dart' as http;
 
 class ChatController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -18,7 +16,7 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    checkObserver();
+    // checkObserver();
   }
 
   createOrJoinChatRoom(String roomId) async {
@@ -30,35 +28,14 @@ class ChatController extends GetxController {
         await chatRoomRef.set({
           'userId': userId,
           'userEmail': userEmail,
-          'createdAt': FieldValue.serverTimestamp(),
+          'createdAt': Timestamp.now(),
           'lastMessage': '',
-          'lastMessageTime': FieldValue.serverTimestamp(),
+          'lastMessageTime': Timestamp.now(),
         });
       }
       currentRoomId.value = roomId;
       listenToMessages();
-    } catch (e) {
-      // print('채팅방 생성/참여 중 오류 발생: $e');
-    }
-  }
-
-  checkObserver() async {
-    if (userEmail.isEmpty) return;
-    try {
-      final url = Uri.parse(
-          'http://127.0.0.1:8000/user/checkObserver?email=$userEmail');
-      final response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        isObserver.value = data['is_observer'] ? 'T' : 'F';
-      } else {
-        throw Exception(
-            'Failed to check observer status: ${response.statusCode}');
-      }
-    } catch (e) {
-      isObserver.value = 'F';
-    }
+    } catch (e) {}
   }
 
   listenToMessages() {
@@ -68,7 +45,7 @@ class ChatController extends GetxController {
         .collection('chatRooms')
         .doc(currentRoomId.value)
         .collection('messages')
-        .orderBy('timestamp', descending: false) // 변경: true에서 false로
+        .orderBy('timestamp', descending: false)
         .snapshots()
         .listen((snapshot) {
       messages.value =
@@ -94,17 +71,17 @@ class ChatController extends GetxController {
         senderId: userEmail,
         content: content,
         timestamp: DateTime.now(),
-        observer: isObserver.value.toString(),
+        observer: isObserver.value == 'Y' ? 'Y' : 'N',
       );
 
       await chatRoomRef.collection('messages').add({
         ...message.toMap(),
-        'timestamp': FieldValue.serverTimestamp(),
+        'timestamp': Timestamp.now(),
       });
 
       await chatRoomRef.update({
         'lastMessage': content,
-        'lastMessageTime': FieldValue.serverTimestamp(),
+        'lastMessageTime': Timestamp.now(),
       });
 
       if (currentRoomId.value != roomId) {
@@ -129,7 +106,7 @@ class ChatController extends GetxController {
       // 채팅방 정보 업데이트
       await _firestore.collection('chatRooms').doc(roomId).update({
         'lastMessage': '',
-        'lastMessageTime': FieldValue.serverTimestamp(),
+        'lastMessageTime': Timestamp.now(),
       });
 
       // 로컬 메시지 목록 초기화
@@ -138,6 +115,28 @@ class ChatController extends GetxController {
       // print('채팅 내역이 삭제되었습니다.');
     } catch (e) {
       // print('채팅 내역 삭제 중 오류 발생: $e');
+    }
+  }
+
+  deleteChatRoom(String roomId) async {
+    try {
+      // 채팅방 문서 삭제
+      await FirebaseFirestore.instance
+          .collection('chatRooms')
+          .doc(roomId)
+          .delete();
+      // 채팅방 내의 모든 메시지 삭제
+      final messagesRef = FirebaseFirestore.instance
+          .collection('chatRooms')
+          .doc(roomId)
+          .collection('messages');
+      final messages = await messagesRef.get();
+      for (var doc in messages.docs) {
+        await doc.reference.delete();
+      }
+      // print('채팅방이 성공적으로 삭제되었습니다.');
+    } catch (e) {
+      // print('채팅방 삭제 중 오류 발생: $e');
     }
   }
 }
