@@ -66,6 +66,9 @@ class Post extends GetView<PostHandler> {
                                 ),
                               ],
                             ),
+                            onTap: () {
+                              // 게시글 상세보기 구현 예정
+                            },
                           ),
                         );
                       },
@@ -77,8 +80,7 @@ class Post extends GetView<PostHandler> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(width: 100), // 왼쪽 여백
-                // 페이지 컨트롤 - 가운데 정렬
+                const SizedBox(width: 100),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -94,7 +96,6 @@ class Post extends GetView<PostHandler> {
                     ),
                   ],
                 ),
-                // 문의 등록 버튼 - 오른쪽 배치
                 ElevatedButton.icon(
                   onPressed: () async {
                     final result = await Get.to(() => PostWrite());

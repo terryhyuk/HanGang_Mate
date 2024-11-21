@@ -10,9 +10,11 @@ class LoginHandler extends GetxController {
   final RxBool _isLoggedIn = false.obs;
   final RxString userEmail = ''.obs;
   final RxString userName = ''.obs;
+  final RxBool _isObserver = false.obs;
   List data = [];
 
   bool get isLoggedIn => _isLoggedIn.value;
+  bool get isObserver => _isObserver.value;
 
   @override
   void onInit() {
@@ -26,6 +28,7 @@ class LoginHandler extends GetxController {
         getStoredEmail().isNotEmpty;
     userEmail.value = getStoredEmail();
     userName.value = box.read('userName') ?? '';
+    _isObserver.value = box.read('isObserver') ?? false; // observer 상태 읽기
   }
 
   // GetStorage에서 저장된 이메일 가져오기
@@ -83,10 +86,15 @@ class LoginHandler extends GetxController {
       var response = await http.get(url);
       data.clear();
       var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-
-      // null 체크와 타입 캐스팅을 함께 처리
       List<dynamic> result = (dataConvertedJSON['results'] as List?) ?? [];
       data.addAll(result);
+
+      if (result.isNotEmpty) {
+        String observerValue = result[0]['observer'] ?? 'false';
+
+        _isObserver.value = observerValue.toLowerCase() == 'true';
+        box.write('isObserver', _isObserver.value);
+      }
     } catch (e) {
       return 'Error fetching user data: $e';
     }
