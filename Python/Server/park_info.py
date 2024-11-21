@@ -3,7 +3,6 @@ author : 정섭, JY(24.11.19 수정)
 Description : DB에 있는 hanriver 목록 불러오기 
 Date : 2024.11.17~
 한강공원 목록 : 'http://127.0.0.1:8000/parking/select_hanriver?'
-공원 주차장 목록 : 'http://127.0.0.1:8000/parking/selectlatlng?hname=' 
 """
 from fastapi import APIRouter
 import pymysql
