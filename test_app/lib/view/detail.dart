@@ -12,7 +12,7 @@ class Detail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Text(controller.selectHname.value),
@@ -34,17 +34,17 @@ class Detail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _gaugeWidget(context),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Text(
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
                             '길찾기',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),
                         _parkingWidget(context),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
                           child: Text(
                             '예상혼잡도',
                             style: TextStyle(
@@ -94,7 +94,7 @@ class Detail extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color.fromARGB(255, 53, 53, 53),
+                            color: const Color.fromARGB(255, 53, 53, 53),
                             width: 1.5,
                           ),
                           borderRadius: BorderRadius.circular(10),
@@ -103,8 +103,8 @@ class Detail extends StatelessWidget {
                           child: Text(
                             controller.parkingInfo[index].pname,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: const Color.fromARGB(255, 44, 109, 45),
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 44, 109, 45),
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -121,33 +121,37 @@ class Detail extends StatelessWidget {
                     degrees: 180,
                     progressBar: GaugeBasicProgressBar(
                       color: controller.parkingCapacity[index] <= 40
-                          ? Color.fromARGB(255, 253, 136, 106)
-                          : Color.fromARGB(255, 136, 202, 255),
+                          ? const Color.fromARGB(255, 253, 136, 106)
+                          : const Color.fromARGB(255, 136, 202, 255),
                     ),
-                    segments: [
+                    segments: const [
                       GaugeSegment(
                         from: 0,
                         to: 100,
                         border: GaugeBorder(color: Colors.black),
                       ),
                     ],
-                    style: GaugeAxisStyle(
+                    style: const GaugeAxisStyle(
                       background: Colors.transparent,
                     ),
                   ),
                 ),
                 Obx(
                   () => Padding(
-                    padding: const EdgeInsets.fromLTRB(0,10,0,0),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: Text(
-                        '${controller.parkingCapacity[index].toStringAsFixed(1)}%',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
+                      '${controller.parkingCapacity[index].toStringAsFixed(1)}%',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
                   ),
                 ),
-                Text('Parking available', style: TextStyle(color: const Color.fromARGB(255, 58, 59, 59),
-                fontWeight: FontWeight.w500
-                ),),
+                const Text(
+                  'Parking available',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 58, 59, 59),
+                      fontWeight: FontWeight.w500),
+                ),
               ],
             );
           },
@@ -174,24 +178,26 @@ class Detail extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20,0,0,0),
-                    child: Text(controller.parkingInfo[index].pname, style: TextStyle(
-                      fontWeight: FontWeight.w600
-                    ),),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: Text(
+                      controller.parkingInfo[index].pname,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(10,0,0,0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                     child: IconButton(
-                      onPressed: () async {
-                        await controller.createRoute(index);
-                        Get.to(Routes(), arguments: index);
-                      },
-                      icon: const Icon(Icons.directions_car),
-                      style: IconButton.styleFrom(backgroundColor: mapButtonClr,
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // 
-                      ),
-                    )),
+                        onPressed: () async {
+                          await controller.createRoute(index);
+                          Get.to(Routes(), arguments: index);
+                        },
+                        icon: const Icon(Icons.directions_car),
+                        style: IconButton.styleFrom(
+                          backgroundColor: mapButtonClr,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10), //
+                          ),
+                        )),
                   )
                 ],
               ),
@@ -212,16 +218,17 @@ class Detail extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(mainAxisAlignment: MainAxisAlignment.center,
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               '예상 혼잡도이므로 실제와 다를 수 있습니다.',
               style: TextStyle(color: Colors.red, fontWeight: FontWeight.w300),
             ),
           ],
-        ),        
+        ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(15,0,0,0),
+          padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
           child: DropdownButton<int>(
             //Map형태(dictionary)
             dropdownColor: dropDownBackgroundClr,

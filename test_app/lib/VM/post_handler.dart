@@ -12,7 +12,7 @@ class PostHandler extends GetxController {
   final RxList<Posting> posts = <Posting>[].obs;
   final RxInt currentPage = 1.obs;
   final RxInt totalPages = 1.obs;
-  final int itemsPerPage = 10;
+  final int itemsPerPage = 5;
   final RxBool isLoading = false.obs;
 
   getHanriverSeq(String hname) async {
