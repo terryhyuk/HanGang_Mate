@@ -178,13 +178,19 @@ class LocationHandler extends GetxController {
       int total = 0;
       int totalCapacity = 0;
       for (var parking in parkingList) {
-        int capacity = int.parse(parking['CPCTY']?.toString() ?? '0');
+        int capacity = int.tryParse(parking['CPCTY']?.toString() ?? '') ?? 0;
         int currentParking =
-            int.parse(parking['CUR_PRK_CNT']?.toString() ?? '0');
+            int.tryParse(parking['CUR_PRK_CNT']?.toString() ?? '') ?? 0;
         total += (capacity - currentParking);
         totalCapacity += capacity;
-        result.add((1 - (currentParking / capacity)) *
-            100); // detail guage 퍼센트 계산 실시간 주차대수로 계산됨
+
+        // 예외처리
+        if (capacity > 0) {
+          result.add((1 - (currentParking / capacity)) *
+              100); // detail guage 퍼센트 계산 실시간 주차대수로 계산됨
+        } else {
+          result.add(0);
+        }
       }
       capacity.value = totalCapacity;
       totalAvailableParking.value = total;
@@ -193,7 +199,7 @@ class LocationHandler extends GetxController {
       apivalue.value = true;
       update();
     } else {
-      // print("Failed to fetch data. Status code: ${response.statusCode}");
+      print("Failed to fetch data. Status code: ${response.statusCode}");
     }
   }
 
@@ -229,7 +235,7 @@ class LocationHandler extends GetxController {
         parkingInfo[i].predictMessage =
             dataConvertedJSON['혼잡도']['예측 $time 혼잡도'];
       }
-      // print(parkingInfo[i].predictMessage);
+      print(parkingInfo[i].predictMessage);
     }
     // print(parkingCapacity);
     predvalue.value = true;
