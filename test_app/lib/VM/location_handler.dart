@@ -199,7 +199,7 @@ class LocationHandler extends GetxController {
       apivalue.value = true;
       update();
     } else {
-      print("Failed to fetch data. Status code: ${response.statusCode}");
+      // print("Failed to fetch data. Status code: ${response.statusCode}");
     }
   }
 
@@ -235,7 +235,7 @@ class LocationHandler extends GetxController {
         parkingInfo[i].predictMessage =
             dataConvertedJSON['혼잡도']['예측 $time 혼잡도'];
       }
-      print(parkingInfo[i].predictMessage);
+      // print(parkingInfo[i].predictMessage);
     }
     // print(parkingCapacity);
     predvalue.value = true;

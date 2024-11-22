@@ -22,7 +22,7 @@ def connect():
 
 # 전체 게시글 불러오기
 @router.get("/selectpost")
-async def selectpost(page: int = 1, limit: int = 10, user_email: str = None, observer: str = 'N'):
+async def selectpost(page: int = 1, limit: int = 5, user_email: str = None, observer: str = 'N'):
     conn = connect()
     curs = conn.cursor(pymysql.cursors.DictCursor)
     try:
