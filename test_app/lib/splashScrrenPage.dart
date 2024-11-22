@@ -4,7 +4,6 @@ import 'package:lottie/lottie.dart';
 import 'package:test_app/home.dart';
 
 class SplashScreen extends StatefulWidget {
-
   const SplashScreen({super.key});
 
   @override
@@ -25,10 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
   _navigateToHome() {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            Home(),
-        transitionsBuilder:
-            (context, animation, secondaryAnimation, child) {
+        pageBuilder: (context, animation, secondaryAnimation) => Home(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
             child: child,
