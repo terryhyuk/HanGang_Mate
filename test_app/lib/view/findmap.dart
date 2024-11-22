@@ -25,6 +25,7 @@ class Findmap extends GetView<LoginHandler> {
               isDestructiveAction: true,
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
+                await controller.signOut();
               },
               child: const Text("Yes"),
             ),
