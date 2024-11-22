@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/model/posting.dart';
+import 'package:test_app/constants/theme.dart';
 
 class PostView extends StatelessWidget {
   final Posting post;
@@ -18,47 +19,70 @@ class PostView extends StatelessWidget {
     }
   }
 
+  Map<String, dynamic> getTimeBasedStyle() {
+    final currentTime = DateTime.now().hour;
+    if (currentTime >= 6 && currentTime < 12) {
+      return {"message": "게시글 상세", "color": morningClr};
+    } else if (currentTime >= 12 && currentTime < 17) {
+      return {"message": "게시글 상세", "color": afternoonClr};
+    } else if (currentTime >= 17 && currentTime < 24) {
+      return {"message": "게시글 상세", "color": eveningClr};
+    } else {
+      return {"message": "게시글 상세", "color": nightClr};
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final baseFontSize = screenWidth * 0.035;
+    final style = getTimeBasedStyle();
 
     return Scaffold(
+      backgroundColor: backClr,
       appBar: AppBar(
-        title: const Text('게시글 상세'),
+        backgroundColor: backClr,
+        title: Text(
+          style["message"],
+          style: TextStyle(
+            color: style["color"],
+            fontSize: screenWidth * 0.05,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.04,
-          vertical: screenHeight * 0.02,
-        ),
+        padding: EdgeInsets.all(screenWidth * 0.04),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // 메타 정보 카드
             Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: const BorderSide(color: Colors.black),
+              ),
+              elevation: 0,
+              color: Colors.white,
               child: Padding(
-                padding: EdgeInsets.all(screenWidth * 0.03),
+                padding: EdgeInsets.all(screenWidth * 0.04),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 작성자 정보
                     Text(
                       '작성자: ${post.userEmail}',
                       style: TextStyle(
-                        fontSize: baseFontSize,
-                        color: Colors.grey[600],
+                        fontSize: screenWidth * 0.04,
+                        color: infoTextClr,
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.01),
-
-                    // 주차장 정보
                     if (post.hname != null) ...[
                       Text(
                         '공원: ${post.hname}',
                         style: TextStyle(
-                          fontSize: baseFontSize,
-                          color: Colors.grey[600],
+                          fontSize: screenWidth * 0.04,
+                          color: infoTextClr,
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.01),
@@ -67,40 +91,38 @@ class PostView extends StatelessWidget {
                       Text(
                         '주차장: ${post.pname}',
                         style: TextStyle(
-                          fontSize: baseFontSize,
-                          color: Colors.grey[600],
+                          fontSize: screenWidth * 0.04,
+                          color: infoTextClr,
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.01),
                     ],
-
-                    // 작성일자와 상태
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Flexible(
-                          child: Text(
-                            formatDate(post.date),
-                            style: TextStyle(
-                              fontSize: baseFontSize,
-                              color: Colors.grey[600],
-                            ),
+                        Text(
+                          formatDate(post.date),
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.035,
+                            color: infoTextClr,
                           ),
                         ),
                         Row(
                           children: [
                             Icon(
                               post.public == 'Y' ? Icons.public : Icons.lock,
-                              size: baseFontSize * 1.2,
+                              size: screenWidth * 0.05,
+                              color: infoTextClr,
                             ),
                             SizedBox(width: screenWidth * 0.02),
                             Text(
                               post.complete == 'Y' ? '답변완료' : '답변대기',
                               style: TextStyle(
-                                fontSize: baseFontSize,
+                                fontSize: screenWidth * 0.035,
                                 color: post.complete == 'Y'
                                     ? Colors.green
                                     : Colors.orange,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -111,49 +133,63 @@ class PostView extends StatelessWidget {
                 ),
               ),
             ),
+
             SizedBox(height: screenHeight * 0.02),
 
             // 문의 내용
-            Text(
+            const Text(
               '문의내용',
               style: TextStyle(
-                fontSize: baseFontSize * 1.2,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: infoTextClr,
               ),
             ),
             SizedBox(height: screenHeight * 0.01),
             Card(
-              child: Container(
-                width: double.infinity,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: const BorderSide(color: Colors.black),
+              ),
+              elevation: 0,
+              color: Colors.white,
+              child: Padding(
                 padding: EdgeInsets.all(screenWidth * 0.04),
                 child: Text(
                   post.question,
-                  style: TextStyle(fontSize: baseFontSize * 1.1),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: infoTextClr,
+                  ),
                 ),
               ),
             ),
 
             // 답변 섹션
             SizedBox(height: screenHeight * 0.02),
-            Text(
+            const Text(
               '답변',
               style: TextStyle(
-                fontSize: baseFontSize * 1.2,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: infoTextClr,
               ),
             ),
             SizedBox(height: screenHeight * 0.01),
             Card(
-              color: post.answer != null ? Colors.blue[50] : Colors.grey[50],
-              child: Container(
-                width: double.infinity,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: const BorderSide(color: Colors.black),
+              ),
+              elevation: 0,
+              color: Colors.white,
+              child: Padding(
                 padding: EdgeInsets.all(screenWidth * 0.04),
                 child: Text(
                   post.answer ?? '아직 답변이 등록되지 않았습니다.',
                   style: TextStyle(
-                    fontSize: baseFontSize * 1.1,
-                    color:
-                        post.answer != null ? Colors.black : Colors.grey[600],
+                    fontSize: 16,
+                    color: post.answer != null ? infoTextClr : Colors.grey,
                   ),
                 ),
               ),
