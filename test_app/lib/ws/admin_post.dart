@@ -2,26 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_app/ws/answer_handler.dart';
 
-class AdminPost extends StatelessWidget {
-  AdminPost({super.key});
+class AdminPost extends GetView<AnswerHandler> {
+  AdminPost({super.key}) {
+    Get.put(AnswerHandler());
+  }
+
   final TextEditingController titleController = TextEditingController();
   final TextEditingController qsController = TextEditingController();
   final TextEditingController awController = TextEditingController();
-  final adminHandler = Get.put(AnswerHandler());
 
   @override
   Widget build(BuildContext context) {
-    var value = Get.arguments ?? 26;
-    // adminHandler.showPostJSONData(value);
+    var seq = Get.arguments ?? 26;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.showPostJSONData(seq);
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: const Text('답변하기'),
       ),
-      body: GetBuilder<AnswerHandler>(builder: (controller) {
-        qsController.text = adminHandler.post.value[2];
-        awController.text = adminHandler.post.value[3];
+      body: Obx(() {
+        if (controller.post.value.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        qsController.text = controller.post.value[2];
+        awController.text = controller.post.value[3] ?? '';
+
         return SingleChildScrollView(
           child: Center(
             child: Padding(
@@ -37,13 +48,16 @@ class AdminPost extends StatelessWidget {
                           width: 120,
                           height: 30,
                           child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black, // Border color
-                                  width: 0.5, // Border width
-                                ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 0.5,
                               ),
-                              child: Text('지점: ${adminHandler.post.value[1]}')),
+                            ),
+                            child: Center(
+                              child: Text('주차장: ${controller.post.value[1]}'),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -53,8 +67,7 @@ class AdminPost extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                            '작성자: ${adminHandler.post.value[0].split('@')[0]}'),
+                        Text('작성자: ${controller.post.value[0].split('@')[0]}'),
                       ],
                     ),
                   ),
@@ -64,54 +77,59 @@ class AdminPost extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       height: 250,
                       child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black, // Border color
-                              width: 0.8, // Border width
-                            ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.black,
+                            width: 0.8,
                           ),
-                          child: TextField(
-                            controller: qsController,
-                            readOnly: true,
-                            maxLines: null,
-                            decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(20),
-                                // hintText: adminHandler.post.value[3],
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none),
-                          )),
+                        ),
+                        child: TextField(
+                          controller: qsController,
+                          readOnly: true,
+                          maxLines: null,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.all(20),
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 250,
                     child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black, // Border color
-                            width: 0.8, // Border width
-                          ),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 0.8,
                         ),
-                        child: TextField(
-                          controller: awController,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(20),
-                              hintText: adminHandler.post.value[3],
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none),
-                        )),
+                      ),
+                      child: TextField(
+                        controller: awController,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(20),
+                          hintText: '답변을 입력하세요',
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFC3D974),
-                            foregroundColor: Colors.black),
-                        onPressed: () async {
-                          await answerAction('Y', awController.text, value);
-                        },
-                        child: const Text('작성완료')),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFC3D974),
+                        foregroundColor: Colors.black,
+                      ),
+                      onPressed: () async {
+                        await answerAction('Y', awController.text, seq);
+                      },
+                      child: const Text('작성완료'),
+                    ),
                   )
                 ],
               ),
@@ -123,21 +141,25 @@ class AdminPost extends StatelessWidget {
   }
 
   answerAction(String complete, String answer, int seq) async {
-    var result = await adminHandler.answerJSONData(complete, answer, seq);
+    var result = await controller.answerJSONData(complete, answer, seq);
     if (result == 'OK') {
-      adminHandler.post.value = [];
-      Get.back();
+      Get.back(result: true);
+      Get.snackbar(
+        '성공',
+        '답변이 등록되었습니다.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green[100],
+        duration: const Duration(seconds: 2),
+      );
     } else {
-      errorSnackBar();
-      // print('Error');
-    }
-  }
-
-  errorSnackBar() {
-    Get.snackbar('Error', '다시 확인해주세요.',
+      Get.snackbar(
+        'Error',
+        '다시 확인해주세요.',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 2),
         backgroundColor: const Color.fromARGB(255, 206, 53, 42),
-        colorText: Colors.white);
+        colorText: Colors.white,
+      );
+    }
   }
 }

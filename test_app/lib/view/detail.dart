@@ -12,7 +12,9 @@ class Detail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           title: Text(controller.selectHname.value),
         ),
         body: SingleChildScrollView(
@@ -32,18 +34,21 @@ class Detail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _gaugeWidget(context),
-                        const Text(
-                          '길찾기',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: const Text(
+                            '길찾기',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                         _parkingWidget(context),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            '      예상혼잡도',
+                            '예상혼잡도',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),
                         _predictWidget(context)
@@ -81,25 +86,50 @@ class Detail extends StatelessWidget {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                Text(controller.parkingInfo[index].pname),
+                Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: SizedBox(
+                      width: 120,
+                      height: 30,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color.fromARGB(255, 53, 53, 53),
+                            width: 1.5,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            controller.parkingInfo[index].pname,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: const Color.fromARGB(255, 44, 109, 45),
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    )),
                 AnimatedRadialGauge(
                   duration: const Duration(seconds: 1),
                   curve: Curves.linear,
                   radius: 50,
                   value: controller.parkingCapacity[index],
-                  axis: const GaugeAxis(
+                  axis: GaugeAxis(
                     min: 0,
                     max: 100,
                     degrees: 180,
                     progressBar: GaugeBasicProgressBar(
-                      color: percentClr,
+                      color: controller.parkingCapacity[index] <= 40
+                          ? Color.fromARGB(255, 253, 136, 106)
+                          : Color.fromARGB(255, 136, 202, 255),
                     ),
                     segments: [
                       GaugeSegment(
                         from: 0,
                         to: 100,
                         border: GaugeBorder(color: Colors.black),
-                      )
+                      ),
                     ],
                     style: GaugeAxisStyle(
                       background: Colors.transparent,
@@ -107,14 +137,25 @@ class Detail extends StatelessWidget {
                   ),
                 ),
                 Obx(
-                  () => Text(
-                      '${controller.parkingCapacity[index].toStringAsFixed(1)}%'),
-                )
+                  () => Padding(
+                    padding: const EdgeInsets.fromLTRB(0,10,0,0),
+                    child: Text(
+                        '${controller.parkingCapacity[index].toStringAsFixed(1)}%',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                        ),
+                  ),
+                ),
+                Text('Parking available', style: TextStyle(color: const Color.fromARGB(255, 58, 59, 59),
+                fontWeight: FontWeight.w500
+                ),),
               ],
             );
           },
         ),
-        const Divider()
+        const Divider(
+          thickness: 2.5,
+          color: Color.fromARGB(208, 0, 0, 0),
+        )
       ],
     );
   }
@@ -132,21 +173,35 @@ class Detail extends StatelessWidget {
             return Center(
               child: Row(
                 children: [
-                  Text(controller.parkingInfo[index].pname),
-                  IconButton(
-                    onPressed: () async {
-                      await controller.createRoute(index);
-                      Get.to(Routes(), arguments: index);
-                    },
-                    icon: const Icon(Icons.directions_car),
-                    style: IconButton.styleFrom(backgroundColor: mapButtonClr),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20,0,0,0),
+                    child: Text(controller.parkingInfo[index].pname, style: TextStyle(
+                      fontWeight: FontWeight.w600
+                    ),),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10,0,0,0),
+                    child: IconButton(
+                      onPressed: () async {
+                        await controller.createRoute(index);
+                        Get.to(Routes(), arguments: index);
+                      },
+                      icon: const Icon(Icons.directions_car),
+                      style: IconButton.styleFrom(backgroundColor: mapButtonClr,
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // 
+                      ),
+                    )),
                   )
                 ],
               ),
             );
           },
         ),
-        const Divider()
+        const Divider(
+          thickness: 2.5,
+          color: Color.fromARGB(208, 0, 0, 0),
+        )
       ],
     );
   }
@@ -155,31 +210,38 @@ class Detail extends StatelessWidget {
   Widget _predictWidget(context) {
     List<Color> color = [pred1Clr, pred2Clr, pred3Clr, pred4Clr];
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DropdownButton<int>(
-          //Map형태(dictionary)
-          dropdownColor: dropDownBackgroundClr,
-          iconEnabledColor: dropDownBackgroundClr,
-          value: controller.selectedTime.value, //선택한 이름
-          icon: const Icon(Icons.keyboard_arrow_down),
-          items: controller.timeList
-              .asMap()
-              .entries
-              .map<DropdownMenuItem<int>>((item) {
-            return DropdownMenuItem<int>(
-              value: item.key,
-              child: Text(item.value),
-            );
-          }).toList(),
-          onChanged: (int? value) {
-            controller.selectedTime.value = value!;
-            controller.predict();
-          },
-        ),
-        const Text(
-          '에상 혼잡도이므로 실제와 다를 수 있습니다',
-          style: TextStyle(color: Colors.red),
+        Row(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '예상 혼잡도이므로 실제와 다를 수 있습니다.',
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.w300),
+            ),
+          ],
+        ),        
+        Padding(
+          padding: const EdgeInsets.fromLTRB(15,0,0,0),
+          child: DropdownButton<int>(
+            //Map형태(dictionary)
+            dropdownColor: dropDownBackgroundClr,
+            iconEnabledColor: const Color.fromARGB(255, 0, 0, 0),
+            value: controller.selectedTime.value, //선택한 이름
+            icon: const Icon(Icons.keyboard_arrow_down),
+            items: controller.timeList
+                .asMap()
+                .entries
+                .map<DropdownMenuItem<int>>((item) {
+              return DropdownMenuItem<int>(
+                value: item.key,
+                child: Text(item.value),
+              );
+            }).toList(),
+            onChanged: (int? value) {
+              controller.selectedTime.value = value!;
+              controller.predict();
+            },
+          ),
         ),
         GridView.builder(
             shrinkWrap: true,
@@ -192,13 +254,14 @@ class Detail extends StatelessWidget {
               return Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
                       controller.parkingInfo[index].pname,
                       style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   Container(
+                    height: 50,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.black)),
@@ -206,9 +269,9 @@ class Detail extends StatelessWidget {
                       dotsCount: 4,
                       position: controller.dotsPosition(index),
                       decorator: DotsDecorator(
-                          size: const Size(20, 20),
-                          activeSize: const Size(20, 20),
-                          color: Colors.black,
+                          size: const Size(25, 25),
+                          activeSize: const Size(25, 25),
+                          color: const Color.fromARGB(120, 0, 0, 0),
                           activeColor: color[controller.dotsPosition(index)]),
                     ),
                   ),

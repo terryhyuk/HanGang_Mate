@@ -4,7 +4,6 @@ import 'package:lottie/lottie.dart';
 import 'package:test_app/home.dart';
 
 class SplashScreen extends StatefulWidget {
-
   const SplashScreen({super.key});
 
   @override
@@ -25,10 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
   _navigateToHome() {
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            Home(),
-        transitionsBuilder:
-            (context, animation, secondaryAnimation, child) {
+        pageBuilder: (context, animation, secondaryAnimation) => Home(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
             child: child,
@@ -44,11 +41,17 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Lottie.asset(
-          'images/Animation - 1731463340483.json',
-          width: 400,
-          height: 400,
-          fit: BoxFit.cover,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('images/RiverPark Mate.png'),
+            Lottie.asset(
+              'images/Animation - 1731463340483.json',
+              width: 400,
+              height: 400,
+              fit: BoxFit.cover,
+            ),
+          ],
         ),
       ),
     );
