@@ -95,14 +95,14 @@ class PostHandler extends GetxController {
     }
   }
 
-  void nextPage() {
+  nextPage() {
     if (currentPage.value < totalPages.value) {
       currentPage.value++;
       getPosts();
     }
   }
 
-  void previousPage() {
+  previousPage() {
     if (currentPage.value > 1) {
       currentPage.value--;
       getPosts();

@@ -13,12 +13,6 @@ class ChatController extends GetxController {
   String get userEmail => _loginHandler.box.read('userEmail') ?? '';
   String get userId => _loginHandler.box.read('userId') ?? '';
 
-  @override
-  void onInit() {
-    super.onInit();
-    // checkObserver();
-  }
-
   createOrJoinChatRoom(String roomId) async {
     if (roomId.isEmpty) return;
     try {
@@ -35,7 +29,9 @@ class ChatController extends GetxController {
       }
       currentRoomId.value = roomId;
       listenToMessages();
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   listenToMessages() {

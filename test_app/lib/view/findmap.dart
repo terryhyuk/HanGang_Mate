@@ -13,10 +13,7 @@ class Findmap extends GetView<LoginHandler> {
         title: const Text('로그아웃'),
         actions: [
           IconButton(
-            onPressed: () => Get.to(AdminPost()), 
-            icon: const Icon(
-              Icons.add
-            ))
+              onPressed: () => Get.to(AdminPost()), icon: const Icon(Icons.add))
         ],
       ),
       body: Center(

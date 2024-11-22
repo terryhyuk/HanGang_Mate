@@ -39,8 +39,8 @@ class Detail extends StatelessWidget {
                         ),
                         _parkingWidget(context),
                         const Padding(
-                          padding:  EdgeInsets.all(8.0),
-                          child:  Text(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
                             '      예상혼잡도',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 15),
@@ -158,13 +158,12 @@ class Detail extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DropdownButton<int>(
-              //Map형태(dictionary)
-              dropdownColor: dropDownBackgroundClr,
-              iconEnabledColor:
-                  dropDownBackgroundClr,
-              value: controller.selectedTime.value, //선택한 이름
-              icon: const Icon(Icons.keyboard_arrow_down),
-              items: controller.timeList
+          //Map형태(dictionary)
+          dropdownColor: dropDownBackgroundClr,
+          iconEnabledColor: dropDownBackgroundClr,
+          value: controller.selectedTime.value, //선택한 이름
+          icon: const Icon(Icons.keyboard_arrow_down),
+          items: controller.timeList
               .asMap()
               .entries
               .map<DropdownMenuItem<int>>((item) {
@@ -173,11 +172,11 @@ class Detail extends StatelessWidget {
               child: Text(item.value),
             );
           }).toList(),
-              onChanged: (int? value) {
-                controller.selectedTime.value = value!;
-                controller.predict();
-              },
-            ),
+          onChanged: (int? value) {
+            controller.selectedTime.value = value!;
+            controller.predict();
+          },
+        ),
         const Text(
           '에상 혼잡도이므로 실제와 다를 수 있습니다',
           style: TextStyle(color: Colors.red),
@@ -194,10 +193,9 @@ class Detail extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Text(controller.parkingInfo[index].pname,
-                    style: const TextStyle(
-                      fontSize: 16
-                    ),
+                    child: Text(
+                      controller.parkingInfo[index].pname,
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   Container(
@@ -206,8 +204,7 @@ class Detail extends StatelessWidget {
                         border: Border.all(color: Colors.black)),
                     child: DotsIndicator(
                       dotsCount: 4,
-                      position: controller.dotsPosition(
-                          index),
+                      position: controller.dotsPosition(index),
                       decorator: DotsDecorator(
                           size: const Size(20, 20),
                           activeSize: const Size(20, 20),
@@ -217,15 +214,13 @@ class Detail extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: 
-                      Text(
-                        controller.parkingInfo[index].predictMessage!,
-                        style: const TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 20
-                        ),
-                      ),
+                    child: Text(
+                      controller.parkingInfo[index].predictMessage!,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                  // ) 
+                  ),
+                  // )
                 ],
               );
             })

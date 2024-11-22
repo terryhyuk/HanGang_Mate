@@ -11,10 +11,10 @@ class ChatScreen extends StatelessWidget {
   final String userEmail;
 
   ChatScreen({
-    Key? key,
+    super.key,
     required this.roomId,
     required this.userEmail,
-  }) : super(key: key);
+  });
 
   final ChatController chatController = Get.find<ChatController>();
   final LoginHandler loginHandler = Get.find<LoginHandler>();
@@ -28,7 +28,7 @@ class ChatScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('${userEmail}님과의 1:1 문의'),
+        title: Text('$userEmail님과의 1:1 문의'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -123,7 +123,7 @@ class ChatScreen extends StatelessWidget {
       sendController.clear();
 
       // 새로운 메시지를 보낸 후 스크롤을 맨 아래로 이동
-      Future.delayed(Duration(milliseconds: 100), () {
+      Future.delayed(const Duration(milliseconds: 100), () {
         scrollController.jumpTo(scrollController.position.maxScrollExtent);
       });
     }

@@ -15,12 +15,14 @@ class Message {
     required this.observer,
   });
 
-    factory Message.fromMap(Map<String, dynamic> map) {
+  factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
       userEmail: map['userEmail'] ?? '',
       senderId: map['senderId'] ?? '',
       content: map['content'] ?? '',
-      timestamp: map['timestamp'] != null ? (map['timestamp'] as Timestamp).toDate() : DateTime.now(),
+      timestamp: map['timestamp'] != null
+          ? (map['timestamp'] as Timestamp).toDate()
+          : DateTime.now(),
       observer: map['observer'] ?? 'F',
     );
   }

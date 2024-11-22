@@ -137,7 +137,6 @@ class Post extends GetView<PostHandler> {
                             controller.getPosts();
                           }
                         },
-                        icon: const Icon(Icons.add),
                         label: Text(
                           '문의등록',
                           style: TextStyle(fontSize: screenWidth * 0.04),

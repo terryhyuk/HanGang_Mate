@@ -250,11 +250,11 @@ class Info extends StatelessWidget {
 
   Widget _card(context) {
     return GestureDetector(
-      onTap: () async{
-        if(controller.apivalue.value == true){
-        await controller.resetTime();
-        await controller.predict();
-        Get.to(Detail());
+      onTap: () async {
+        if (controller.apivalue.value == true) {
+          await controller.resetTime();
+          await controller.predict();
+          Get.to(Detail());
         }
       },
       child: Padding(
