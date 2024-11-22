@@ -34,7 +34,7 @@ class AnswerHandler extends GetxController {
   // sql="select user_email, hanriver_seq, question, answer from qa where seq=%s"
 
   //Post 확인
-  Future<void> showPostJSONData(int seq) async {
+  showPostJSONData(int seq) async {
     var url = Uri.parse('http://127.0.0.1:8000/admin/showpost?seq=$seq');
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));

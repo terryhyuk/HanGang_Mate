@@ -4,6 +4,7 @@ import 'package:test_app/view/post_view.dart';
 import 'package:test_app/view/post_write.dart';
 import 'package:test_app/vm/post_handler.dart';
 import 'package:test_app/vm/login_handler.dart';
+import 'package:test_app/ws/admin_post.dart';
 
 class Post extends GetView<PostHandler> {
   const Post({super.key});
@@ -80,10 +81,23 @@ class Post extends GetView<PostHandler> {
                                       size: screenWidth * 0.04,
                                     ),
                                     SizedBox(width: screenWidth * 0.02),
-                                    Text(
-                                      post.complete == 'Y' ? '답변완료' : '답변대기',
-                                      style: TextStyle(
-                                        fontSize: screenWidth * 0.035,
+                                    GestureDetector(
+                                      onTap: loginHandler.isObserver == 'Y'
+                                          ? () => Get.to(() => AdminPost(),
+                                              arguments: post.seq)
+                                          : null,
+                                      child: Text(
+                                        post.complete == 'Y' ? '답변완료' : '답변대기',
+                                        style: TextStyle(
+                                          fontSize: screenWidth * 0.035,
+                                          color: post.complete == 'Y'
+                                              ? Colors.green
+                                              : Colors.orange,
+                                          decoration:
+                                              loginHandler.isObserver == 'Y'
+                                                  ? TextDecoration.underline
+                                                  : TextDecoration.none,
+                                        ),
                                       ),
                                     ),
                                   ],

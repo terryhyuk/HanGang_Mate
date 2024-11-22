@@ -20,7 +20,7 @@ class PostWrite extends GetView<PostHandler> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('게시글 작성'),
+        title: const Text('문의글 작성'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -226,7 +226,7 @@ class PostWrite extends GetView<PostHandler> {
                     }
                   },
                   child: Text(
-                    '게시글 올리기',
+                    '문의 등록',
                     style: TextStyle(fontSize: screenWidth * 0.04),
                   ),
                 ),
