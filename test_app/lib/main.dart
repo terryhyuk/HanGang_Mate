@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:test_app/firebase_options.dart';
-import 'package:test_app/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:test_app/splashScrrenPage.dart';
 import 'package:test_app/vm/location_handler.dart';
 import 'package:test_app/vm/login_handler.dart';
 import 'package:test_app/vm/post_handler.dart';
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Home(),
+      home: const SplashScreen(),
     );
   }
 }
