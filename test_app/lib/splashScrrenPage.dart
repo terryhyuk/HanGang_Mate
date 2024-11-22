@@ -41,11 +41,17 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Lottie.asset(
-          'images/Animation - 1731463340483.json',
-          width: 400,
-          height: 400,
-          fit: BoxFit.cover,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('images/RiverPark Mate.png'),
+            Lottie.asset(
+              'images/Animation - 1731463340483.json',
+              width: 400,
+              height: 400,
+              fit: BoxFit.cover,
+            ),
+          ],
         ),
       ),
     );
