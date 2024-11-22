@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/vm/login_handler.dart';
-import 'package:test_app/constants/theme.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
+import 'package:RiverPark_Mate/constants/theme.dart';
 
 class Findmap extends GetView<LoginHandler> {
   const Findmap({super.key});

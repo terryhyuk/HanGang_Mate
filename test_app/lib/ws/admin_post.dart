@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/ws/answer_handler.dart';
+import 'package:RiverPark_Mate/ws/answer_handler.dart';
 
 class AdminPost extends GetView<AnswerHandler> {
   AdminPost({super.key}) {

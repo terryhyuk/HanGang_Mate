@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/model/posting.dart';
-import 'package:test_app/constants/theme.dart';
+import 'package:RiverPark_Mate/model/posting.dart';
+import 'package:RiverPark_Mate/constants/theme.dart';
 
 class PostView extends StatelessWidget {
   final Posting post;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/view/chat/chat.dart';
-import 'package:test_app/view/findmap.dart';
-import 'package:test_app/view/info.dart';
-import 'package:test_app/view/post.dart';
-import 'package:test_app/view/widgets/login_check.dart';
-import 'package:test_app/vm/tab_vm.dart';
+import 'package:RiverPark_Mate/view/chat/chat.dart';
+import 'package:RiverPark_Mate/view/findmap.dart';
+import 'package:RiverPark_Mate/view/info.dart';
+import 'package:RiverPark_Mate/view/post.dart';
+import 'package:RiverPark_Mate/view/widgets/login_check.dart';
+import 'package:RiverPark_Mate/vm/tab_vm.dart';
 
 import 'vm/location_handler.dart';
 import 'vm/login_handler.dart';

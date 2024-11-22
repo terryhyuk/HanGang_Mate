@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:lottie/lottie.dart';
-import 'package:test_app/home.dart';
+import 'package:RiverPark_Mate/home.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

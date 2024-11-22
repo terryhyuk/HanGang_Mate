@@ -5,8 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:test_app/Model/parking.dart';
-import 'package:test_app/private.dart';
+import 'package:RiverPark_Mate/Model/parking.dart';
+import 'package:RiverPark_Mate/private.dart';
 
 class LocationHandler extends GetxController {
   // Variables

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/constants/theme.dart';
-import 'package:test_app/view/post_view.dart';
-import 'package:test_app/view/post_write.dart';
-import 'package:test_app/vm/post_handler.dart';
-import 'package:test_app/vm/login_handler.dart';
-import 'package:test_app/ws/admin_post.dart';
+import 'package:RiverPark_Mate/constants/theme.dart';
+import 'package:RiverPark_Mate/view/post_view.dart';
+import 'package:RiverPark_Mate/view/post_write.dart';
+import 'package:RiverPark_Mate/vm/post_handler.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
+import 'package:RiverPark_Mate/ws/admin_post.dart';
 
 class Post extends GetView<PostHandler> {
   const Post({super.key});

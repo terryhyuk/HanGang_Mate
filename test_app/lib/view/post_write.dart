@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test_app/Model/parking.dart';
-import 'package:test_app/model/post_request.dart';
-import 'package:test_app/vm/location_handler.dart';
-import 'package:test_app/vm/post_handler.dart';
-import 'package:test_app/vm/login_handler.dart';
-import 'package:test_app/constants/theme.dart';
+import 'package:RiverPark_Mate/Model/parking.dart';
+import 'package:RiverPark_Mate/model/post_request.dart';
+import 'package:RiverPark_Mate/vm/location_handler.dart';
+import 'package:RiverPark_Mate/vm/post_handler.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
+import 'package:RiverPark_Mate/constants/theme.dart';
 
 class PostWrite extends GetView<PostHandler> {
   PostWrite({super.key});

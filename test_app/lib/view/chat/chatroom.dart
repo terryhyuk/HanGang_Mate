@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
-import 'package:test_app/Model/message.dart';
-import 'package:test_app/vm/chating_controller.dart';
-import 'package:test_app/vm/login_handler.dart';
+import 'package:RiverPark_Mate/Model/message.dart';
+import 'package:RiverPark_Mate/vm/chating_controller.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
 
 class ChatScreen extends StatelessWidget {
   final String roomId;

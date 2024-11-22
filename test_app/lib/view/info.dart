@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:test_app/Model/custom.dart';
-import 'package:test_app/constants/theme.dart';
-import 'package:test_app/vm/location_handler.dart';
-import 'package:test_app/view/detail.dart';
+import 'package:RiverPark_Mate/Model/custom.dart';
+import 'package:RiverPark_Mate/constants/theme.dart';
+import 'package:RiverPark_Mate/vm/location_handler.dart';
+import 'package:RiverPark_Mate/view/detail.dart';
 
 class Info extends StatelessWidget {
   Info({super.key});

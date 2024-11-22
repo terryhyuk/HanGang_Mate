@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:test_app/model/post_request.dart';
+import 'package:RiverPark_Mate/model/post_request.dart';
 import 'dart:convert';
-import 'package:test_app/model/posting.dart';
-import 'package:test_app/vm/login_handler.dart';
+import 'package:RiverPark_Mate/model/posting.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
 
 class PostHandler extends GetxController {
   final LoginHandler loginHandler = Get.find<LoginHandler>();

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:test_app/firebase_options.dart';
+import 'package:RiverPark_Mate/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:test_app/splashScrrenPage.dart';
-import 'package:test_app/vm/location_handler.dart';
-import 'package:test_app/vm/login_handler.dart';
-import 'package:test_app/vm/post_handler.dart';
-import 'package:test_app/vm/tab_vm.dart';
+import 'package:RiverPark_Mate/splashScrrenPage.dart';
+import 'package:RiverPark_Mate/vm/location_handler.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
+import 'package:RiverPark_Mate/vm/post_handler.dart';
+import 'package:RiverPark_Mate/vm/tab_vm.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

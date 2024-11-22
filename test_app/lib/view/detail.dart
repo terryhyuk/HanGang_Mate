@@ -2,9 +2,9 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:get/get.dart';
-import 'package:test_app/view/routes.dart';
-import 'package:test_app/vm/location_handler.dart';
-import 'package:test_app/constants/theme.dart';
+import 'package:RiverPark_Mate/view/routes.dart';
+import 'package:RiverPark_Mate/vm/location_handler.dart';
+import 'package:RiverPark_Mate/constants/theme.dart';
 
 class Detail extends StatelessWidget {
   Detail({super.key});
