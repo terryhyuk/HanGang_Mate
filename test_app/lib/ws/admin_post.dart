@@ -45,7 +45,7 @@ class AdminPost extends GetView<AnswerHandler> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
-                          width: 120,
+                          width: 150,
                           height: 30,
                           child: Container(
                             decoration: BoxDecoration(
