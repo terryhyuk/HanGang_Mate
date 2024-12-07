@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:RiverPark_Mate/Model/message.dart';
 import 'package:RiverPark_Mate/vm/login_handler.dart';
 
@@ -30,7 +31,7 @@ class ChatController extends GetxController {
       currentRoomId.value = roomId;
       listenToMessages();
     } catch (e) {
-      //
+      // 에러 처리
     }
   }
 
@@ -46,8 +47,17 @@ class ChatController extends GetxController {
         .listen((snapshot) {
       messages.value =
           snapshot.docs.map((doc) => Message.fromMap(doc.data())).toList();
+      
+      // 새 메시지가 추가될 때마다 스크롤을 아래로 이동
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.find<ScrollController>().animateTo(
+          Get.find<ScrollController>().position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
     }, onError: (error) {
-      // print('Error listening to messages: $error');
+      // 에러 처리
     });
   }
 
@@ -85,7 +95,7 @@ class ChatController extends GetxController {
         listenToMessages();
       }
     } catch (e) {
-      // print('Error sending message: $e');
+      // 에러 처리
     }
   }
 
@@ -107,22 +117,17 @@ class ChatController extends GetxController {
 
       // 로컬 메시지 목록 초기화
       messages.clear();
-
-      // print('채팅 내역이 삭제되었습니다.');
     } catch (e) {
-      // print('채팅 내역 삭제 중 오류 발생: $e');
+      // 에러 처리
     }
   }
 
   deleteChatRoom(String roomId) async {
     try {
       // 채팅방 문서 삭제
-      await FirebaseFirestore.instance
-          .collection('chatRooms')
-          .doc(roomId)
-          .delete();
+      await _firestore.collection('chatRooms').doc(roomId).delete();
       // 채팅방 내의 모든 메시지 삭제
-      final messagesRef = FirebaseFirestore.instance
+      final messagesRef = _firestore
           .collection('chatRooms')
           .doc(roomId)
           .collection('messages');
@@ -130,9 +135,8 @@ class ChatController extends GetxController {
       for (var doc in messages.docs) {
         await doc.reference.delete();
       }
-      // print('채팅방이 성공적으로 삭제되었습니다.');
     } catch (e) {
-      // print('채팅방 삭제 중 오류 발생: $e');
+      // 에러 처리
     }
   }
 }

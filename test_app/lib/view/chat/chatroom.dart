@@ -19,11 +19,12 @@ class ChatScreen extends StatelessWidget {
   final ChatController chatController = Get.find<ChatController>();
   final LoginHandler loginHandler = Get.find<LoginHandler>();
   final TextEditingController sendController = TextEditingController();
-  final ScrollController scrollController =
-      ScrollController(); // ScrollController 추가
 
   @override
   Widget build(BuildContext context) {
+    // ScrollController를 GetX에 등록
+    Get.put(ScrollController());
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -46,8 +47,8 @@ class ChatScreen extends StatelessWidget {
           Expanded(
             child: Obx(
               () => ListView.builder(
-                controller: scrollController, // ScrollController 설정
-                reverse: false, // 최신 메시지를 아래에 표시
+                controller: Get.find<ScrollController>(),
+                reverse: false,
                 itemCount: chatController.messages.length,
                 itemBuilder: (context, index) {
                   Message message = chatController.messages[index];
@@ -123,8 +124,12 @@ class ChatScreen extends StatelessWidget {
       sendController.clear();
 
       // 새로운 메시지를 보낸 후 스크롤을 맨 아래로 이동
-      Future.delayed(const Duration(milliseconds: 100), () {
-        scrollController.jumpTo(scrollController.position.maxScrollExtent);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.find<ScrollController>().animateTo(
+          Get.find<ScrollController>().position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
       });
     }
   }
