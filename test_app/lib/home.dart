@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:RiverPark_Mate/view/chat/chat.dart';
@@ -15,32 +16,118 @@ class Home extends GetView<TabVM> {
 
   final LoginHandler loginController = Get.find<LoginHandler>();
   final LocationHandler locationController = Get.find<LocationHandler>();
-
-  final Color selectedColor = const Color(0xFFFF8D62); // 선택된 네모 박스 색상
+  final Color selectedColor = const Color(0xFFFF8D62);
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: TabBarView(
-            controller: controller.tabController,
-            children: [
-              Info(),
-              Obx(() => loginController.isLoggedIn
-                  ? const Post()
-                  : const LoginCheck()),
-              Obx(() =>
-                  loginController.isLoggedIn ? Chat() : const LoginCheck()),
-              const Findmap()
-            ],
-          ),
-          bottomNavigationBar: Obx(() => _buildBottomNavigationBar(context)),
-        );
+        if (kIsWeb) {
+          // 웹 버전 레이아웃
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: Row(
+              children: [
+                // 웹용 사이드 네비게이션
+                _buildWebSideNavigation(context),
+                // 메인 콘텐츠
+                Expanded(
+                  child: TabBarView(
+                    controller: controller.tabController,
+                    children: [
+                      Info(),
+                      Obx(() => loginController.isLoggedIn
+                          ? const Post()
+                          : const LoginCheck()),
+                      Obx(() => loginController.isLoggedIn 
+                          ? Chat() 
+                          : const LoginCheck()),
+                      const Findmap()
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          // 모바일 기존
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: TabBarView(
+              controller: controller.tabController,
+              children: [
+                Info(),
+                Obx(() => loginController.isLoggedIn
+                    ? const Post()
+                    : const LoginCheck()),
+                Obx(() => loginController.isLoggedIn 
+                    ? Chat() 
+                    : const LoginCheck()),
+                const Findmap()
+              ],
+            ),
+            bottomNavigationBar: Obx(() => _buildBottomNavigationBar(context)),
+          );
+        }
       },
     );
   }
+
+  // 웹용 사이드 네비게이션 위젯
+  Widget _buildWebSideNavigation(BuildContext context) {
+    return Container(
+      width: 250,
+      color: Colors.white,
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          // 웹용 네비게이션 아이템들
+          _buildWebNavigationItem('images/homeimage.png', 0, '홈'),
+          _buildWebNavigationItem('images/postpage.png', 1, '게시물'),
+          _buildWebNavigationItem('images/Chat.png', 2, '채팅'),
+          _buildWebNavigationItem('images/userpage.png', 3, '로그아웃'),
+        ],
+      ),
+    );
+  }
+
+  // 웹용 네비게이션 아이템 위젯
+  Widget _buildWebNavigationItem(String imagePath, int index, String label) {
+    return Obx(() {
+      final bool isSelected = controller.currentIndex.value == index;
+      return InkWell(
+        onTap: () => controller.tabController.index = index,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+          decoration: isSelected
+              ? BoxDecoration(
+                  color: selectedColor,
+                  borderRadius: BorderRadius.circular(8),
+                )
+              : null,
+          child: Row(
+            children: [
+              Image.asset(
+                imagePath,
+                width: 24,
+                height: 24,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+
 
   Widget _buildBottomNavigationBar(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

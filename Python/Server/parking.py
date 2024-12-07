@@ -12,6 +12,7 @@ from login import router as login_router
 from model import router as model_router
 from HanRiver_API import router as hanriver_router
 from admin import router as admin_router
+from fastapi.middleware.cors import CORSMiddleware
 import pymysql
 import host
 
@@ -33,6 +34,15 @@ def connect():
         charset='utf8'
     )
     return conn
+
+# CORS 설정
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins = ['*'], # 모든 도메인 허용 : 테스트 할 때만 사용하기
+    allow_credentials = True,
+    allow_methods=['*'], # 모든 http 메서드 허용
+    allow_headers = ['*'], # 모든 헤더 사용
+)    
 
 if __name__ == "__main__":
     import uvicorn
