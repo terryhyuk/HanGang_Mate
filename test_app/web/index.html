@@ -31,6 +31,27 @@
 
   <title>test_app</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+  <!-- 필요한 다른 Firebase 서비스 스크립트를 여기에 추가하세요 -->
+
+  <script>
+    // Firebase 구성
+    const firebaseConfig = {
+      apiKey: "AIzaSyADxzCgi_C2kVqJ9YqbXGRpIT-Kb1CnnGQ",
+      authDomain: "parking-b7b92.firebaseapp.com",
+      projectId: "parking-b7b92",
+      storageBucket: "parking-b7b92.firebasestorage.app",
+      messagingSenderId: "92194517348",
+      appId: "1:92194517348:web:5d6f54e2064143ed464a71",
+      measurementId: "G-7YQNB6PV1K"
+    };
+    // Firebase 초기화
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
