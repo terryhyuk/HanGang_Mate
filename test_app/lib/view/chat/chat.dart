@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app/view/chat/chatroom.dart';
-import 'package:test_app/vm/chating_controller.dart';
+import 'package:RiverPark_Mate/view/chat/chatroom.dart';
+import 'package:RiverPark_Mate/vm/chating_controller.dart';
 import 'package:get/get.dart';
-import 'package:test_app/vm/login_handler.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
 
 class Chat extends StatelessWidget {
   Chat({super.key});

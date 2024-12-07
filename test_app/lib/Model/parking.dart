@@ -17,6 +17,6 @@ class Parking {
       : pname = res['pname'],
         lat = res['lat'],
         lng = res['lng'],
-        predictParking= res['predictParking'],
+        predictParking = res['predictParking'],
         predictMessage = res['predictMessage'];
 }

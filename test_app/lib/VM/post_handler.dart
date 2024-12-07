@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:test_app/model/post_request.dart';
+import 'package:RiverPark_Mate/model/post_request.dart';
 import 'dart:convert';
-import 'package:test_app/model/posting.dart';
-import 'package:test_app/vm/login_handler.dart';
+import 'package:RiverPark_Mate/model/posting.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
 
 class PostHandler extends GetxController {
   final LoginHandler loginHandler = Get.find<LoginHandler>();
@@ -12,7 +12,7 @@ class PostHandler extends GetxController {
   final RxList<Posting> posts = <Posting>[].obs;
   final RxInt currentPage = 1.obs;
   final RxInt totalPages = 1.obs;
-  final int itemsPerPage = 10;
+  final int itemsPerPage = 5;
   final RxBool isLoading = false.obs;
 
   getHanriverSeq(String hname) async {
@@ -95,14 +95,14 @@ class PostHandler extends GetxController {
     }
   }
 
-  void nextPage() {
+  nextPage() {
     if (currentPage.value < totalPages.value) {
       currentPage.value++;
       getPosts();
     }
   }
 
-  void previousPage() {
+  previousPage() {
     if (currentPage.value > 1) {
       currentPage.value--;
       getPosts();

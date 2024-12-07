@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:test_app/Model/message.dart';
-import 'package:test_app/vm/login_handler.dart';
+import 'package:RiverPark_Mate/Model/message.dart';
+import 'package:RiverPark_Mate/vm/login_handler.dart';
 
 class ChatController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -12,12 +12,6 @@ class ChatController extends GetxController {
 
   String get userEmail => _loginHandler.box.read('userEmail') ?? '';
   String get userId => _loginHandler.box.read('userId') ?? '';
-
-  @override
-  void onInit() {
-    super.onInit();
-    // checkObserver();
-  }
 
   createOrJoinChatRoom(String roomId) async {
     if (roomId.isEmpty) return;
@@ -35,7 +29,9 @@ class ChatController extends GetxController {
       }
       currentRoomId.value = roomId;
       listenToMessages();
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   listenToMessages() {

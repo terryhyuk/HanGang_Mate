@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:test_app/vm/location_handler.dart';
+import 'package:RiverPark_Mate/vm/location_handler.dart';
 
 class Routes extends StatelessWidget {
   Routes({super.key});
