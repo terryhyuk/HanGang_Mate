@@ -1,10 +1,10 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:get/get.dart';
 import 'package:RiverPark_Mate/view/routes.dart';
 import 'package:RiverPark_Mate/vm/location_handler.dart';
 import 'package:RiverPark_Mate/constants/theme.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class Detail extends StatelessWidget {
   Detail({super.key});
@@ -33,7 +33,8 @@ class Detail extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _gaugeWidget(context),
+                        testGaugeWidget(context),
+                        // _gaugeWidget(context),
                         const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
@@ -72,97 +73,7 @@ class Detail extends StatelessWidget {
         ));
   }
 
-// 주차장 현황 게이지
-  Widget _gaugeWidget(context) {
-    return Column(
-      children: [
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: controller.parkingInfo.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, //한줄에 출력될 개수
-          ),
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 53, 53, 53),
-                            width: 1.5,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            controller.parkingInfo[index].pname,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Color.fromARGB(255, 44, 109, 45),
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    )),
-                AnimatedRadialGauge(
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.linear,
-                  radius: 50,
-                  value: controller.parkingCapacity[index],
-                  axis: GaugeAxis(
-                    min: 0,
-                    max: 100,
-                    degrees: 180,
-                    progressBar: GaugeBasicProgressBar(
-                      color: controller.parkingCapacity[index] <= 40
-                          ? const Color.fromARGB(255, 253, 136, 106)
-                          : const Color.fromARGB(255, 136, 202, 255),
-                    ),
-                    segments: const [
-                      GaugeSegment(
-                        from: 0,
-                        to: 100,
-                        border: GaugeBorder(color: Colors.black),
-                      ),
-                    ],
-                    style: const GaugeAxisStyle(
-                      background: Colors.transparent,
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: Text(
-                      '${controller.parkingCapacity[index].toStringAsFixed(1)}%',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17),
-                    ),
-                  ),
-                ),
-                const Text(
-                  'Parking available',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 58, 59, 59),
-                      fontWeight: FontWeight.w500),
-                ),
-              ],
-            );
-          },
-        ),
-        const Divider(
-          thickness: 2.5,
-          color: Color.fromARGB(208, 0, 0, 0),
-        )
-      ],
-    );
-  }
+
 
 // 주차장 길찾기 목록
   Widget _parkingWidget(context) {
@@ -178,14 +89,14 @@ class Detail extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(20,0,0,0),
                     child: Text(
                       controller.parkingInfo[index].pname,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(30,0,0,0),
                     child: IconButton(
                         onPressed: () async {
                           await controller.createRoute(index);
@@ -230,10 +141,9 @@ class Detail extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
           child: DropdownButton<int>(
-            //Map형태(dictionary)
             dropdownColor: dropDownBackgroundClr,
             iconEnabledColor: const Color.fromARGB(255, 0, 0, 0),
-            value: controller.selectedTime.value, //선택한 이름
+            value: controller.selectedTime.value, //선택한 시간
             icon: const Icon(Icons.keyboard_arrow_down),
             items: controller.timeList
                 .asMap()
@@ -297,4 +207,119 @@ class Detail extends StatelessWidget {
       ],
     );
   }
+
+
+
+// TEST
+Widget testGaugeWidget(context) {
+  return Column(
+    children: [
+      GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: controller.parkingInfo.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.8, // 이 값을 조절하여 각 그리드 아이템의 비율을 조정할 수 있습니다
+        ),
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 120,
+                  height: 30,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 53, 53, 53),
+                        width: 1.5,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        controller.parkingInfo[index].pname,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 44, 109, 45),
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 120, // 게이지의 높이를 조절합니다
+                width: 120, // 게이지의 너비를 조절합니다
+                child: SfRadialGauge(
+                  axes: <RadialAxis>[
+                    RadialAxis(
+                      minimum: 0,
+                      maximum: 100,
+                      startAngle: 180,
+                      endAngle: 0,
+                      showLabels: false,
+                      showTicks: false,
+                      radiusFactor: 0.8,
+                      axisLineStyle: const AxisLineStyle(
+                        thickness: 0.2,
+                        thicknessUnit: GaugeSizeUnit.factor,
+                      ),
+                      pointers: <GaugePointer>[
+                        RangePointer(
+                          value: controller.parkingCapacity[index],
+                          width: 0.2,
+                          sizeUnit: GaugeSizeUnit.factor,
+                          enableAnimation: true,
+                          animationType: AnimationType.ease,
+                          color: controller.parkingCapacity[index] <= 40
+                              ? const Color.fromARGB(255, 253, 136, 106)
+                              : const Color.fromARGB(255, 136, 202, 255),
+                        ),
+                        NeedlePointer(
+                          value:  controller.parkingCapacity[index],
+                          needleEndWidth: 2,
+                          enableAnimation: true,
+                          animationType: AnimationType.ease,
+                        )
+                      ],
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                          widget: Text(
+                            '${controller.parkingCapacity[index].toStringAsFixed(1)}%',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14
+                            ),
+                          ),
+                          angle: 90,
+                          positionFactor: 0.5,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Text(
+                'Parking available',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 58, 59, 59),
+                  fontWeight: FontWeight.w500
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+      const Divider(
+        thickness: 2.5,
+        color: Color.fromARGB(208, 0, 0, 0),
+      )
+    ],
+  );
+}
 }
