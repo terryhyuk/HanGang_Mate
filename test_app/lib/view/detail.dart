@@ -26,7 +26,10 @@ class Detail extends StatelessWidget {
                     return const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [CircularProgressIndicator(), Text('예측중')],
+                        children: [
+                          CircularProgressIndicator(), 
+                          // Text('예측중')
+                          ],
                       ),
                     );
                   } else {

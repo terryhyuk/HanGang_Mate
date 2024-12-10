@@ -20,57 +20,60 @@ class Chat extends StatelessWidget {
         title: const Text('1:1 문의'),
         centerTitle: false,
       ),
-      body: Obx(() {
-        final isAdmin = loginHandler.isObserver == 'Y';
-        if (isAdmin) {
-          return StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection('chatRooms').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              final chatRooms = snapshot.data?.docs ?? [];
-              return ListView.builder(
-                itemCount: chatRooms.length,
-                itemBuilder: (context, index) {
-                  final room = chatRooms[index];
-                  return GestureDetector(
-                    onLongPress: () {
-                      showDeleteConfirmDialog(context, room.id);
-                    },
-                    child: ListTile(
-                      title: Text(room['userEmail'] ?? 'Unknown User'),
-                      subtitle: Text(room['lastMessage'] ?? ''),
-                      onTap: () {
-                        Get.to(() => ChatScreen(
-                              roomId: room.id,
-                              userEmail: room['userEmail'],
-                            ));
-                      },
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        } else {
-          return Center(
-            child: ElevatedButton(
-              child: const Text('1:1 문의하기'),
-              onPressed: () {
-                final currentUserEmail = loginHandler.userEmail.value;
-                if (currentUserEmail.isNotEmpty) {
-                  Get.to(() => ChatScreen(
-                        roomId: currentUserEmail,
-                        userEmail: currentUserEmail,
-                      ));
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Obx(() {
+          final isAdmin = loginHandler.isObserver == 'Y';
+          if (isAdmin) {
+            return StreamBuilder<QuerySnapshot>(
+              stream:
+                  FirebaseFirestore.instance.collection('chatRooms').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
                 }
+                final chatRooms = snapshot.data?.docs ?? [];
+                return ListView.builder(
+                  itemCount: chatRooms.length,
+                  itemBuilder: (context, index) {
+                    final room = chatRooms[index];
+                    return GestureDetector(
+                      onLongPress: () {
+                        showDeleteConfirmDialog(context, room.id);
+                      },
+                      child: ListTile(
+                        title: Text(room['userEmail'] ?? 'Unknown User'),
+                        subtitle: Text(room['lastMessage'] ?? ''),
+                        onTap: () {
+                          Get.to(() => ChatScreen(
+                                roomId: room.id,
+                                userEmail: room['userEmail'],
+                              ));
+                        },
+                      ),
+                    );
+                  },
+                );
               },
-            ),
-          );
-        }
-      }),
+            );
+          } else {
+            return Center(
+              child: ElevatedButton(
+                child: const Text('1:1 문의하기'),
+                onPressed: () {
+                  final currentUserEmail = loginHandler.userEmail.value;
+                  if (currentUserEmail.isNotEmpty) {
+                    Get.to(() => ChatScreen(
+                          roomId: currentUserEmail,
+                          userEmail: currentUserEmail,
+                        ));
+                  }
+                },
+              ),
+            );
+          }
+        }),
+      ),
     );
   }
 

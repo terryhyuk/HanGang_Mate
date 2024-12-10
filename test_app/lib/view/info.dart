@@ -60,11 +60,11 @@ class Info extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Image.asset(
-                'images/clear-cloudy.png',
-                width: MediaQuery.of(context).size.width * 0.12,
-                height: MediaQuery.of(context).size.width * 0.12,
-              )
+              // Image.asset(
+              //   'images/clear-cloudy.png',
+              //   width: MediaQuery.of(context).size.width * 0.12,
+              //   height: MediaQuery.of(context).size.width * 0.12,
+              // )
             ],
           ),
         ),
@@ -81,7 +81,13 @@ class Info extends StatelessWidget {
                     return Obx(() {
                       if (controller.parkingMarker.isEmpty) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                            ],
+                          ),
                         );
                       } else {
                         return Center(
