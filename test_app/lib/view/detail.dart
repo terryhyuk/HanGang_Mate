@@ -73,8 +73,6 @@ class Detail extends StatelessWidget {
         ));
   }
 
-
-
 // 주차장 길찾기 목록
   Widget _parkingWidget(context) {
     return Column(
@@ -89,14 +87,14 @@ class Detail extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20,0,0,0),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: Text(
                       controller.parkingInfo[index].pname,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(30,0,0,0),
+                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                     child: IconButton(
                         onPressed: () async {
                           await controller.createRoute(index);
@@ -208,118 +206,163 @@ class Detail extends StatelessWidget {
     );
   }
 
-
-
 // TEST
-Widget testGaugeWidget(context) {
-  return Column(
-    children: [
-      GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: controller.parkingInfo.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.8, // 이 값을 조절하여 각 그리드 아이템의 비율을 조정할 수 있습니다
-        ),
-        itemBuilder: (context, index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: 120,
-                  height: 30,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 53, 53, 53),
-                        width: 1.5,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        controller.parkingInfo[index].pname,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 44, 109, 45),
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                  ),
+  // TEST
+  Widget testGaugeWidget(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    return Column(
+      children: [
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: controller.parkingInfo.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: screenWidth < 600 ? 2 : 3, // 화면 크기에 따라 열 수 변경
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 0.9,
+          ),
+          itemBuilder: (context, index) {
+            final double capacity = controller.parkingCapacity[index];
+
+            // 퍼센트 값에 따른 색상 결정
+            Color getCapacityColor(double value) {
+              if (value >= 80) {
+                return Colors.blueAccent; // 80% 이상: 초록색
+              } else if (value >= 50) {
+                return Colors.orangeAccent; // 50% 이상: 주황색
+              } else if (value > 0) {
+                return Colors.redAccent; // 0% 초과 50% 미만: 빨간색
+              } else {
+                return Colors.grey; // 0% 또는 없음: 회색
+              }
+            }
+
+            final Color capacityColor = getCapacityColor(capacity);
+
+            return Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
                 ),
+                color: Colors.white, // 단색 배경으로 차분하게 변경
+                borderRadius: BorderRadius.circular(20),
               ),
-              SizedBox(
-                height: 120, // 게이지의 높이를 조절합니다
-                width: 120, // 게이지의 너비를 조절합니다
-                child: SfRadialGauge(
-                  axes: <RadialAxis>[
-                    RadialAxis(
-                      minimum: 0,
-                      maximum: 100,
-                      startAngle: 180,
-                      endAngle: 0,
-                      showLabels: false,
-                      showTicks: false,
-                      radiusFactor: 0.8,
-                      axisLineStyle: const AxisLineStyle(
-                        thickness: 0.2,
-                        thicknessUnit: GaugeSizeUnit.factor,
-                      ),
-                      pointers: <GaugePointer>[
-                        RangePointer(
-                          value: controller.parkingCapacity[index],
-                          width: 0.2,
-                          sizeUnit: GaugeSizeUnit.factor,
-                          enableAnimation: true,
-                          animationType: AnimationType.ease,
-                          color: controller.parkingCapacity[index] <= 40
-                              ? const Color.fromARGB(255, 253, 136, 106)
-                              : const Color.fromARGB(255, 136, 202, 255),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // 상단 아이콘과 텍스트
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.local_parking,
+                          size: 30,
+                          color: capacityColor, // 아이콘 색상 설정
                         ),
-                        NeedlePointer(
-                          value:  controller.parkingCapacity[index],
-                          needleEndWidth: 2,
-                          enableAnimation: true,
-                          animationType: AnimationType.ease,
-                        )
-                      ],
-                      annotations: <GaugeAnnotation>[
-                        GaugeAnnotation(
-                          widget: Text(
-                            '${controller.parkingCapacity[index].toStringAsFixed(1)}%',
+                        Expanded(
+                          child: Text(
+                            controller.parkingInfo[index].pname,
+                            textAlign: TextAlign.end,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 14
+                              color: Colors.black87,
+                              fontSize: 14,
                             ),
+                            overflow: TextOverflow.ellipsis, // 텍스트가 넘칠 경우 처리
                           ),
-                          angle: 90,
-                          positionFactor: 0.5,
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 12),
+                    // 게이지
+                    SizedBox(
+                      height: screenWidth < 600 ? 100 : 120, // 화면 크기에 따라 크기 조정
+                      width: screenWidth < 600 ? 100 : 120,
+                      child: SfRadialGauge(
+                        axes: <RadialAxis>[
+                          RadialAxis(
+                            minimum: 0,
+                            maximum: 100,
+                            startAngle: 180,
+                            endAngle: 0,
+                            showLabels: false,
+                            showTicks: false,
+                            radiusFactor: 0.8,
+                            axisLineStyle: const AxisLineStyle(
+                              thickness: 0.2,
+                              thicknessUnit: GaugeSizeUnit.factor,
+                            ),
+                            pointers: <GaugePointer>[
+                              RangePointer(
+                                value: capacity,
+                                width: 0.2,
+                                sizeUnit: GaugeSizeUnit.factor,
+                                enableAnimation: true,
+                                animationType: AnimationType.easeOutBack,
+                                color: capacityColor, // 게이지 색상 설정
+                              ),
+                              NeedlePointer(
+                                value: capacity,
+                                needleColor: Colors.black87,
+                                knobStyle: const KnobStyle(
+                                  color: Colors.black87,
+                                  sizeUnit: GaugeSizeUnit.factor,
+                                  knobRadius: 0.06,
+                                ),
+                                enableAnimation: true,
+                                animationType: AnimationType.ease,
+                              ),
+                            ],
+                            annotations: <GaugeAnnotation>[
+                              GaugeAnnotation(
+                                widget: Text(
+                                  '${capacity.toStringAsFixed(1)}%',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                angle: 90,
+                                positionFactor: 0.5,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // 상태 메시지
+                    Text(
+                      capacity >= 80
+                          ? 'High Availability'
+                          : capacity >= 50
+                              ? 'Moderate Availability'
+                              : capacity > 0
+                                  ? 'Low Availability'
+                                  : 'No Parking Available',
+                      style: const TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
               ),
-              const Text(
-                'Parking available',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 58, 59, 59),
-                  fontWeight: FontWeight.w500
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-      const Divider(
-        thickness: 2.5,
-        color: Color.fromARGB(208, 0, 0, 0),
-      )
-    ],
-  );
-}
+            );
+          },
+        ),
+        const Divider(
+          thickness: 2.5,
+          color: Colors.black54,
+        ),
+      ],
+    );
+  }
 }
