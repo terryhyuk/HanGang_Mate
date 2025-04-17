@@ -1,120 +1,140 @@
-## 주제 
+# HangangPark
 
-머신러닝을 이용한 한강공원의 주차장별 혼잡도 예측
-  - 여의도 한강공원(1~5주차장)
-  - 뚝섬 한강공원(1~4주차장)
+[![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white)](https://firebase.google.com/)
 
---------
+---
 
+## Table of Contents
 
+- [Overview](#overview)
+- [Demo Video](#demo-video)
+- [Assigned Role](#assigned-role)
+- [Tech Stack](#tech-stack)
+- [Flutter Packages](#flutter-packages)
+- [How to Run](#how-to-run)
+- [Links](#links)
+- [Contact](#contact)
 
-## 팀원
-- 신정섭 : 깃허브 관리, 뚝섬 데이터 분석, 구글맵 연결, API, detail 페이지
-- 윤용혁 : 뚝섬 데이터 분석, 한강관리자와 사용자 1:1 채팅문의 구현
-- 정우선 : 여의도 데이터 분석, 관리자 답변, UI
-- 정정영 : 구글로그인, APP, UI, 게시글 관리
-- 하동훈 : info Page, 여의도 데이터 분석, 실시간 API연동, 머신러닝 모델 Fast API 연동
+---
 
---------
+## Overview
 
+HangangPark is a Flutter-based app that predicts parking lot congestion in Yeouido Hangang Park and Ttukseom Hangang Park using machine learning.
 
-## Packages 사용한 패키지
-```
+- Provides real-time parking information and future congestion predictions based on holidays, time slots, and parking lot locations.
+- Offers navigation assistance to help users find parking spots in real time.
 
-# Get
-  get: ^4.6.6
+- **Duration/Team Size:**  
+  November 1, 2024 – November 22, 2024  
+  5-member team project
 
-  # 내비게이션 바
-  persistent_bottom_nav_bar: ^6.2.1
+---
 
-  # http
-  http: ^1.2.2
+## Demo Video
 
-  # getstorage
-  get_storage: ^2.1.1
+[![Demo Video](https://img.youtube.com/vi/GxYjpVGlDhHs/0.jpg)](https://youtu.be/GxYjpVGlDhHs)
 
-  # firebase
-  firebase_core: ^3.6.0
-  cloud_firestore: ^5.4.3
+[Watch on YouTube](https://youtu.be/GxYjpVGlDhHs)
 
- # lottie(animation effect)
- lottie: ^3.1.2
-# 채팅패키지
- chat_bubbles: ^1.6.0
+---
 
- # 구글 맵
- google_maps_flutter: ^2.9.0
+## Assigned Role
 
- # 구글맵 경로
- flutter_polyline_points: ^2.1.0
+1. **Data Analysis and Preprocessing of Ddukseom Parking Lot Using Python**
+   - Analyzed parking lot data and performed preprocessing tasks to prepare for model development.
+2. **Development of Machine Learning-Based Congestion Prediction Model**
+   - Built a predictive model to estimate parking lot congestion using machine learning techniques.
+3. **Implementation of Prediction Model Using FastAPI**
+   - Deployed the machine learning model through FastAPI to enable real-time predictions.
+4. **Real-Time API Server for Providing Prediction Results**
+   - Established a real-time API server to deliver congestion predictions to users.
+5. **Implementation of Real-Time Chat System with Administrators**
+   - Developed a chat system for real-time communication between users and administrators.
 
- # 지도
- geolocator: ^13.0.2
+---
 
- # 구글 로그인
- firebase_auth: ^5.3.3
- google_sign_in: ^6.2.2
-# 주차대수 게이지 표시
- gauge_indicator: ^0.4.3
+## Tech Stack
 
- # info 페이지 무지개 슬라이더
- gradient_slider: ^1.0.2
+**Frameworks:**  
+<img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"/>
+<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
 
- # detail 페이지 예측값 모양
- dots_indicator: ^3.0.0
+**Languages:**  
+<img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"/>
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
 
- # intl(datetime formatting)
- intl: ^0.19.0
-```
-------
+**Database:**  
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
+<img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white"/>
 
+**Design/Planning:**  
+<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white"/>
+<img src="https://img.shields.io/badge/Miro-050038?style=for-the-badge&logo=miro&logoColor=white"/>
 
-### Progress
+**Tools:**  
+<img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"/>
+<img src="https://img.shields.io/badge/Scikit-learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white"/>
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/>
+<img src="https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white"/>
 
-11.12~
-  프로젝트 기획 및 주제 선정
+---
 
-11.13 ~ 11.20
-  데이터 분석, 모델링 및 모델 평가
+## Flutter Packages
 
-11.13~ 11.21 
-  데이터베이스 구축 및 최종 모델 연결
+- `get` (^4.6.6): State management and navigation
+- `persistent_bottom_nav_bar` (^6.2.1): Bottom navigation bar
+- `http` (^1.2.2): HTTP requests
+- `get_storage` (^2.1.1): Local storage management
+- `firebase_core` (^3.6.0): Core Firebase functionalities
+- `cloud_firestore` (^5.4.3): Firestore database integration
+- `google_maps_flutter` (^2.9.0): Google Maps integration
+- `flutter_polyline_points` (^2.1.0): Polyline routes for maps
+- `geolocator` (^13.0.2): Geolocation services
+- `firebase_auth` (^5.3.3): Firebase Authentication
+- `google_sign_in` (^6.2.2): Google Sign-In integration
+- `lottie` (^3.1.2): Lottie animations
+- `chat_bubbles` (^1.6.0): Chat UI widgets
+- `gauge_indicator` (^0.4.3): Gauge for parking lot status
+- `gradient_slider` (^1.0.2): Gradient-style slider for UI
+- `dots_indicator` (^3.0.0): Dots indicator for pagination/progress
 
-총 개발 기간 11.11 ~ 11.22
+---
 
-------
+## How to Run
 
+1. Clone the repository  
+   `git clone https://github.com/shinjs99/HanGang-Mate.git`
+2. Install Flutter dependencies  
+   `flutter pub get`
+3. Run the app  
+   `flutter run`
+4. Backend setup (for ML prediction API):
+   - The backend (FastAPI) source code is in the `/pythonSpace` directory (if public).
+   - To run the backend:
+     1. Open a terminal and go to the `pythonSpace` folder.
+     2. (Optional) Create a virtual environment:
+        `python3 -m venv venv`
+        `source venv/bin/activate`
+     3. Install dependencies:
+        `pip install -r requirements.txt`
+     4. Start the FastAPI server:
+        `uvicorn calmlake:app --reload`
+   - The Flutter app uses Firebase directly; there is **no separate Firebase folder**.  
+     Make sure your Firebase project is set up and configured in your Flutter app as described in the Flutter/Firebase documentation.
 
-## 요약
+---
 
-### Python
-- 신정섭 : 
-- 정정영 :
-- 하동훈 :
-- 윤용혁 :
-- 정우선 :
+## Links
 
+- [GitHub Repository](https://github.com/shinjs99/HanGang-Mate)
 
-### Model
-- 신정섭 : 
-- 정정영 :
-- 하동훈 :
-- 윤용혁 :
-- 정우선 :
+---
 
-### View
-- 신정섭 : 
-- 정정영 :
-- 하동훈 :
-- 윤용혁 :
-- 정우선 :
+## Contact
 
-### ViewModel
-- 신정섭 : 
-- 정정영 :
-- 하동훈 :
-- 윤용혁 :
-- 정우선 :
-
-
-
+For questions, contact:  
+**Terry Yoon**  
+yonghyuk.terry.yoon@gmail.com
