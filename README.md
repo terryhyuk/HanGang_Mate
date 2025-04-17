@@ -132,7 +132,7 @@ It also offers navigation assistance to help users find parking spots in real ti
 ## Database
 
 ### MySQL EER Diagram  
-_Only the EER diagram is provided; actual database dump is not included._
+_Only the ERD is provided; actual database dump is not included._
 
 ![MySQL EER Diagram](image/MySQL_ERD.png)
 
