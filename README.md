@@ -37,8 +37,9 @@ It also offers navigation assistance to help users find parking spots in real ti
 
 ## Demo Video
 
-[![Demo Video](https://img.youtube.com/vi/여기에_유튜브_코드.png)](https://youtu.be/여기에_유튜브_링크)
-<!-- 유튜브 링크와 썸네일 이미지는 직접 수정하세요 -->
+
+**Links:**  
+- [Demo Video](https://youtu.be/GxYjpVGDhHs)
 
 ---
 
