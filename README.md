@@ -16,9 +16,9 @@
 - [Tech Stack](#tech-stack)
 - [Main Packages](#main-packages)
 - [System Architecture](#system-architecture)
+- [Database](#database)
 - [Screen Flow Diagram](#screen-flow-diagram)
 - [Screenshots](#screenshots)
-- [Database](#database)
 - [Data Analysis Results](#data-analysis-results)
 - [How to Run](#how-to-run)
 - [Contact](#contact)
@@ -114,6 +114,18 @@ It also offers navigation assistance to help users find parking spots in real ti
 
 ---
 
+## Database
+
+### MySQL ERD  
+_Only the ERD is provided; actual database dump is not included._
+
+![MySQL ERD](image/MySQL_ERD.png)
+
+### Firebase Structure  
+![Firebase Structure](image/Firebase.png)
+
+---
+
 ## Screen Flow Diagram
 
 ![Screen Flow Diagram](image/SFD.png)
@@ -126,18 +138,6 @@ It also offers navigation assistance to help users find parking spots in real ti
 
 ![Chat 1](image/chat1.png)
 ![Chat 2](image/chat2.png)
-
----
-
-## Database
-
-### MySQL EER Diagram  
-_Only the ERD is provided; actual database dump is not included._
-
-![MySQL EER Diagram](image/MySQL_ERD.png)
-
-### Firebase Structure  
-![Firebase Structure](image/Firebase.png)
 
 ---
 
@@ -169,7 +169,7 @@ The data analysis I performed for this project is summarized in the following PD
      3. Install dependencies:
         `pip install -r ../requirements.txt`
      4. Start the FastAPI server:
-        `uvicorn host:app --reload`
+        `uvicorn parking:app --reload`
    - The Flutter app uses Firebase directly; there is **no separate Firebase folder**.  
      Make sure your Firebase project is set up and configured in your Flutter app as described in the Flutter/Firebase documentation.
 
