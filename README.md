@@ -19,6 +19,7 @@
 - [Screen Flow Diagram](#screen-flow-diagram)
 - [Screenshots](#screenshots)
 - [Database](#database)
+- [Data Analysis Results](#data-analysis-results)
 - [How to Run](#how-to-run)
 - [Contact](#contact)
 
@@ -37,8 +38,6 @@ It also offers navigation assistance to help users find parking spots in real ti
 
 ## Demo Video
 
-
-**Links:**  
 - [Demo Video](https://youtu.be/GxYjpVGDhHs)
 
 ---
@@ -111,7 +110,7 @@ It also offers navigation assistance to help users find parking spots in real ti
 
 ## System Architecture
 
-![System Configuration](image/system_configuration.png)
+![System Architecture](image/System\ Architecture.png)
 
 ---
 
@@ -125,9 +124,8 @@ It also offers navigation assistance to help users find parking spots in real ti
 
 ### Main Screenshots (Features I Developed)
 
-![Page 1](image/page1.png)
-![Page 2](image/page2.png)
-<!-- 스크린샷 이미지는 직접 교체하세요 -->
+![Chat 1](image/chat1.png)
+![Chat 2](image/chat2.png)
 
 ---
 
@@ -136,10 +134,20 @@ It also offers navigation assistance to help users find parking spots in real ti
 ### MySQL EER Diagram  
 _Only the EER diagram is provided; actual database dump is not included._
 
-![MySQL EER Diagram](image/MySQL_EER.png)
+![MySQL EER Diagram](image/MySQL_ERD.png)
 
 ### Firebase Structure  
 ![Firebase Structure](image/Firebase.png)
+
+---
+
+## Data Analysis Results
+
+The data analysis I performed for this project is summarized in the following PDF document:
+
+- [Data Analysis Report (PDF)](image/data_analysis.pdf)
+
+> This report includes data preprocessing, feature engineering, exploratory analysis, and model evaluation.
 
 ---
 
@@ -152,7 +160,23 @@ _Only the EER diagram is provided; actual database dump is not included._
 3. Run the app  
    `flutter run`
 4. Backend setup (for ML prediction API):
-   - The backend (FastAPI) source code is in the `/pythonSpace` directory (if public).
+   - The backend (FastAPI) source code is in the `/Python/Server` directory.
    - To run the backend:
-     1. Open a terminal and go to the `pythonSpace` folder.
+     1. Open a terminal and go to the `Python/Server` folder.
      2. (Optional) Create a virtual environment:
+        `python3 -m venv venv`
+        `source venv/bin/activate`
+     3. Install dependencies:
+        `pip install -r ../requirements.txt`
+     4. Start the FastAPI server:
+        `uvicorn host:app --reload`
+   - The Flutter app uses Firebase directly; there is **no separate Firebase folder**.  
+     Make sure your Firebase project is set up and configured in your Flutter app as described in the Flutter/Firebase documentation.
+
+---
+
+## Contact
+
+For questions, contact:  
+**Terry Yoon**  
+yonghyuk.terry.yoon@gmail.com
