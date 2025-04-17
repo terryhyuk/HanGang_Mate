@@ -1,4 +1,4 @@
-# HangangPark
+# HanGang-Mate
 
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
@@ -11,48 +11,53 @@
 
 - [Overview](#overview)
 - [Demo Video](#demo-video)
-- [Assigned Role](#assigned-role)
+- [Features](#features)
+- [My Roles & Responsibilities](#my-roles--responsibilities)
 - [Tech Stack](#tech-stack)
-- [Flutter Packages](#flutter-packages)
+- [Main Packages](#main-packages)
+- [System Architecture](#system-architecture)
+- [Screen Flow Diagram](#screen-flow-diagram)
+- [Screenshots](#screenshots)
+- [Database](#database)
 - [How to Run](#how-to-run)
-- [Links](#links)
 - [Contact](#contact)
 
 ---
 
 ## Overview
 
-HangangPark is a Flutter-based app that predicts parking lot congestion in Yeouido Hangang Park and Ttukseom Hangang Park using machine learning.
+HanGang-Mate is a Flutter-based mobile app that predicts parking lot congestion in Yeouido and Ttukseom Hangang Parks using machine learning.  
+The app provides real-time parking information and future congestion predictions based on holidays, time slots, and parking lot locations.  
+It also offers navigation assistance to help users find parking spots in real time.
 
-- Provides real-time parking information and future congestion predictions based on holidays, time slots, and parking lot locations.
-- Offers navigation assistance to help users find parking spots in real time.
-
-- **Duration/Team Size:**  
-  November 1, 2024 – November 22, 2024  
-  5-member team project
+- **Team Size:** 5 members  
+- **Project Duration:** November 1, 2024 – November 22, 2024
 
 ---
 
 ## Demo Video
 
-[![Demo Video](https://img.youtube.com/vi/GxYjpVGlDhHs/0.jpg)](https://youtu.be/GxYjpVGlDhHs)
-
-[Watch on YouTube](https://youtu.be/GxYjpVGlDhHs)
+[![Demo Video](https://img.youtube.com/vi/여기에_유튜브_코드.png)](https://youtu.be/여기에_유튜브_링크)
+<!-- 유튜브 링크와 썸네일 이미지는 직접 수정하세요 -->
 
 ---
 
-## Assigned Role
+## Features
 
-1. **Data Analysis and Preprocessing of Ddukseom Parking Lot Using Python**
-   - Analyzed parking lot data and performed preprocessing tasks to prepare for model development.
-2. **Development of Machine Learning-Based Congestion Prediction Model**
-   - Built a predictive model to estimate parking lot congestion using machine learning techniques.
-3. **Implementation of Prediction Model Using FastAPI**
-   - Deployed the machine learning model through FastAPI to enable real-time predictions.
-4. **Real-Time API Server for Providing Prediction Results**
-   - Established a real-time API server to deliver congestion predictions to users.
-5. **Implementation of Real-Time Chat System with Administrators**
-   - Developed a chat system for real-time communication between users and administrators.
+- Real-time parking lot congestion prediction using machine learning
+- Provides parking lot information for Yeouido and Ttukseom Hangang Parks
+- Navigation guidance to available parking spots
+- Real-time chat system with administrators
+
+---
+
+## My Roles & Responsibilities
+
+- Data analysis and preprocessing for Ttukseom parking lot using Python
+- Developed machine learning-based congestion prediction model
+- Implemented the prediction model using FastAPI
+- Built a real-time API server to provide prediction results
+- Developed real-time chat system with administrators
 
 ---
 
@@ -82,24 +87,58 @@ HangangPark is a Flutter-based app that predicts parking lot congestion in Yeoui
 
 ---
 
-## Flutter Packages
+## Main Packages
 
-- `get` (^4.6.6): State management and navigation
-- `persistent_bottom_nav_bar` (^6.2.1): Bottom navigation bar
-- `http` (^1.2.2): HTTP requests
-- `get_storage` (^2.1.1): Local storage management
-- `firebase_core` (^3.6.0): Core Firebase functionalities
-- `cloud_firestore` (^5.4.3): Firestore database integration
-- `google_maps_flutter` (^2.9.0): Google Maps integration
-- `flutter_polyline_points` (^2.1.0): Polyline routes for maps
-- `geolocator` (^13.0.2): Geolocation services
-- `firebase_auth` (^5.3.3): Firebase Authentication
-- `google_sign_in` (^6.2.2): Google Sign-In integration
-- `lottie` (^3.1.2): Lottie animations
-- `chat_bubbles` (^1.6.0): Chat UI widgets
-- `gauge_indicator` (^0.4.3): Gauge for parking lot status
-- `gradient_slider` (^1.0.2): Gradient-style slider for UI
-- `dots_indicator` (^3.0.0): Dots indicator for pagination/progress
+- `get`: State management and navigation
+- `persistent_bottom_nav_bar`: Bottom navigation bar
+- `http`: HTTP requests
+- `get_storage`: Local storage management
+- `firebase_core`: Core Firebase functionalities
+- `cloud_firestore`: Firestore database integration
+- `google_maps_flutter`: Google Maps integration
+- `flutter_polyline_points`: Polyline routes for maps
+- `geolocator`: Geolocation services
+- `firebase_auth`: Firebase Authentication
+- `google_sign_in`: Google Sign-In integration
+- `lottie`: Lottie animations
+- `chat_bubbles`: Chat UI widgets
+- `gauge_indicator`: Gauge for parking lot status
+- `gradient_slider`: Gradient-style slider for UI
+- `dots_indicator`: Dots indicator for pagination/progress
+
+---
+
+## System Architecture
+
+![System Configuration](image/system_configuration.png)
+
+---
+
+## Screen Flow Diagram
+
+![Screen Flow Diagram](image/SFD.png)
+
+---
+
+## Screenshots
+
+### Main Screenshots (Features I Developed)
+
+![Page 1](image/page1.png)
+![Page 2](image/page2.png)
+<!-- 스크린샷 이미지는 직접 교체하세요 -->
+
+---
+
+## Database
+
+### MySQL EER Diagram  
+_Only the EER diagram is provided; actual database dump is not included._
+
+![MySQL EER Diagram](image/MySQL_EER.png)
+
+### Firebase Structure  
+![Firebase Structure](image/Firebase.png)
 
 ---
 
@@ -116,25 +155,3 @@ HangangPark is a Flutter-based app that predicts parking lot congestion in Yeoui
    - To run the backend:
      1. Open a terminal and go to the `pythonSpace` folder.
      2. (Optional) Create a virtual environment:
-        `python3 -m venv venv`
-        `source venv/bin/activate`
-     3. Install dependencies:
-        `pip install -r requirements.txt`
-     4. Start the FastAPI server:
-        `uvicorn calmlake:app --reload`
-   - The Flutter app uses Firebase directly; there is **no separate Firebase folder**.  
-     Make sure your Firebase project is set up and configured in your Flutter app as described in the Flutter/Firebase documentation.
-
----
-
-## Links
-
-- [GitHub Repository](https://github.com/shinjs99/HanGang-Mate)
-
----
-
-## Contact
-
-For questions, contact:  
-**Terry Yoon**  
-yonghyuk.terry.yoon@gmail.com
