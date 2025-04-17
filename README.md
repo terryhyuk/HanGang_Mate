@@ -25,7 +25,6 @@
 - [Main Packages](#main-packages)
 - [System Architecture](#system-architecture)
 - [Database](#database)
-- [Screen Flow Diagram](#screen-flow-diagram)
 - [Screenshots](#screenshots)
 - [Data Analysis Results](#data-analysis-results)
 - [How to Run](#how-to-run)
@@ -132,12 +131,6 @@ _Only the ERD is provided; actual database dump is not included._
 
 ### Firebase Structure  
 ![Firebase Structure](image/Firebase.png)
-
----
-
-## Screen Flow Diagram
-
-![Screen Flow Diagram](image/SFD.png)
 
 ---
 
